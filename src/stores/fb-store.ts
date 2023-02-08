@@ -18,6 +18,11 @@ export const totalTime = derived(playingInfo,
         return parseInt($playingInfo.itemPlayingLen as string);
 });
 
+export const trackName = derived(playingInfo,
+    ($playingInfo: PlayingInfo) => {
+        return $playingInfo.helper2;
+});
+
 function createCurrentTimeStore() {
     let _time = 0;
     return asyncWritable(

@@ -32,6 +32,7 @@
             flex-grow: 1;
 
             .artist {
+                padding: 0 1rem;
                 font-size: 38px;
                 font-weight: 500;
             }
