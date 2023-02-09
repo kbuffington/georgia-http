@@ -1,3 +1,6 @@
+#ignore schema folder as it's not legit json
+static/schema
+
 .DS_Store
 node_modules
 /build
