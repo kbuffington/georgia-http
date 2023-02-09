@@ -1,5 +1,4 @@
 <script>
-    import Progress from './Progress.svelte';
     import Artwork from './Artwork.svelte';
     import { fbStore, playingInfo }  from '../stores/fb-store';
 
@@ -15,7 +14,6 @@
             <Artwork />
         {/await}
     </div>
-    <Progress />
 </div>
 
 <style lang="scss">

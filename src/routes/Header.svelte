@@ -3,7 +3,9 @@
 </script>
 
 <header>
-    Menus go here?
+    <a href="/playlist"><button>Playlist</button></a>
+    <a href="/"><button>Search</button></a>
+    <a href="/"><button>Now Playing</button></a>
 </header>
 
 <style lang="scss">
