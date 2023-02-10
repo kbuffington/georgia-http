@@ -1,5 +1,5 @@
 <script>
-	import Header from './Header.svelte';
+    import Header from './Header.svelte';
     import Progress from './Progress.svelte';
 </script>
 
@@ -7,7 +7,7 @@
     <Header />
 
     <main>
-        <div class="menu-bg-extended"></div>
+        <div class="menu-bg-extended" />
         <slot />
     </main>
 
@@ -18,8 +18,8 @@
 </div>
 
 <style lang="scss">
-    @import "../scss/colors.scss";
-    @import "../scss/constants.scss";
+    @import '../scss/colors.scss';
+    @import '../scss/constants.scss';
 
     .app {
         display: flex;
@@ -57,10 +57,6 @@
             // align-items: center;
             font-size: 12px;
             padding: 0;
-
-            a {
-                font-weight: bold;
-            }
 
             .version-string {
                 text-align: center;
