@@ -9,7 +9,7 @@ export const playingInfo = asyncReadable({}, async () => {
     const json = await response.json();
     return new Promise<any>((resolve, reject) => {
         const obj: PlayingInfo = json;
-        obj.trackInfo = new TrackInfo(json.helper4);
+        obj.trackInfo = new TrackInfo(json.helper5);
         obj.playlistsInfo = new PlaylistsInfo(json);
         obj.playlistData = json.playlist.map((t: any, i: number) => new PlTrackData(t, i, obj.playlistsInfo));
         console.log(obj.playlistsInfo);

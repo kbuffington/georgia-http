@@ -8,26 +8,27 @@ export class TrackInfo {
     album = '';
     albumArtist = '';
     title = '';
-    rating = '';
+    rating = 0;
     ratingStars = '';
-    playCount = 0;
+    playcount = 0;
     length = 0;
     date = '';
     tracknumber = '';
     displayLength = '';
 
-    constructor(jsonStr: string) {
-        if (jsonStr.trim().length) {
-            const escaped = jsonStr.replace(/&#92;&quot;/g, '\\"').replace(/&quot;/g, '"');
-            const obj = JSON.parse(escaped);
+    constructor(obj: any) {
+        // if (jsonStr.trim().length) {
+        // const escaped = jsonStr.replace(/&#92;&quot;/g, '\\"').replace(/&quot;/g, '"');
+        // const obj = JSON.parse(escaped);
+        if (Object.keys(obj)) {
             this.artist = obj.a;
             this.album = obj.b;
             this.albumArtist = obj.aa;
             this.title = obj.t;
-            this.playCount = parseInt(obj.pc);
+            this.playcount = typeof obj.pc === 'number' ? obj.pc : parseInt(obj.pc); // TODO: remove
             this.length = obj.ls;
             this.date = obj.d;
-            this.rating = obj.rn;
+            this.rating = typeof obj.rn === 'number' ? obj.rn : parseInt(obj.rn);
             this.ratingStars = obj.r;
             this.tracknumber = obj.n;
             this.displayLength = secondsToTime(this.length);
@@ -46,6 +47,7 @@ export class PlTrackData {
     playcount = '';
     rating = 0;
     ratingStars = '';
+    ratingEmpty = '⋅⋅⋅⋅⋅';
     title = '';
     tracknumber = '';
     active = false;
@@ -58,27 +60,19 @@ export class PlTrackData {
             this.date = json.d;
             this.length = json.ls;
             this.displayLength = secondsToTime(this.length);
-            this.playcount = json.pc;
+            this.playcount = typeof json.pc === 'number' ? json.pc : parseInt(json.pc);
             this.rating = json.rn ? parseInt(json.rn) : 0;
             // const fill = '\u00B7'; // · (middle dot)
             const fill = '\u2219'; // ⋅ (bullet operator)
             // const fill = '\u2616'; // ☆ (White Star)
-            this.ratingStars = '★'.repeat(this.rating).padEnd(5, fill);
+            this.ratingStars = '★'.repeat(this.rating); //.padEnd(5, fill);
             // this.ratingStars = json.r.padEnd(5, '\u2219');
-            this.r1 = json.r;
-            this.r2 = fill.repeat(5 - this.rating);
+            this.ratingEmpty = fill.repeat(5 - this.rating);
             this.title = json.t;
             this.tracknumber = json.n;
             this.active =
                 plInfo.playlistActive === plInfo.playlistPlaying &&
                 plInfo.playingItem === plInfo.playlistItemsPerPage * plInfo.playlistPage + index;
-            console.log(
-                index,
-                this.active,
-                plInfo.playlistActive === plInfo.playlistPlaying,
-                plInfo.playingItem,
-                plInfo.playlistItemsPerPage * plInfo.playlistPage + index
-            );
         }
     }
 }

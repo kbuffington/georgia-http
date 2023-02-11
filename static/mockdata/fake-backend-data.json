@@ -236,7 +236,7 @@
             "l": "3:00",
             "r": "★★★★★",
             "rn": "5",
-            "pc": "",
+            "pc": "888",
             "ls": "180",
             "d": "1993"
         },
@@ -260,7 +260,7 @@
             "l": "2:18",
             "r": "",
             "rn": "",
-            "pc": "",
+            "pc": 0,
             "ls": "138",
             "d": "1993"
         },
@@ -272,7 +272,7 @@
             "l": "2:01",
             "r": "",
             "rn": "",
-            "pc": "",
+            "pc": 3,
             "ls": "121",
             "d": "1993"
         },
@@ -442,5 +442,17 @@
     "helper2": "03. Timelash",
     "helper3": "MP3 | 283kbps | 44100Hz | stereo",
     "helper4": "{&quot;a&quot;:&quot;Sumerlands&quot;,&quot;aa&quot;:&quot;Sumerlands&quot;,&quot;b&quot;:&quot;The Art of Survival&quot;,&quot;n&quot;:&quot;06&quot;,&quot;t&quot;:&quot;Timelash&quot;,&quot;r&quot;:&quot;★★★&quot;,&quot;rn&quot;:&quot;3&quot;,&quot;pc&quot;:&quot;1&quot;,&quot;ls&quot;:233,&quot;d&quot;:&quot;2022-10-07&quot;}",
+    "helper5": {
+        "a": "Sumerlands",
+        "aa": "Sumerlands",
+        "b": "Sumerlands",
+        "n": "03",
+        "t": "Timelash",
+        "r": "★★★★",
+        "rn": "4",
+        "pc": 5,
+        "ls": 240,
+        "d": "2016-09-16"
+    },
     "albumArt": "/ajquery/albumart_0000.jpg"
 }
