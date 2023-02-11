@@ -14,15 +14,29 @@
                 </div>
             </div>
             <div class="playlist-data">
-                {#each $playlistData as item}
+                {#each $playlistData as item, i}
                     <div class="item-row" class:active={item.active}>
                         <div class="cell tracknum">{item.tracknumber}.</div>
-                        <div class="cell title">{item.title}</div>
-                        <div class="cell playcount">{item.playcount} |</div>
-                        <div class="cell rating">
-                            <span class="star">{item.r1}</span><span class="empty">{item.r2}</span>
+                        <div class="cell title">
+                            {#if i === 0 || item.albumArtist !== $playlistData[i - 1].albumArtist || item.album !== $playlistData[i - 1].album}
+                                {item.title}
+                                <span class="dimmed" title="{item.artist} / {item.date} / {item.album}">
+                                    / {item.artist} / {item.date} / {item.album}</span
+                                >
+                            {:else}
+                                {item.title}
+                            {/if}
                         </div>
-                        <!-- <div class="cell rating">{item.ratingStars}</div> -->
+                        <div class="cell playcount">
+                            {#if item.playcount > 0}
+                                {item.playcount}
+                            {/if}
+                        </div>
+                        <div class="cell rating">
+                            <span class="dimmed">| </span>
+                            <span class="star">{item.ratingStars}</span>
+                            <span class="empty dimmed">{item.ratingEmpty}</span>
+                        </div>
                         <div class="cell length">{item.displayLength}</div>
                     </div>
                 {/each}
@@ -33,8 +47,6 @@
 
 <style lang="scss">
     @import '../../scss/constants.scss';
-
-    $playlist-width: 60vw;
 
     .main-container {
         z-index: 100;
@@ -60,11 +72,15 @@
                 width: $playlist-width;
                 display: table;
 
+                span.dimmed {
+                    color: rgb(200, 200, 200);
+                }
+
                 .item-row {
-                    padding: 2px;
-                    font-size: 13px;
+                    font-size: 12px;
                     font-family: 'Helvetica Now Text';
                     display: table-row;
+                    height: 20px;
 
                     &.active {
                         background-color: var(--color) !important;
@@ -72,6 +88,7 @@
 
                     div.cell {
                         display: table-cell;
+                        padding-top: 1px; // centers within row?
                         &.tracknum {
                             font-family: 'Helvetica Monospaced Pro';
                             width: $pl-track-w;
@@ -79,7 +96,12 @@
                         }
                         &.title {
                             padding-left: 1rem;
-                            width: calc(100% - $pl-track-w - $pl-playcount-w - $pl-rating-w - $pl-length-w);
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            max-width: calc(
+                                $playlist-width - $pl-track-w - $pl-playcount-w - $pl-rating-w - $pl-length-w
+                            );
                         }
                         &.playcount {
                             font-family: 'Helvetica Monospaced Pro';
@@ -96,7 +118,7 @@
                             .empty {
                                 font-family: 'Helvetica Now Display';
                                 letter-spacing: 8px;
-                                padding-left: 4px;
+                                padding-left: 3px;
                             }
                             // font-family: 'Helvetica Monospaced Pro';
                             // font-family: 'Segoe UI Symbolz', monospace;
