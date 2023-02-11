@@ -1,26 +1,43 @@
 <script>
     import { extractColors } from 'extract-colors';
+    import { trackInfo } from '../stores/fb-store';
     import { artColor } from '../stores/stores';
 
-    const imgSrc = '/images/albumart_0000.jpeg';
+    // const imgSrc = '/images/albumart_0000.jpeg';
 
-    extractColors(imgSrc)
+    extractColors($trackInfo.artwork)
         .then(c => {
             // console.log(c);
             artColor.set(c[0].hex);
         })
-        .catch(console.error)
+        .catch(console.error);
 </script>
 
 <div class="artwork" style="--color:{$artColor}">
     <div class="metadata">
-        test
+        <div class="album">{$trackInfo.album}</div>
+        <div class="grid">
+            <div class="label">Date</div>
+            <div class="data">{$trackInfo.date}</div>
+
+            {#if $trackInfo.playcount > 0}
+                <div class="label">Playcount</div>
+                <div class="data">{$trackInfo.playcount}</div>
+            {/if}
+
+            <div class="label">Rating</div>
+            <div class="data">
+                {#each { length: $trackInfo.rating } as _}
+                    <span class="material-symbols-outlined"> grade </span>
+                {/each}
+            </div>
+        </div>
     </div>
-    <img class="albumart" src={imgSrc} alt="album art">
+    <img class="albumart" src={$trackInfo.artwork} alt="album art" />
 </div>
 
 <style lang="scss">
-    @import "../scss/constants.scss";
+    @import '../scss/constants.scss';
 
     .artwork {
         background-color: var(--color);
@@ -33,6 +50,28 @@
             font-size: 2rem;
             font-weight: 300;
             padding: 1rem 1rem 1rem 0;
+
+            .album {
+                font-size: 26px;
+                font-weight: bold;
+            }
+
+            .grid {
+                font-size: 20px;
+                max-width: 25vw;
+                display: grid;
+                grid-template-columns: 2fr 3fr;
+                grid-auto-rows: 1fr;
+                gap: 0 0.5rem;
+
+                .label {
+                    // width: 5vw;
+                    // flex: 1 35%;
+                }
+                .data {
+                    // flex: 1 65%;
+                }
+            }
             // background:red;
         }
 

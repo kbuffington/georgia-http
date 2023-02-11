@@ -5,6 +5,7 @@ function secondsToTime(time: number) {
 }
 export class TrackInfo {
     artist = '';
+    artwork = '';
     album = '';
     albumArtist = '';
     title = '';
@@ -16,7 +17,7 @@ export class TrackInfo {
     tracknumber = '';
     displayLength = '';
 
-    constructor(obj: any) {
+    constructor(obj: any, artwork: string) {
         // if (jsonStr.trim().length) {
         // const escaped = jsonStr.replace(/&#92;&quot;/g, '\\"').replace(/&quot;/g, '"');
         // const obj = JSON.parse(escaped);
@@ -32,6 +33,7 @@ export class TrackInfo {
             this.ratingStars = obj.r;
             this.tracknumber = obj.n;
             this.displayLength = secondsToTime(this.length);
+            this.artwork = artwork;
             console.log(this);
         }
     }
@@ -113,6 +115,8 @@ export interface PlayingInfo {
     helper2: string;
     helper3: string;
     helper4: string;
+    helper5: string;
+    albumArt: string;
     playlistsInfo: PlaylistsInfo;
     playlistData: PlTrackData[];
     trackInfo: TrackInfo;
