@@ -1,4 +1,11 @@
 <script>
+    import { Switch } from '@svelteuidev/core';
+    import { refreshPlayingInfo } from '../stores/backend';
+    import { userSettings } from '../stores/stores';
+
+    function reloadData() {
+        setTimeout(refreshPlayingInfo);
+    }
 </script>
 
 <header>
@@ -23,6 +30,16 @@
             <span class="material-symbols-outlined"> shuffle </span>
         </li>
     </ul>
+
+    <div class="switch-wrapper">
+        <Switch
+            class="switch"
+            bind:checked={$userSettings.useMocks}
+            on:change={reloadData}
+            label="Mocked data"
+            size="md"
+        />
+    </div>
 </header>
 
 <style lang="scss">
@@ -54,6 +71,13 @@
                 position: relative;
                 height: 100%;
             }
+        }
+
+        .switch-wrapper {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-family: sans-serif;
         }
     }
 </style>

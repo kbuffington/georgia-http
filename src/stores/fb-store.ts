@@ -1,6 +1,6 @@
 import { asyncReadable, asyncDerived, asyncWritable } from '@square/svelte-store';
 import { derived, readable, writable } from 'svelte/store';
-import { refreshPlayingInfo } from './fake-backend';
+import { refreshPlayingInfo } from './backend';
 import { PlaylistsInfo, PlTrackData, TrackInfo, type PlayingInfo } from './types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
