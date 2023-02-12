@@ -85,26 +85,28 @@ export interface PlaylistData {
 }
 
 export class PlaylistsInfo {
-    playlists: PlaylistData[];
-    playlistActive: number;
-    playlistPlaying: number;
-    playlistPlayingNumItems: number;
-    playlistPage: number;
-    playlistItemsPerPage: number;
-    playingItem: number;
-    playlistTotalTime: string;
+    playlists: PlaylistData[] = [];
+    playlistActive = 0;
+    playlistPlaying = 0;
+    playlistPlayingNumItems = 0;
+    playlistPage = 0;
+    playlistItemsPerPage = 0;
+    playingItem = 0;
+    playlistTotalTime = '';
 
     constructor(json: any) {
-        this.playlists = json.playlists.map((pl: any) => {
-            return { name: pl.name, count: parseInt(pl.count) };
-        });
-        this.playlistActive = parseInt(json.playlistActive);
-        this.playlistPlaying = parseInt(json.playlistPlaying);
-        this.playlistPage = parseInt(json.playlistPage);
-        this.playlistItemsPerPage = parseInt(json.playlistItemsPerPage);
-        this.playlistPlayingNumItems = parseInt(json.playlistPlayingItemsCount);
-        this.playingItem = parseInt(json.playingItem);
-        this.playlistTotalTime = json.playlistTotalTime;
+        if (json.playlists) {
+            this.playlists = json.playlists.map((pl: any) => {
+                return { name: pl.name, count: parseInt(pl.count) };
+            });
+            this.playlistActive = parseInt(json.playlistActive);
+            this.playlistPlaying = parseInt(json.playlistPlaying);
+            this.playlistPage = parseInt(json.playlistPage);
+            this.playlistItemsPerPage = parseInt(json.playlistItemsPerPage);
+            this.playlistPlayingNumItems = parseInt(json.playlistPlayingItemsCount);
+            this.playingItem = parseInt(json.playingItem);
+            this.playlistTotalTime = json.playlistTotalTime;
+        }
     }
 }
 

@@ -7,7 +7,7 @@
     const progress = writable(0);
 
     function secondsToTime(time: number) {
-        const minutes = Math.floor(time/60);
+        const minutes = Math.floor(time / 60);
         const seconds = Math.max(time - minutes * 60, 0);
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
@@ -17,7 +17,7 @@
     const unsubscribe = currentTime.subscribe(value => {
         clearInterval(interval);
         if (value !== undefined) {
-            progress.set(value/$trackInfo.length);
+            progress.set(value / $trackInfo.length);
             // console.log(value, $totalTime);
             interval = window.setInterval(() => {
                 if (value < $trackInfo.length) {
@@ -35,23 +35,23 @@
 
 <div id="progress-bar">
     <div class="time-bar">
-    {#await currentTime.load()}
-        <div class="loading">Georgia-HTTP</div>
-    {:then}
-        <div class="track-num">{$trackInfo.tracknumber}.</div>
-        <div class="track-name">{$trackInfo.title}</div>
-        <div class="elapsed">
-            {secondsToTime($currentTime)}
-        </div>
-        <div class="total">{$trackInfo.displayLength}</div>
-    {/await}
+        {#await currentTime.load()}
+            <div class="loading">Georgia-HTTP</div>
+        {:then}
+            <div class="track-num">{$trackInfo.tracknumber}.</div>
+            <div class="track-name">{$trackInfo.title}</div>
+            <div class="elapsed">
+                {secondsToTime($currentTime)}
+            </div>
+            <div class="total">{$trackInfo.displayLength}</div>
+        {/await}
     </div>
-    <progress value={$progress} style="--fill-color:{$artColor}"></progress>
+    <progress value={$progress} style="--fill-color:{$artColor}" />
 </div>
 
 <style lang="scss">
-    @import "../scss/colors.scss";
-    @import "../scss/constants.scss";
+    @import '../scss/colors.scss';
+    @import '../scss/constants.scss';
 
     #progress-bar {
         padding: 0 1rem;
@@ -67,7 +67,8 @@
         .track-name {
             flex-grow: 1;
         }
-        .elapsed, .loading {
+        .elapsed,
+        .loading {
             flex-shrink: 1;
             text-align: right;
             font-weight: 500;
@@ -89,7 +90,7 @@
         width: 100%;
         height: $progress-bar-height;
         -webkit-appearance: none;
-        border: .5px solid black;
+        border: 0.5px solid black;
 
         &::-webkit-progress-bar {
             background-color: $menu-bg;

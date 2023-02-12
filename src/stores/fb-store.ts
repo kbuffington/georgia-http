@@ -4,18 +4,37 @@ import { refreshPlayingInfo } from './backend';
 import { PlaylistsInfo, PlTrackData, TrackInfo, type PlayingInfo } from './types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const playingInfo = asyncReadable({}, async () => {
-    const response = await refreshPlayingInfo();
-    const json = await response.json();
-    return new Promise<any>((resolve, reject) => {
-        const obj: PlayingInfo = json;
-        obj.trackInfo = new TrackInfo(json.helper5, json.albumArt);
-        obj.playlistsInfo = new PlaylistsInfo(json);
-        obj.playlistData = json.playlist.map((t: any, i: number) => new PlTrackData(t, i, obj.playlistsInfo));
-        console.log(obj.playlistsInfo);
-        resolve(obj);
-    });
-});
+export const playingInfo = asyncReadable(
+    {},
+    async () => {
+        try {
+            const response = await refreshPlayingInfo();
+            const json = await response.json();
+            console.log('here');
+
+            return new Promise<any>((resolve, reject) => {
+                const obj: PlayingInfo = json;
+                obj.trackInfo = new TrackInfo(json.helper5, json.albumArt);
+                obj.playlistsInfo = new PlaylistsInfo(json);
+                obj.playlistData = json.playlist.map((t: any, i: number) => new PlTrackData(t, i, obj.playlistsInfo));
+                console.log(obj.playlistsInfo);
+                resolve(obj);
+            });
+        } catch (e) {
+            console.log('handled');
+            return new Promise<any>((resolve, reject) => {
+                const obj: PlayingInfo = {};
+                obj.trackInfo = new TrackInfo({}, '');
+                obj.playlistsInfo = new PlaylistsInfo({});
+                obj.playlistData = [];
+                resolve(obj);
+            });
+        }
+    },
+    {
+        reloadable: true
+    }
+);
 
 export const playlistData = derived(playingInfo, ($playingInfo: PlayingInfo) => {
     return $playingInfo.playlistData;

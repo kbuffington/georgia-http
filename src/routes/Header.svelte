@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
     import { Switch } from '@svelteuidev/core';
     import { refreshPlayingInfo } from '../stores/backend';
+    import { playingInfo } from '../stores/fb-store';
     import { userSettings } from '../stores/stores';
 
     function reloadData() {
-        setTimeout(refreshPlayingInfo);
+        setTimeout(playingInfo.reload!, 100);
     }
 </script>
 
