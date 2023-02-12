@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onDestroy } from 'svelte';
     import { writable } from 'svelte/store';
-    import { currentTime, trackInfo } from '../stores/fb-store';
+    import { fb, currentTime, trackInfo } from '../stores/fb-store';
     import { artColor } from '../stores/stores';
 
     const progress = writable(0);
@@ -36,14 +36,18 @@
 <div id="progress-bar">
     <div class="time-bar">
         {#await currentTime.load()}
-            <div class="loading">Georgia-HTTP</div>
+        <div class="loading">Georgia-HTTP</div>
         {:then}
-            <div class="track-num">{$trackInfo.tracknumber}.</div>
-            <div class="track-name">{$trackInfo.title}</div>
-            <div class="elapsed">
-                {secondsToTime($currentTime)}
-            </div>
-            <div class="total">{$trackInfo.displayLength}</div>
+            {#if !$fb.isStopped}
+                <div class="track-num">{$trackInfo.tracknumber}.</div>
+                <div class="track-name">{$trackInfo.title}</div>
+                <div class="elapsed">
+                    {secondsToTime($currentTime)}
+                </div>
+                <div class="total">{$trackInfo.displayLength}</div>
+            {:else}
+                <div class="loading">Georgia-HTTP</div>
+            {/if}
         {/await}
     </div>
     <progress value={$progress} style="--fill-color:{$artColor}" />

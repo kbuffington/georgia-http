@@ -1,8 +1,6 @@
 <script>
     import Artwork from './Artwork.svelte';
-    import { fbStore, playingInfo, trackInfo }  from '../stores/fb-store';
-
-    fbStore.init();
+    import { fb, playingInfo, trackInfo }  from '../stores/fb-store';
 </script>
 
 <div id="main-content">
@@ -10,8 +8,10 @@
         {#await playingInfo.load()}
             Loading...
         {:then}
-            <div class="artist">{ $trackInfo.artist }</div>
-            <Artwork />
+            {#if !$fb.isStopped}
+                <div class="artist">{ $trackInfo.artist }</div>
+                <Artwork />
+            {/if}
         {/await}
     </div>
 </div>

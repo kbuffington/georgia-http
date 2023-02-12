@@ -114,6 +114,35 @@ export class PlaylistsInfo {
     }
 }
 
+enum PlaybackStates {
+    STOPPED = 0,
+    PAUSED = 1,
+    PLAYING = 2,
+}
+
+export class PlaybackState {
+    private state: PlaybackStates = PlaybackStates.STOPPED;
+    constructor(json: any) {
+        if (json.isPlaying === '1') {
+            this.state = PlaybackStates.PLAYING
+        } else if (json.isPaused === '1') {
+            this.state = PlaybackStates.PAUSED
+        }
+    }
+
+    get isPlaying() {
+        return this.state === PlaybackStates.PLAYING;
+    }
+
+    get isPaused() {
+        return this.state === PlaybackStates.PAUSED;
+    }
+
+    get isStopped() {
+        return this.state === PlaybackStates.STOPPED;
+    }
+}
+
 export interface PlayingInfo {
     itemPlayingPos: string | number;
     itemPlayingLen: string | number;
@@ -123,6 +152,7 @@ export interface PlayingInfo {
     helper4: string;
     helper5: string;
     albumArt: string;
+    playbackState: PlaybackState;
     playlistsInfo: PlaylistsInfo;
     playlistData: PlTrackData[];
     trackInfo: TrackInfo;

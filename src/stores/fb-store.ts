@@ -1,7 +1,7 @@
 import { asyncReadable, asyncDerived, asyncWritable } from '@square/svelte-store';
 import { derived, readable, writable } from 'svelte/store';
 import { refreshPlayingInfo } from './backend';
-import { PlaylistsInfo, PlTrackData, TrackInfo, type PlayingInfo } from './types';
+import { PlaybackState, PlaylistsInfo, PlTrackData, TrackInfo, type PlayingInfo } from './types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const playingInfo = asyncReadable(
@@ -14,6 +14,7 @@ export const playingInfo = asyncReadable(
 
             return new Promise<any>((resolve, reject) => {
                 const obj: PlayingInfo = json;
+                obj.playbackState = new PlaybackState(json);
                 obj.trackInfo = new TrackInfo(json.helper5, json.albumArt);
                 obj.playlistsInfo = new PlaylistsInfo(json);
                 obj.playlistData = json.playlist.map((t: any, i: number) => new PlTrackData(t, i, obj.playlistsInfo));
@@ -23,7 +24,8 @@ export const playingInfo = asyncReadable(
         } catch (e) {
             console.log('handled');
             return new Promise<any>((resolve, reject) => {
-                const obj: PlayingInfo = {};
+                const obj: PlayingInfo = {} as any;
+                obj.playbackState = new PlaybackState({});
                 obj.trackInfo = new TrackInfo({}, '');
                 obj.playlistsInfo = new PlaylistsInfo({});
                 obj.playlistData = [];
@@ -35,6 +37,10 @@ export const playingInfo = asyncReadable(
         reloadable: true
     }
 );
+
+export const fb = derived(playingInfo, ($playingInfo: PlayingInfo) => {
+    return $playingInfo.playbackState;
+});
 
 export const playlistData = derived(playingInfo, ($playingInfo: PlayingInfo) => {
     return $playingInfo.playlistData;
@@ -65,19 +71,3 @@ function createCurrentTimeStore() {
     );
 }
 export const currentTime = createCurrentTimeStore();
-
-function createFoobarStore() {
-    const { subscribe, set, update } = writable({});
-
-    return {
-        subscribe,
-        init: () => {
-            fetch(`http://date.jsontest.com/`)
-                .then(resp => resp.json())
-                .then(data => set(JSON.stringify(data)))
-                .catch(error => set(error.message));
-        }
-    };
-}
-
-export const fbStore = createFoobarStore();
