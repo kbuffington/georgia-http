@@ -50,7 +50,7 @@ export class PlTrackData {
     date = '';
     displayLength = '';
     length = 0;
-    playcount = '';
+    playcount = 0;
     rating = 0;
     ratingStars = '';
     ratingEmpty = '⋅⋅⋅⋅⋅';

@@ -12,6 +12,6 @@ export const refreshPlayingInfo = async (): Promise<Response> => {
         return await fetch('/mockdata/fake-backend-data.json');
     } else {
         // return await fetch('/mockdata/fake-backend-data2.json');
-        return await fetch('/georgia/?cmd=RefreshPlayingInfo&param3=schema/state.json');
+        return await fetch(window.location.host + '/georgia/?cmd=RefreshPlayingInfo&param3=schema/state.json');
     }
 };

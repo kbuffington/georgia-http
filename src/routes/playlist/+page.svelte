@@ -35,7 +35,7 @@
                         <div class="cell rating">
                             <span class="dimmed">| </span>
                             <span class="star">{item.ratingStars}</span>
-                            <span class="empty dimmed">{item.ratingEmpty}</span>
+                            <span class="empty dimmed" class:nostars={!item.ratingStars}>{item.ratingEmpty}</span>
                         </div>
                         <div class="cell length">{item.displayLength}</div>
                     </div>
@@ -65,7 +65,6 @@
                 font-weight: 400;
                 text-align: center;
                 margin-bottom: 2px;
-                // display: table-row;
             }
 
             .playlist-data {
@@ -90,7 +89,6 @@
                         display: table-cell;
                         padding-top: 1px; // centers within row?
                         &.tracknum {
-                            // font-family: 'Helvetica Monospaced Pro';
                             font-weight: 500;
                             width: $pl-track-w;
                             text-align: right;
@@ -106,7 +104,6 @@
                             );
                         }
                         &.playcount {
-                            // font-family: 'Helvetica Monospaced Pro';
                             font-size: 10px;
                             text-align: right;
                             padding-right: 5px;
@@ -119,13 +116,12 @@
                                 letter-spacing: 2px;
                             }
                             .empty {
-                                // font-family: 'Helvetica Now Display';
-                                letter-spacing: 8px;
-                                padding-left: 3px;
+                                letter-spacing: 6.3px;
+
+                                &.nostars {
+                                    padding-left: 3px;
+                                }
                             }
-                            // font-family: 'Helvetica Monospaced Pro';
-                            // font-family: 'Segoe UI Symbolz', monospace;
-                            // font-size: 15px;
                             width: $pl-rating-w;
                         }
                         &.length {
