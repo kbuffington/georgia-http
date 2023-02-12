@@ -64,7 +64,7 @@
             padding: 1rem 1rem 1rem 0;
 
             .album {
-                font-family: 'Helvetica Neue LT Pro';
+                // font-family: 'Helvetica Neue LT Pro';
                 font-size: 26px;
                 font-weight: 500;
                 margin-bottom: 2px;
@@ -75,8 +75,8 @@
                 max-width: 25vw;
                 display: grid;
                 grid-template-columns: 2fr 3fr;
-                grid-auto-rows: 30px;
-                gap: 0 0.5rem;
+                grid-auto-rows: auto;
+                gap: 0.2rem 0.5rem;
 
                 .label {
                     // width: 5vw;

@@ -4,10 +4,13 @@
 </script>
 
 <svelte:head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300&display=swap" rel="stylesheet">
 </svelte:head>
 
 <div class="app">
@@ -33,7 +36,7 @@
         flex-direction: column;
         min-height: 100vh;
         background: $bg-color;
-        font-family: 'Helvetica Neue LT Pro';
+        font-family: 'Roboto';
         color: white;
 
         main {

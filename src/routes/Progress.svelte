@@ -59,12 +59,15 @@
     .time-bar {
         display: flex;
         font-size: $progress-bar-time-font-size;
+        padding: 2px;
+        margin-bottom: 2px;
 
         .track-num {
             font-weight: 500;
             padding-right: 1rem;
         }
         .track-name {
+            font-weight: 300;
             flex-grow: 1;
         }
         .elapsed,
@@ -76,6 +79,7 @@
 
         .total {
             flex-shrink: 1;
+            font-weight: 100;
             margin-left: 1rem;
         }
 

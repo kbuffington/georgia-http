@@ -78,7 +78,7 @@
 
                 .item-row {
                     font-size: 12px;
-                    font-family: 'Helvetica Now Text';
+                    // font-family: 'Helvetica Now Text';
                     display: table-row;
                     height: 20px;
 
@@ -90,11 +90,13 @@
                         display: table-cell;
                         padding-top: 1px; // centers within row?
                         &.tracknum {
-                            font-family: 'Helvetica Monospaced Pro';
+                            // font-family: 'Helvetica Monospaced Pro';
+                            font-weight: 500;
                             width: $pl-track-w;
                             text-align: right;
                         }
                         &.title {
+                            font-weight: 300;
                             padding-left: 1rem;
                             overflow: hidden;
                             text-overflow: ellipsis;
@@ -104,10 +106,11 @@
                             );
                         }
                         &.playcount {
-                            font-family: 'Helvetica Monospaced Pro';
+                            // font-family: 'Helvetica Monospaced Pro';
                             font-size: 10px;
                             text-align: right;
                             padding-right: 5px;
+                            font-weight: 100;
                             width: $pl-playcount-w;
                         }
 
@@ -116,7 +119,7 @@
                                 letter-spacing: 2px;
                             }
                             .empty {
-                                font-family: 'Helvetica Now Display';
+                                // font-family: 'Helvetica Now Display';
                                 letter-spacing: 8px;
                                 padding-left: 3px;
                             }
@@ -128,8 +131,9 @@
                         &.length {
                             width: $pl-length-w;
                             text-align: right;
-                            font-family: 'Helvetica Monospaced Pro';
+                            // font-family: 'Helvetica Monospaced Pro';
                             padding-right: 1rem;
+                            font-weight: 500;
                         }
                     }
                     &:nth-of-type(odd) {
