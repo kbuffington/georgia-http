@@ -20,17 +20,29 @@
             <div class="label">Date</div>
             <div class="data">{$trackInfo.date}</div>
 
+            {#if $trackInfo.labels}
+                <div class="label">Label</div>
+                <div class="data">{$trackInfo.labels}</div>
+            {/if}
+
+            {#if $trackInfo.genre}
+                <div class="label">Genre</div>
+                <div class="data">{$trackInfo.genre}</div>
+            {/if}
+
             {#if $trackInfo.playcount > 0}
                 <div class="label">Playcount</div>
                 <div class="data">{$trackInfo.playcount}</div>
             {/if}
 
-            <div class="label">Rating</div>
-            <div class="data">
-                {#each { length: $trackInfo.rating } as _}
-                    <span class="material-symbols-outlined"> grade </span>
-                {/each}
-            </div>
+            {#if $trackInfo.rating > 0}
+                <div class="label">Rating</div>
+                <div class="data rating">
+                    {#each { length: $trackInfo.rating } as _}
+                        <span class="material-symbols-outlined"> grade </span>
+                    {/each}
+                </div>
+            {/if}
         </div>
     </div>
     <img class="albumart" src={$trackInfo.artwork} alt="album art" />
@@ -52,8 +64,10 @@
             padding: 1rem 1rem 1rem 0;
 
             .album {
+                font-family: 'Helvetica Neue LT Pro';
                 font-size: 26px;
-                font-weight: bold;
+                font-weight: 500;
+                margin-bottom: 2px;
             }
 
             .grid {
@@ -61,7 +75,7 @@
                 max-width: 25vw;
                 display: grid;
                 grid-template-columns: 2fr 3fr;
-                grid-auto-rows: 1fr;
+                grid-auto-rows: 30px;
                 gap: 0 0.5rem;
 
                 .label {
@@ -69,7 +83,10 @@
                     // flex: 1 35%;
                 }
                 .data {
-                    // flex: 1 65%;
+                    &.rating {
+                        color: orange;
+                        text-shadow: 0px 0px 1px black;
+                    }
                 }
             }
             // background:red;

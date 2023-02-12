@@ -19,7 +19,7 @@
         if (value !== undefined) {
             progress.set(value / $trackInfo.length);
             // console.log(value, $totalTime);
-            interval = window.setInterval(() => {
+            interval = setInterval(() => {
                 if (value < $trackInfo.length) {
                     currentTime.update(n => n + 1);
                 }

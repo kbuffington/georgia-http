@@ -1,6 +1,6 @@
 <script>
     import Artwork from './Artwork.svelte';
-    import { fbStore, playingInfo }  from '../stores/fb-store';
+    import { fbStore, playingInfo, trackInfo }  from '../stores/fb-store';
 
     fbStore.init();
 </script>
@@ -10,7 +10,7 @@
         {#await playingInfo.load()}
             Loading...
         {:then}
-            <div class="artist">{ $playingInfo.helper1 }</div>
+            <div class="artist">{ $trackInfo.artist }</div>
             <Artwork />
         {/await}
     </div>

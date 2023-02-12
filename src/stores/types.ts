@@ -8,6 +8,8 @@ export class TrackInfo {
     artwork = '';
     album = '';
     albumArtist = '';
+    genre = '';
+    labels = '';
     title = '';
     rating = 0;
     ratingStars = '';
@@ -25,6 +27,8 @@ export class TrackInfo {
             this.artist = obj.a;
             this.album = obj.b;
             this.albumArtist = obj.aa;
+            this.genre = obj.g;
+            this.labels = obj.l;
             this.title = obj.t;
             this.playcount = typeof obj.pc === 'number' ? obj.pc : parseInt(obj.pc); // TODO: remove
             this.length = obj.ls;
