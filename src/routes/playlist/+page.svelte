@@ -14,11 +14,11 @@
                 </div>
             </div>
             <div class="playlist-data">
-                {#each $playlistData as item, i}
+                {#each $playlistData.tracks as item, i}
                     <div class="item-row" class:active={item.active}>
                         <div class="cell tracknum">{item.tracknumber}.</div>
                         <div class="cell title">
-                            {#if i === 0 || item.albumArtist !== $playlistData[i - 1].albumArtist || item.album !== $playlistData[i - 1].album}
+                            {#if i === 0 || item.albumArtist !== $playlistData.tracks[i - 1].albumArtist || item.album !== $playlistData.tracks[i - 1].album}
                                 {item.title}
                                 <span class="dimmed" title="{item.artist} / {item.date} / {item.album}">
                                     / {item.artist} / {item.date} / {item.album}</span
@@ -56,6 +56,7 @@
             border: 1px solid black;
             padding: 3px;
             border-radius: 6px;
+            height: calc($pl-row-height * 30 + $pl-header-height);
 
             .playlist-header {
                 width: calc($playlist-width - 8px);
@@ -79,7 +80,8 @@
                     font-size: 12px;
                     // font-family: 'Helvetica Now Text';
                     display: table-row;
-                    height: 20px;
+                    max-height: $pl-row-height;
+                    line-height: calc($pl-row-height - 2px);
 
                     &.active {
                         background-color: var(--color) !important;

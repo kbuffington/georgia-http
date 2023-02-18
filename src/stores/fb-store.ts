@@ -1,7 +1,7 @@
 import { asyncReadable, asyncDerived, asyncWritable } from '@square/svelte-store';
 import { derived, readable, writable } from 'svelte/store';
 import { refreshPlayingInfo } from './backend';
-import { PlaybackState, PlaylistsInfo, PlTrackData, TrackInfo, type PlayingInfo } from './types';
+import { PlaybackState, PlaylistData, PlaylistsInfo, PlTrackData, TrackInfo, type PlayingInfo } from './types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const playingInfo = asyncReadable(
@@ -10,25 +10,24 @@ export const playingInfo = asyncReadable(
         try {
             const response = await refreshPlayingInfo();
             const json = await response.json();
-            console.log('here');
 
             return new Promise<any>((resolve, reject) => {
                 const obj: PlayingInfo = json;
-                obj.playbackState = new PlaybackState(json);
+                obj.playbackState = new PlaybackState(json.fb);
                 obj.trackInfo = new TrackInfo(json.helper5, json.albumArt);
-                obj.playlistsInfo = new PlaylistsInfo(json);
-                obj.playlistData = json.playlist.map((t: any, i: number) => new PlTrackData(t, i, obj.playlistsInfo));
+                obj.playlistsInfo = new PlaylistsInfo(json.playlists);
+                obj.playlistData = new PlaylistData(json.playlist);
                 console.log(obj.playlistsInfo);
                 resolve(obj);
             });
         } catch (e) {
-            console.log('handled');
+            console.warn('Caught error handling/parsing response');
             return new Promise<any>((resolve, reject) => {
                 const obj: PlayingInfo = {} as any;
                 obj.playbackState = new PlaybackState({});
                 obj.trackInfo = new TrackInfo({}, '');
                 obj.playlistsInfo = new PlaylistsInfo({});
-                obj.playlistData = [];
+                obj.playlistData = new PlaylistData({ js: [] });
                 resolve(obj);
             });
         }

@@ -83,34 +83,48 @@ export class PlTrackData {
     }
 }
 
-export interface PlaylistData {
+export class PlaylistData {
+    tracks: PlTrackData[] = [];
+    focusedItem = -1;
+    numItems = 0;
+    page = 0;
+    playingItem = -1;
+    totalTime = "";
+
+    constructor(json: any) {
+        this.tracks = json.js.map((t: any, i: number) => new PlTrackData(t, i, json));
+        this.page = parseInt(json.playlistPage);
+        // this.playingNumItems = parseInt(json.playingNumItems);
+        this.numItems = json.numItems === '?' ? 0 : parseInt(json.numItems);
+        this.focusedItem = json.focused === '?' ? -1 : parseInt(json.focused);
+        this.playingItem = json.itemPlaying === '?' ? -1 : parseInt(json.itemPlaying);
+        this.totalTime = json.playlistTotalTime;
+    }
+}
+
+export interface PlaylistEntry {
     name: string;
     count: number;
+    locked: boolean;
 }
 
 export class PlaylistsInfo {
-    playlists: PlaylistData[] = [];
-    playlistActive = 0;
-    playlistPlaying = 0;
-    playlistPlayingNumItems = 0;
-    playlistPage = 0;
+    playlists: PlaylistEntry[] = [];
+    playlistActive = -1;
+    playlistPlaying = -1;
     playlistItemsPerPage = 0;
-    playingItem = 0;
-    playlistTotalTime = '';
+    // playlistPlayingNumItems = 0;
+    // playlistPage = 0;
+    // playingItem = 0;
+    // playlistTotalTime = '';
 
     constructor(json: any) {
-        if (json.playlists) {
-            this.playlists = json.playlists.map((pl: any) => {
-                return { name: pl.name, count: parseInt(pl.count) };
-            });
-            this.playlistActive = parseInt(json.playlistActive);
-            this.playlistPlaying = parseInt(json.playlistPlaying);
-            this.playlistPage = parseInt(json.playlistPage);
-            this.playlistItemsPerPage = parseInt(json.playlistItemsPerPage);
-            this.playlistPlayingNumItems = parseInt(json.playlistPlayingItemsCount);
-            this.playingItem = parseInt(json.playingItem);
-            this.playlistTotalTime = json.playlistTotalTime;
-        }
+        this.playlists = json.js.map((pl: any) => {
+            return { name: pl.name, count: parseInt(pl.count), locked: pl.locked };
+        });
+        this.playlistActive = parseInt(json.active);
+        this.playlistPlaying = parseInt(json.playing);
+        this.playlistItemsPerPage = parseInt(json.itemsPerPage);
     }
 }
 
@@ -154,6 +168,6 @@ export interface PlayingInfo {
     albumArt: string;
     playbackState: PlaybackState;
     playlistsInfo: PlaylistsInfo;
-    playlistData: PlTrackData[];
+    playlistData: PlaylistData;
     trackInfo: TrackInfo;
 }

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { isNumber } from '@svelteuidev/composables';
     import { onDestroy } from 'svelte';
     import { writable } from 'svelte/store';
     import { fb, currentTime, trackInfo } from '../stores/fb-store';
@@ -16,7 +17,7 @@
 
     const unsubscribe = currentTime.subscribe(value => {
         clearInterval(interval);
-        if (value !== undefined) {
+        if (value !== undefined && $fb.isPlaying) {
             progress.set(value / $trackInfo.length);
             // console.log(value, $totalTime);
             interval = setInterval(() => {
