@@ -119,12 +119,14 @@ export class PlaylistsInfo {
     // playlistTotalTime = '';
 
     constructor(json: any) {
-        this.playlists = json.js.map((pl: any) => {
-            return { name: pl.name, count: parseInt(pl.count), locked: pl.locked };
-        });
-        this.playlistActive = parseInt(json.active);
-        this.playlistPlaying = parseInt(json.playing);
-        this.playlistItemsPerPage = parseInt(json.itemsPerPage);
+        if (JSON.stringify(json) !== '{}') {
+            this.playlists = json.js.map((pl: any) => {
+                return { name: pl.name, count: parseInt(pl.count), locked: pl.locked };
+            });
+            this.playlistActive = parseInt(json.active);
+            this.playlistPlaying = parseInt(json.playing);
+            this.playlistItemsPerPage = parseInt(json.itemsPerPage);
+        }
     }
 }
 
@@ -142,6 +144,7 @@ export class PlaybackState {
         } else if (json.isPaused === '1') {
             this.state = PlaybackStates.PAUSED
         }
+        console.log(this.isPlaying);
     }
 
     get isPlaying() {

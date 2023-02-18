@@ -15,22 +15,37 @@
 
     let interval: number;
 
-    const unsubscribe = currentTime.subscribe(value => {
-        clearInterval(interval);
-        if (value !== undefined && $fb.isPlaying) {
-            progress.set(value / $trackInfo.length);
-            // console.log(value, $totalTime);
+    function updateTime(value: number) {
+        clearTimeout(interval);
+        if (value !== undefined) {
+            if (!$fb.isStopped && $trackInfo.length) {
+                progress.set(value / $trackInfo.length);
+            }
             interval = setInterval(() => {
-                if (value < $trackInfo.length) {
+                if (value < $trackInfo.length && $fb.isPlaying) {
+                    console.log('setting current time');
                     currentTime.update(n => n + 1);
                 }
             }, 1000);
         }
+    }
+
+    const unsubscribe = currentTime.subscribe(updateTime);
+    const unsubscribeStatus = fb.subscribe(fb => {
+        console.log(fb.isPlaying);
+        if (fb.isPlaying) {
+            updateTime($currentTime);
+        } else if (fb.isPaused) {
+            clearTimeout(interval);
+        } else if (fb.isStopped) {
+            clearTimeout(interval);
+        }
     });
 
     onDestroy(() => {
-        clearInterval(interval);
+        clearTimeout(interval);
         unsubscribe();
+        unsubscribeStatus();
     });
 </script>
 

@@ -1,5 +1,6 @@
 <script>
-    import Header from './Header.svelte';
+    import { playingInfo } from '../stores/fb-store';
+import Header from './Header.svelte';
     import Progress from './Progress.svelte';
 </script>
 
@@ -37,7 +38,11 @@
     </main>
 
     <footer>
-        <Progress />
+        {#await playingInfo.load()}
+            <span></span>
+        {:then}
+            <Progress />
+        {/await}
         <p class="version-string">Georgia-HTTP</p>
     </footer>
 </div>

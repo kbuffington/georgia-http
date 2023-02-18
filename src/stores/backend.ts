@@ -6,6 +6,7 @@ const timeout = (ms: number) => {
 };
 
 export const refreshPlayingInfo = async (): Promise<Response> => {
+    console.log('refreshing playingInfo');
     const { useMocks } = get_store_value(userSettings);
     if (useMocks) {
         await timeout(1000);

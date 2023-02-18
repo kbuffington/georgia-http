@@ -1,11 +1,12 @@
 <script lang="ts">
     import { Switch } from '@svelteuidev/core';
-    import { refreshPlayingInfo } from '../stores/backend';
-    import { playingInfo } from '../stores/fb-store';
+    import Fab from '@smui/fab';
+    import { playOrPause, startNext, startPrevious, stop } from '../stores/commands';
+    import { fb, playingInfo } from '../stores/fb-store';
     import { userSettings } from '../stores/stores';
 
     function reloadData() {
-        setTimeout(playingInfo.reload!, 100);
+        // setTimeout(playingInfo.reload!, 100);
     }
 </script>
 
@@ -16,20 +17,40 @@
 
     <ul id="transport">
         <li>
-            <span class="material-symbols-outlined"> stop </span>
+            <Fab on:click={stop} mini>
+                <span class="material-symbols-outlined"> stop </span>
+            </Fab>
         </li>
         <li>
-            <span class="material-symbols-outlined"> skip_previous </span>
+            <Fab on:click={startPrevious} mini>
+                <span class="material-symbols-outlined"> skip_previous </span>
+            </Fab>
         </li>
         <li>
-            <span class="material-symbols-outlined"> play_arrow </span>
+            <Fab on:click={playOrPause} mini>
+                {#await playingInfo.load()}
+                    <span class="material-symbols-outlined"> play_arrow </span>
+                {:then}
+                    {#if !$fb.isPlaying}
+                        <span class="material-symbols-outlined"> play_arrow </span>
+                    {:else}
+                        <span class="material-symbols-outlined"> pause </span>
+                    {/if}
+                {/await}
+                <!-- <Icon class="material-icons">play_arrow</Icon> -->
+            </Fab>
+            <!-- <div class="button" on:click={playOrPause}>
+                <span class="material-symbols-outlined"> play_arrow </span>
+            </div> -->
         </li>
         <li>
-            <span class="material-symbols-outlined"> skip_next </span>
+            <Fab on:click={startNext} mini>
+                <span class="material-symbols-outlined"> skip_next </span>
+            </Fab>
         </li>
-        <li>
+        <!-- <li>
             <span class="material-symbols-outlined"> shuffle </span>
-        </li>
+        </li> -->
     </ul>
 
     <div class="switch-wrapper">

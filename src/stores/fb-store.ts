@@ -8,6 +8,7 @@ export const playingInfo = asyncReadable(
     {},
     async () => {
         try {
+            console.log('here');
             const response = await refreshPlayingInfo();
             const json = await response.json();
 
