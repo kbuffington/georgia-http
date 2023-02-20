@@ -4,7 +4,7 @@
     import Button from '@smui/button';
     import Menu from '@smui/menu';
     import Slider from '@smui/slider';
-    import List, { Item, Text } from '@smui/list';
+    import List, { Item, Text, PrimaryText, SecondaryText, Meta } from '@smui/list';
     import { onDestroy } from 'svelte';
 
     let menu: Menu;
@@ -43,7 +43,18 @@
             <List>
                 {#each $playlistsInfo.playlists as pl, i}
                     <Item on:SMUI:action={() => switchToPlaylist(i) }>
-                        <Text>{pl.name}</Text>
+                        <div class="playlist-item">
+                            <Text>
+                                {pl.name}
+                                {#if pl.locked}
+                                    <span class="lock-icon material-symbols-outlined"> lock </span>
+                                {/if}
+                            </Text>
+                            <Meta>[{pl.count}]</Meta>
+                        </div>
+                        <!-- <Text>
+                            <PrimaryText>{pl.name}</PrimaryText>
+                        </Text> -->
                     </Item>
                 {/each}
             </List>
@@ -77,21 +88,23 @@
 
 <style lang="scss">
     @import '@css/constants.scss';
+    @import '@css/colors.scss';
 
-    :global(.page-slider) {
+    .page-selection :global(.page-slider) {
         height: $pl-slider-height !important;
     }
-    :global(.mdc-slider .mdc-slider__thumb) {
+    .page-selection :global(.mdc-slider .mdc-slider__thumb) {
         height: $pl-slider-height !important;
         width: $pl-slider-height !important;
         left: calc($pl-slider-height / -2) !important;
     }
 
-    :global(.mdc-button[mini=true]) {
+    .menu-container :global(.mdc-button[mini=true]) {
         height: $pl-header-height !important;
         padding: 0px !important;
+        min-width: 48px !important;
     }
-    :global(.playlist-menu.mdc-menu) {
+    .menu-container :global(.playlist-menu.mdc-menu) {
         transform-origin: right top !important;
         left: unset !important;
         right: 0px;
@@ -99,13 +112,33 @@
         overflow-y: scroll;
     }
 
-
-
     .active-playlist {
         display: flex;
 
         .playlist-title {
             flex-grow: 1;
         }
+
+        .playlist-item {
+            min-width: 30vw;
+            max-width: 30vw;
+            display: flex;
+
+            .lock-icon {
+                width: 20px;
+                font-size: 14px;
+                line-height: unset;
+                color: $dim-text;
+            }
+        }
     }
+
+    .active-playlist :global(.playlist-item .mdc-deprecated-list-item__text) {
+        flex-grow: 1 !important;
+        text-align: left !important;
+        padding-right: 1rem;
+    }
+    // .active-playlist :global(.playlist-item .mdc-deprecated-list-item__secondary-text) {
+    //     text-align: right !important;
+    // }
 </style>

@@ -1,7 +1,13 @@
 <script lang="ts">
-    import { playingInfo, playlistData } from '../../stores/fb-store';
-    import { artColor } from '../../stores/stores';
+    import { playingInfo, playlistData } from '@stores/fb-store';
+    import { artColor } from '@stores/stores';
     import PlaylistHeader from './PlaylistHeader.svelte';
+    import { playPlaylistItem } from '@api/commands';
+
+    function playItem(evt, index: number) {
+        playPlaylistItem(index);
+        evt.preventDefault();
+    }
 </script>
 
 <div class="main-container" style="--color:{$artColor}">
@@ -14,7 +20,9 @@
             </div>
             <div class="playlist-data">
                 {#each $playlistData.tracks as item, i}
-                    <div class="item-row" class:active={item.active}>
+                    <div class="item-row"
+                            class:active={item.active}
+                            on:dblclick={(e) => playItem(e, i)}>
                         <div class="cell tracknum">{item.tracknumber}.</div>
                         <div class="cell title">
                             {#if i === 0 || item.albumArtist !== $playlistData.tracks[i - 1].albumArtist || item.album !== $playlistData.tracks[i - 1].album}
@@ -79,11 +87,12 @@
 
                 .item-row {
                     font-size: 12px;
-                    // font-family: 'Helvetica Now Text';
                     display: table-row;
                     max-height: $pl-row-height;
                     height: $pl-row-height;
                     line-height: calc($pl-row-height - 2px);
+                    cursor: default;
+                    user-select: none;
 
                     &.active {
                         background-color: var(--color) !important;

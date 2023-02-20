@@ -1,7 +1,7 @@
 import { playingInfo } from "@stores/fb-store";
 
 const sendCommand = async (command: string, p1?: string|number) => {
-    const url = `/georgia/?cmd=${command}${p1 ? `&param1=${p1}` : ''}`;
+    const url = `/georgia/?cmd=${command}${p1 !== undefined ? `&param1=${p1}` : ''}`;
     await fetch(url);
     setTimeout(() => {
         playingInfo.reload!();
