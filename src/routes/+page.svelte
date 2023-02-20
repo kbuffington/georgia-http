@@ -17,7 +17,7 @@
 </div>
 
 <style lang="scss">
-    @import "../scss/colors.scss";
+    @import "@css/colors.scss";
 
     #main-content {
         flex: 1;

@@ -65,8 +65,8 @@
 </header>
 
 <style lang="scss">
-    @import '../scss/colors.scss';
-    @import '../scss/constants.scss';
+    @import '@css/colors.scss';
+    @import '@css/constants.scss';
 
     $padding: 1rem;
 

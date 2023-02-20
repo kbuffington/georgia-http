@@ -6,7 +6,7 @@ import Header from './Header.svelte';
 
 <svelte:head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
     <!-- Material Icons -->
     <link
         rel="stylesheet"
@@ -48,8 +48,8 @@ import Header from './Header.svelte';
 </div>
 
 <style lang="scss">
-    @import '../scss/colors.scss';
-    @import '../scss/constants.scss';
+    @import '@css/colors.scss';
+    @import '@css/constants.scss';
 
     .app {
         display: flex;

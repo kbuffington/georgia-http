@@ -49,7 +49,7 @@
 </div>
 
 <style lang="scss">
-    @import '../scss/constants.scss';
+    @import '@css/constants.scss';
 
     .artwork {
         background-color: var(--color);
