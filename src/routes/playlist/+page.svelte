@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { playingInfo, playlistData, playlistsInfo } from '../../stores/fb-store';
+    import { playingInfo, playlistData } from '../../stores/fb-store';
     import { artColor } from '../../stores/stores';
+    import PlaylistHeader from './PlaylistHeader.svelte';
 </script>
 
 <div class="main-container" style="--color:{$artColor}">
@@ -9,9 +10,7 @@
             Loading...
         {:then}
             <div class="playlist-header">
-                <div class="active-playlist">
-                    {$playlistsInfo.playlists[$playlistsInfo.playlistActive].name}
-                </div>
+                <PlaylistHeader></PlaylistHeader>
             </div>
             <div class="playlist-data">
                 {#each $playlistData.tracks as item, i}
@@ -46,17 +45,19 @@
 </div>
 
 <style lang="scss">
-    @import '../../scss/constants.scss';
+    @import '@css/constants.scss';
 
     .main-container {
         z-index: 100;
+        margin-top: 2rem;
+
         .playlist-container {
             width: fit-content;
             background-color: rgb(40, 44, 47);
             border: 1px solid black;
             padding: 3px;
             border-radius: 6px;
-            height: calc($pl-row-height * 30 + $pl-header-height);
+            height: calc($pl-row-height * 30 + $pl-slider-height + $pl-header-height + 8px);
 
             .playlist-header {
                 width: calc($playlist-width - 8px);
@@ -81,6 +82,7 @@
                     // font-family: 'Helvetica Now Text';
                     display: table-row;
                     max-height: $pl-row-height;
+                    height: $pl-row-height;
                     line-height: calc($pl-row-height - 2px);
 
                     &.active {

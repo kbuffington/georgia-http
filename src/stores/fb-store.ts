@@ -17,7 +17,7 @@ export const playingInfo = asyncReadable(
                 obj.playbackState = new PlaybackState(json.fb);
                 obj.trackInfo = new TrackInfo(json.helper5, json.albumArt);
                 obj.playlistsInfo = new PlaylistsInfo(json.playlists);
-                obj.playlistData = new PlaylistData(json.playlist);
+                obj.playlistData = new PlaylistData(json.playlist, obj.playlistsInfo);
                 console.log(obj.playlistsInfo);
                 resolve(obj);
             });
@@ -28,7 +28,7 @@ export const playingInfo = asyncReadable(
                 obj.playbackState = new PlaybackState({});
                 obj.trackInfo = new TrackInfo({}, '');
                 obj.playlistsInfo = new PlaylistsInfo({});
-                obj.playlistData = new PlaylistData({ js: [] });
+                obj.playlistData = new PlaylistData({ js: [] }, obj.playlistsInfo);
                 resolve(obj);
             });
         }

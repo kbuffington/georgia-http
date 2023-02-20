@@ -2,6 +2,7 @@
     import { isNumber } from '@svelteuidev/composables';
     import { onDestroy } from 'svelte';
     import { writable } from 'svelte/store';
+    import { refreshInfo } from '../stores/commands';
     import { fb, currentTime, trackInfo } from '../stores/fb-store';
     import { artColor } from '../stores/stores';
 
@@ -18,13 +19,16 @@
     function updateTime(value: number) {
         clearTimeout(interval);
         if (value !== undefined) {
-            if (!$fb.isStopped && $trackInfo.length) {
+            if ($fb.isStopped) {
+                progress.set(0);
+            } else if ($trackInfo.length) {
                 progress.set(value / $trackInfo.length);
             }
             interval = setInterval(() => {
                 if (value < $trackInfo.length && $fb.isPlaying) {
-                    console.log('setting current time');
                     currentTime.update(n => n + 1);
+                } else if (value == $trackInfo.length) {
+                    refreshInfo()
                 }
             }, 1000);
         }
@@ -70,8 +74,8 @@
 </div>
 
 <style lang="scss">
-    @import '../scss/colors.scss';
-    @import '../scss/constants.scss';
+    @import '@css/colors.scss';
+    @import '@css/constants.scss';
 
     #progress-bar {
         padding: 0 1rem;

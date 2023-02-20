@@ -58,7 +58,7 @@ export class PlTrackData {
     tracknumber = '';
     active = false;
 
-    constructor(json: any, index: number, plInfo: PlaylistsInfo) {
+    constructor(json: any, index: number, plInfo: PlaylistsInfo, pData: PlaylistData) {
         if (Object.keys(json)) {
             this.artist = json.a;
             this.albumArtist = json.aa;
@@ -78,7 +78,7 @@ export class PlTrackData {
             this.tracknumber = json.n;
             this.active =
                 plInfo.playlistActive === plInfo.playlistPlaying &&
-                plInfo.playingItem === plInfo.playlistItemsPerPage * plInfo.playlistPage + index;
+                pData.playingItem === plInfo.playlistItemsPerPage * (pData.page - 1) + index;
         }
     }
 }
@@ -87,18 +87,21 @@ export class PlaylistData {
     tracks: PlTrackData[] = [];
     focusedItem = -1;
     numItems = 0;
-    page = 0;
+    page = 1;
+    pages = 1;
     playingItem = -1;
     totalTime = "";
 
-    constructor(json: any) {
-        this.tracks = json.js.map((t: any, i: number) => new PlTrackData(t, i, json));
-        this.page = parseInt(json.playlistPage);
+    constructor(json: any, pi: PlaylistsInfo) {
+        this.page = parseInt(json.page);
+        this.pages = parseInt(json.pages);
         // this.playingNumItems = parseInt(json.playingNumItems);
         this.numItems = json.numItems === '?' ? 0 : parseInt(json.numItems);
         this.focusedItem = json.focused === '?' ? -1 : parseInt(json.focused);
         this.playingItem = json.itemPlaying === '?' ? -1 : parseInt(json.itemPlaying);
         this.totalTime = json.playlistTotalTime;
+        this.tracks = json.js.map((t: any, i: number) => new PlTrackData(t, i, pi, this));
+        console.log(this);
     }
 }
 
