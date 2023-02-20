@@ -1,7 +1,7 @@
 <script>
     import { extractColors } from 'extract-colors';
-    import { trackInfo } from '../stores/fb-store';
-    import { artColor } from '../stores/stores';
+    import { trackInfo } from '@stores/fb-store';
+    import { artColor } from '@stores/stores';
 
     // const imgSrc = '/images/albumart_0000.jpeg';
 

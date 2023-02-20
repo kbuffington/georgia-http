@@ -1,7 +1,7 @@
 import { asyncReadable, asyncDerived, asyncWritable } from '@square/svelte-store';
 import { derived, readable, writable } from 'svelte/store';
-import { refreshPlayingInfo } from './backend';
-import { PlaybackState, PlaylistData, PlaylistsInfo, PlTrackData, TrackInfo, type PlayingInfo } from './types';
+import { refreshPlayingInfo } from '@api/backend';
+import { PlaybackState, PlaylistData, PlaylistsInfo, TrackInfo, type PlayingInfo } from './types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const playingInfo = asyncReadable(

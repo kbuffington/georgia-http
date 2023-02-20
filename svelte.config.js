@@ -23,6 +23,8 @@ const config = {
         alias: {
             // these are the aliases and paths to them
             '@css': path.resolve('./src/scss'),
+            '@api': path.resolve('./src/api'),
+            '@stores': path.resolve('./src/stores'),
         }
     }
 };

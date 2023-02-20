@@ -2,9 +2,9 @@
     import { isNumber } from '@svelteuidev/composables';
     import { onDestroy } from 'svelte';
     import { writable } from 'svelte/store';
-    import { refreshInfo } from '../stores/commands';
-    import { fb, currentTime, trackInfo } from '../stores/fb-store';
-    import { artColor } from '../stores/stores';
+    import { refreshInfo } from '@api/commands';
+    import { fb, currentTime, trackInfo } from '@stores/fb-store';
+    import { artColor } from '@stores/stores';
 
     const progress = writable(0);
 

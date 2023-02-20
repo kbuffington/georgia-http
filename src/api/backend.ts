@@ -1,5 +1,5 @@
 import { get_store_value } from 'svelte/internal';
-import { userSettings } from './stores';
+import { userSettings } from '@stores/stores';
 
 const timeout = (ms: number) => {
     return new Promise(resolve => setTimeout(resolve, ms));

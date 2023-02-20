@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { playlistData, playlistsInfo } from '../../stores/fb-store';
-    import { setPlaylistPage, switchPlaylist } from '../../stores/commands';
+    import { playlistData, playlistsInfo } from '@stores/fb-store';
+    import { setPlaylistPage, switchPlaylist } from '@api/commands';
     import Button from '@smui/button';
     import Menu from '@smui/menu';
     import Slider from '@smui/slider';

@@ -1,4 +1,4 @@
-import { playingInfo } from "./fb-store";
+import { playingInfo } from "@stores/fb-store";
 
 const sendCommand = async (command: string, p1?: string|number) => {
     const url = `/georgia/?cmd=${command}${p1 ? `&param1=${p1}` : ''}`;
@@ -36,4 +36,8 @@ export const setPlaylistPage = (page: number) => {
 
 export const switchPlaylist = (plIndex: number) => {
     sendCommand('SwitchPlaylist', plIndex);
+}
+
+export const playPlaylistItem = (index: number) => {
+    sendCommand('Start', index);
 }

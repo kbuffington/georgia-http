@@ -1,9 +1,9 @@
 <script lang="ts">
     import { Switch } from '@svelteuidev/core';
     import Fab from '@smui/fab';
-    import { playOrPause, startNext, startPrevious, stop } from '../stores/commands';
-    import { fb, playingInfo } from '../stores/fb-store';
-    import { userSettings } from '../stores/stores';
+    import { playOrPause, startNext, startPrevious, stop } from '@api/commands';
+    import { fb, playingInfo } from '@stores/fb-store';
+    import { userSettings } from '@stores/stores';
 
     function reloadData() {
         // setTimeout(playingInfo.reload!, 100);

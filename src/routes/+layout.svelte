@@ -1,5 +1,5 @@
 <script>
-    import { playingInfo } from '../stores/fb-store';
+    import { playingInfo } from '@stores/fb-store';
 import Header from './Header.svelte';
     import Progress from './Progress.svelte';
 </script>
