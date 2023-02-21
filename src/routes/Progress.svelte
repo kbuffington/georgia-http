@@ -1,10 +1,9 @@
 <script lang="ts">
-    import { isNumber } from '@svelteuidev/composables';
     import { onDestroy } from 'svelte';
     import { writable } from 'svelte/store';
-    import { refreshInfo } from '@api/commands';
     import { fb, currentTime, trackInfo } from '@stores/fb-store';
     import { artColor } from '@stores/stores';
+    import { PlayingInfoRefresher } from '@api/refresh-data';
 
     const progress = writable(0);
 
@@ -28,7 +27,7 @@
                 if (value < $trackInfo.length && $fb.isPlaying) {
                     currentTime.update(n => n + 1);
                 } else if (value == $trackInfo.length) {
-                    refreshInfo()
+                    PlayingInfoRefresher.refreshRebounced(100);
                 }
             }, 1000);
         }
@@ -56,7 +55,7 @@
 <div id="progress-bar">
     <div class="time-bar">
         {#await currentTime.load()}
-        <div class="loading">Georgia-HTTP</div>
+            <div class="loading">Georgia-HTTP</div>
         {:then}
             {#if !$fb.isStopped}
                 <div class="track-num">{$trackInfo.tracknumber}.</div>

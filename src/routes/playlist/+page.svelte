@@ -4,9 +4,8 @@
     import PlaylistHeader from './PlaylistHeader.svelte';
     import { playPlaylistItem } from '@api/commands';
 
-    function playItem(evt, index: number) {
+    function playItem(index: number) {
         playPlaylistItem(index);
-        evt.preventDefault();
     }
 </script>
 
@@ -23,7 +22,7 @@
                     <div class="item-row"
                             class:active={item.active}
                             class:focused={item.focused}
-                            on:dblclick={(e) => playItem(e, i)}>
+                            on:dblclick={() => playItem(i)}>
                         <div class="cell tracknum">{item.tracknumber}.</div>
                         <div class="cell title">
                             {#if i === 0 || item.albumArtist !== $playlistData.tracks[i - 1].albumArtist || item.album !== $playlistData.tracks[i - 1].album}

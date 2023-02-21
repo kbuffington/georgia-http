@@ -1,35 +1,41 @@
 <script>
     import { playingInfo } from '@stores/fb-store';
-import Header from './Header.svelte';
+    import Header from './Header.svelte';
     import Progress from './Progress.svelte';
+    import { visibilityChange } from 'svelte-visibility-change';
+    import { visibilityChanged } from '@api/refresh-data';
 </script>
 
 <svelte:head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <!-- Material Icons -->
-    <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;1,100;1,300&display=swap" rel="stylesheet">
-    <!-- Roboto Mono -->
     <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;1,100;1,300&display=swap"
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Roboto+Mono"
     />
+    <!-- Roboto Mono -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono" />
 
     <!-- SMUI Styles -->
     <link rel="stylesheet" href="/georgia/smui.css" media="(prefers-color-scheme: light)" />
-    <link rel="stylesheet" href="/georgia/smui-dark.css" media="screen and (prefers-color-scheme: dark)"
+    <link
+        rel="stylesheet"
+        href="/georgia/smui-dark.css"
+        media="screen and (prefers-color-scheme: dark)"
     />
 </svelte:head>
 
-<div class="app">
+<div class="app"
+        use:visibilityChange
+        on:visibilitychange={({ detail }) => {
+            visibilityChanged(detail.visible);
+        }}>
     <Header />
 
     <main>
@@ -39,7 +45,7 @@ import Header from './Header.svelte';
 
     <footer>
         {#await playingInfo.load()}
-            <span></span>
+            <span />
         {:then}
             <Progress />
         {/await}

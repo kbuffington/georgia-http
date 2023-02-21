@@ -32,7 +32,9 @@
 
 <div class="active-playlist">
     <div class="playlist-title">
-        {$playlistsInfo.playlists[$playlistsInfo.playlistActive].name}
+        {#if $playlistsInfo.playlists.length}
+            {$playlistsInfo.playlists[$playlistsInfo.playlistActive].name}
+        {/if}
     </div>
     <div class="menu-container">
         <Button mini on:click={() => { menu.setOpen(true); console.log(menu.isOpen(), menu); }}>

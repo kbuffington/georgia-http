@@ -1,11 +1,12 @@
 import { get_store_value } from 'svelte/internal';
 import { userSettings } from '@stores/stores';
+import { rebounce } from '@square/svelte-store';
 
 const timeout = (ms: number) => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
 
-export const refreshPlayingInfo = async (): Promise<Response> => {
+const refreshPlayingInfoCall = async (): Promise<Response> => {
     console.log('refreshing playingInfo');
     const { useMocks } = get_store_value(userSettings);
     if (useMocks) {
@@ -16,3 +17,5 @@ export const refreshPlayingInfo = async (): Promise<Response> => {
         return await fetch(window.location.origin + '/georgia/?cmd=RefreshPlayingInfo&param3=schema/state.json');
     }
 };
+
+export const refreshPlayingInfo = rebounce(refreshPlayingInfoCall, 100);

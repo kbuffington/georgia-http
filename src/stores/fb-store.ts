@@ -1,5 +1,5 @@
-import { asyncReadable, asyncDerived, asyncWritable } from '@square/svelte-store';
-import { derived, readable, writable } from 'svelte/store';
+import { asyncReadable, asyncWritable } from '@square/svelte-store';
+import { derived } from 'svelte/store';
 import { refreshPlayingInfo } from '@api/backend';
 import { PlaybackState, PlaylistData, PlaylistsInfo, TrackInfo, type PlayingInfo } from './types';
 
@@ -21,15 +21,23 @@ export const playingInfo = asyncReadable(
                 resolve(obj);
             });
         } catch (e) {
-            console.warn('Caught error handling/parsing response');
-            return new Promise<any>((resolve, reject) => {
-                const obj: PlayingInfo = {} as any;
-                obj.playbackState = new PlaybackState({});
-                obj.trackInfo = new TrackInfo({}, '');
-                obj.playlistsInfo = new PlaylistsInfo({});
-                obj.playlistData = new PlaylistData({ js: [] }, obj.playlistsInfo);
-                resolve(obj);
-            });
+            if (e.name !== 'AbortError') {
+                console.warn('Theme caught error handling/parsing response');
+                console.log(e.name, '>>>', e.message);
+                return new Promise<any>((resolve, reject) => {
+                    const obj: PlayingInfo = {} as any;
+                    obj.playbackState = new PlaybackState({});
+                    obj.trackInfo = new TrackInfo({}, '');
+                    obj.playlistsInfo = new PlaylistsInfo({});
+                    obj.playlistData = new PlaylistData({ js: [] }, obj.playlistsInfo);
+                    resolve(obj);
+                });
+            } else {
+                return new Promise<any>((resolve, reject) => {
+                    // aborted so reject
+                    reject(e);
+                });
+            }
         }
     },
     {
