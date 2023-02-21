@@ -22,6 +22,7 @@
                 {#each $playlistData.tracks as item, i}
                     <div class="item-row"
                             class:active={item.active}
+                            class:focused={item.focused}
                             on:dblclick={(e) => playItem(e, i)}>
                         <div class="cell tracknum">{item.tracknumber}.</div>
                         <div class="cell title">
@@ -96,6 +97,10 @@
 
                     &.active {
                         background-color: var(--color) !important;
+                    }
+
+                    &.focused {
+                        box-shadow: inset 0px 0px 0px 1px grey;
                     }
 
                     div.cell {

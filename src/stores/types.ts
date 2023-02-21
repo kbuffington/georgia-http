@@ -51,12 +51,14 @@ export class PlTrackData {
     displayLength = '';
     length = 0;
     playcount = 0;
+    plIndex = -1; // real index of this track in the playlist
     rating = 0;
     ratingStars = '';
     ratingEmpty = '⋅⋅⋅⋅⋅';
     title = '';
     tracknumber = '';
     active = false;
+    focused = false;
 
     constructor(json: any, index: number, plInfo: PlaylistsInfo, pData: PlaylistData) {
         if (Object.keys(json)) {
@@ -76,9 +78,11 @@ export class PlTrackData {
             this.ratingEmpty = fill.repeat(5 - this.rating);
             this.title = json.t;
             this.tracknumber = json.n;
+            this.plIndex = plInfo.playlistItemsPerPage * (pData.page - 1) + index
             this.active =
                 plInfo.playlistActive === plInfo.playlistPlaying &&
-                pData.playingItem === plInfo.playlistItemsPerPage * (pData.page - 1) + index;
+                pData.playingItem === this.plIndex;
+            this.focused = pData.focusedItem === this.plIndex;
         }
     }
 }
@@ -166,7 +170,6 @@ export class PlaybackState {
 export interface PlayingInfo {
     itemPlayingPos: string | number;
     itemPlayingLen: string | number;
-    helper1: string;
     helper2: string;
     helper3: string;
     helper4: string;
