@@ -1,4 +1,3 @@
-import { playingInfo } from '@stores/fb-store';
 import { PlayingInfoRefresher } from './refresh-data';
 
 const sendCommand = async (command: string, p1?: string | number) => {

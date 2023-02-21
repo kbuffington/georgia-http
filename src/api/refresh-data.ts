@@ -22,4 +22,4 @@ export const visibilityChanged = (visible: boolean) => {
     if (visible) {
         PlayingInfoRefresher.refresh();
     }
-}
+};
