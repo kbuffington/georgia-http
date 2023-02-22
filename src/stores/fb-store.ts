@@ -11,7 +11,7 @@ export const playingInfo = asyncReadable(
             const response = await refreshPlayingInfo();
             const json = await response.json();
 
-            return new Promise<any>((resolve, reject) => {
+            return new Promise<any>(resolve => {
                 const obj: PlayingInfo = json;
                 obj.playbackState = new PlaybackState(json.fb);
                 obj.trackInfo = new TrackInfo(json.helper1, json.albumArt);
@@ -20,11 +20,12 @@ export const playingInfo = asyncReadable(
                 console.log(obj.playlistsInfo);
                 resolve(obj);
             });
-        } catch (e) {
+        } catch (e: any) {
+            console.log(e);
             if (e.name !== 'AbortError') {
                 console.warn('Theme caught error handling/parsing response');
                 console.log(e.name, '>>>', e.message);
-                return new Promise<any>((resolve, reject) => {
+                return new Promise<any>(resolve => {
                     const obj: PlayingInfo = {} as any;
                     obj.playbackState = new PlaybackState({});
                     obj.trackInfo = new TrackInfo({}, '');
@@ -41,7 +42,7 @@ export const playingInfo = asyncReadable(
         }
     },
     {
-        reloadable: true
+        reloadable: true,
     }
 );
 
@@ -73,7 +74,7 @@ function createCurrentTimeStore() {
             _time = time;
         },
         {
-            reloadable: true
+            reloadable: true,
         }
     );
 }

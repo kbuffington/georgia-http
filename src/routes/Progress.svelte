@@ -13,7 +13,7 @@
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
 
-    let interval: number;
+    let interval: number | any;
 
     function updateTime(value: number) {
         clearTimeout(interval);
@@ -27,7 +27,7 @@
                 if (value < $trackInfo.length && $fb.isPlaying) {
                     currentTime.update(n => n + 1);
                 } else if (value == $trackInfo.length) {
-                    PlayingInfoRefresher.refreshRebounced(100);
+                    PlayingInfoRefresher.refreshRebounced();
                 }
             }, 1000);
         }
@@ -116,6 +116,7 @@
         display: block;
         width: 100%;
         height: $progress-bar-height;
+        appearance: none;
         -webkit-appearance: none;
         border: 0.5px solid black;
 
@@ -125,9 +126,6 @@
         &::-webkit-progress-value {
             background-color: var(--fill-color);
             transition: 1s linear;
-        }
-        &::-moz-progress-bar {
-            // TODO: what goes here?
         }
     }
 </style>

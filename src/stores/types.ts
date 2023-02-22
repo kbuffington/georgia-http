@@ -3,6 +3,8 @@ function secondsToTime(time: number) {
     const seconds = Math.max(time - minutes * 60, 0);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export class TrackInfo {
     artist = '';
     artwork = '';
@@ -78,7 +80,7 @@ export class PlTrackData {
             this.ratingEmpty = fill.repeat(5 - this.rating);
             this.title = json.t;
             this.tracknumber = json.n;
-            this.plIndex = plInfo.playlistItemsPerPage * (pData.page - 1) + index
+            this.plIndex = plInfo.playlistItemsPerPage * (pData.page - 1) + index;
             this.active =
                 plInfo.playlistActive === plInfo.playlistPlaying &&
                 pData.playingItem === this.plIndex;
@@ -94,7 +96,7 @@ export class PlaylistData {
     page = 1;
     pages = 1;
     playingItem = -1;
-    totalTime = "";
+    totalTime = '';
 
     constructor(json: any, pi: PlaylistsInfo) {
         this.page = parseInt(json.page);
@@ -147,9 +149,9 @@ export class PlaybackState {
     private state: PlaybackStates = PlaybackStates.STOPPED;
     constructor(json: any) {
         if (json.isPlaying === '1') {
-            this.state = PlaybackStates.PLAYING
+            this.state = PlaybackStates.PLAYING;
         } else if (json.isPaused === '1') {
-            this.state = PlaybackStates.PAUSED
+            this.state = PlaybackStates.PAUSED;
         }
         console.log(this.isPlaying);
     }

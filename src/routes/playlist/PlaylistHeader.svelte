@@ -11,7 +11,7 @@
     let currentPage = 1;
 
     const unsubscribe = playlistData.subscribe(data => {
-        currentPage = data?.page ? data.page : 1;
+        currentPage = data?.page ? data.page : 1; // fix weird behavior with .page not being set from backend
         console.log(currentPage);
     });
 
@@ -20,7 +20,7 @@
     }
 
     function switchToPlaylist(plIndex: number) {
-        if (playlistsInfo.active !== plIndex) {
+        if ($playlistsInfo.playlistActive !== plIndex) {
             switchPlaylist(plIndex);
         }
     }
@@ -37,14 +37,18 @@
         {/if}
     </div>
     <div class="menu-container">
-        <Button mini on:click={() => { menu.setOpen(true); console.log(menu.isOpen(), menu); }}>
-            <!-- <Icon class="material-icons" style="margin: 0;">arrow_drop_down</Icon> -->
+        <Button
+            class="mini"
+            on:click={() => {
+                menu.setOpen(true);
+            }}
+        >
             <span class="material-symbols-outlined"> arrow_drop_down </span>
         </Button>
         <Menu bind:this={menu} anchorCorner="TOP_START" class="playlist-menu">
             <List>
                 {#each $playlistsInfo.playlists as pl, i}
-                    <Item on:SMUI:action={() => switchToPlaylist(i) }>
+                    <Item on:SMUI:action={() => switchToPlaylist(i)}>
                         <div class="playlist-item">
                             <Text>
                                 {pl.name}
@@ -101,7 +105,7 @@
         left: calc($pl-slider-height / -2) !important;
     }
 
-    .menu-container :global(.mdc-button[mini=true]) {
+    .menu-container :global(.mdc-button.mini) {
         height: $pl-header-height !important;
         padding: 0px !important;
         min-width: 48px !important;
