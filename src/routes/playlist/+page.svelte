@@ -32,6 +32,9 @@
                         class="item-row"
                         class:active={item.active}
                         class:focused={item.focused}
+                        class:newalbum={i > 0 &&
+                            (item.albumArtist !== $playlistData.tracks[i - 1].albumArtist ||
+                                item.album !== $playlistData.tracks[i - 1].album)}
                         on:dblclick={() => playItem(i)}
                     >
                         <div class="cell tracknum">{item.tracknumber}.</div>
@@ -131,6 +134,9 @@
 
                     &.focused {
                         box-shadow: inset 0px 0px 0px 1px grey;
+                    }
+                    &:not(.focused).newalbum .cell {
+                        border-top: 1px solid var(--color);
                     }
 
                     div.cell {

@@ -1,4 +1,4 @@
-import { PlayingInfoRefresher, rebouncedInfoPlayingRefresh } from './refresh-data';
+import { rebouncedInfoPlayingRefresh } from './refresh-data';
 
 export function debounce<T extends unknown[], U>(
     callback: (...args: T) => PromiseLike<U> | U,
@@ -14,8 +14,17 @@ export function debounce<T extends unknown[], U>(
     };
 }
 
-const sendCommand = async (command: string, p1?: string | number) => {
-    const url = `/georgia/?cmd=${command}${p1 !== undefined ? `&param1=${p1}` : ''}`;
+const sendCommand = async (
+    command: string,
+    p1?: string | number,
+    p2?: string | number,
+    p3?: string
+) => {
+    const url =
+        `/georgia/?cmd=${command}` +
+        `${p1 !== undefined ? `&param1=${p1}` : ''}` +
+        `${p2 !== undefined ? `&param2=${p2}` : ''}` +
+        `${p3 !== undefined ? `&param3=${p3}` : ''}`;
     await fetch(url);
     rebouncedInfoPlayingRefresh();
 };
@@ -49,7 +58,7 @@ export const playPlaylistItem = (index: number) => {
 };
 
 const searchLibrary = (searchStr: string) => {
-    sendCommand('SearchMediaLibrary', searchStr);
+    sendCommand('SearchMediaLibrary', searchStr, undefined, 'NoResponse');
 };
 
 export const librarySearch = debounce(searchLibrary, 250);

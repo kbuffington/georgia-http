@@ -68,7 +68,8 @@
 </div>
 
 <div class="page-selection">
-    {#if $playlistData.pages == 1}
+    <!-- .pages can be 0 if the playlist is empty -->
+    {#if $playlistData.pages <= 1}
         <Slider
             class="page-slider"
             bind:value={currentPage}
