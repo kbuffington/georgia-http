@@ -11,7 +11,7 @@
     let currentPage = 1;
 
     const unsubscribe = playlistData.subscribe(data => {
-        currentPage = data?.page ? data.page : 1; // fix weird behavior with .page not being set from backend
+        currentPage = data?.page ?? 1;
         console.log(currentPage);
     });
 
