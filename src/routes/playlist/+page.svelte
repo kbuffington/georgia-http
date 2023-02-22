@@ -5,7 +5,6 @@
     import { librarySearch, playPlaylistItem } from '@api/commands';
     import Textfield from '@smui/textfield';
     import Icon from '@smui/textfield/icon';
-    // import HelperText from '@smui/textfield/helper-text';
 
     let searchString = '';
 
@@ -69,7 +68,12 @@
     </div>
     <div class="search-container">
         <div class="search-string">
-            <Textfield bind:value={searchString} on:keyup={doSearch} label="Search">
+            <Textfield
+                variant="outlined"
+                bind:value={searchString}
+                on:keyup={doSearch}
+                label="Search"
+            >
                 <Icon class="material-icons" slot="leadingIcon">search</Icon>
                 <!-- <span class="material-symbols-outlined"> search </span> -->
                 <!-- <HelperText slot="helper">Helper Text</HelperText> -->
