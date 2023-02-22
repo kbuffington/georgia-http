@@ -122,6 +122,8 @@
 
         .playlist-title {
             flex-grow: 1;
+            border-right: 1px dotted $dim-text;
+            margin-right: 0.25rem;
         }
 
         .playlist-item {

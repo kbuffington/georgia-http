@@ -1,4 +1,4 @@
-import { PlayingInfoRefresher } from './refresh-data';
+import { PlayingInfoRefresher, rebouncedInfoPlayingRefresh } from './refresh-data';
 
 export function debounce<T extends unknown[], U>(
     callback: (...args: T) => PromiseLike<U> | U,
@@ -17,7 +17,7 @@ export function debounce<T extends unknown[], U>(
 const sendCommand = async (command: string, p1?: string | number) => {
     const url = `/georgia/?cmd=${command}${p1 !== undefined ? `&param1=${p1}` : ''}`;
     await fetch(url);
-    PlayingInfoRefresher.refreshRebounced();
+    rebouncedInfoPlayingRefresh();
 };
 
 export const playOrPause = () => {

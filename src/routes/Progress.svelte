@@ -3,7 +3,7 @@
     import { writable } from 'svelte/store';
     import { fb, currentTime, trackInfo } from '@stores/fb-store';
     import { artColor } from '@stores/stores';
-    import { PlayingInfoRefresher } from '@api/refresh-data';
+    import { rebouncedInfoPlayingRefresh } from '@api/refresh-data';
 
     const progress = writable(0);
 
@@ -27,7 +27,7 @@
                 if (value < $trackInfo.length && $fb.isPlaying) {
                     currentTime.update(n => n + 1);
                 } else if (value == $trackInfo.length) {
-                    PlayingInfoRefresher.refreshRebounced();
+                    rebouncedInfoPlayingRefresh();
                 }
             }, 1000);
         }
