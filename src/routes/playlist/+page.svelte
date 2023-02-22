@@ -2,7 +2,17 @@
     import { playingInfo, playlistData } from '@stores/fb-store';
     import { artColor } from '@stores/stores';
     import PlaylistHeader from './PlaylistHeader.svelte';
-    import { playPlaylistItem } from '@api/commands';
+    import { librarySearch, playPlaylistItem } from '@api/commands';
+    import Textfield from '@smui/textfield';
+    import Icon from '@smui/textfield/icon';
+    // import HelperText from '@smui/textfield/helper-text';
+
+    let searchString = '';
+
+    function doSearch() {
+        console.log('searching for:', searchString);
+        librarySearch(searchString);
+    }
 
     function playItem(index: number) {
         playPlaylistItem(index);
@@ -15,19 +25,24 @@
             Loading...
         {:then}
             <div class="playlist-header">
-                <PlaylistHeader></PlaylistHeader>
+                <PlaylistHeader />
             </div>
             <div class="playlist-data">
                 {#each $playlistData.tracks as item, i}
-                    <div class="item-row"
-                            class:active={item.active}
-                            class:focused={item.focused}
-                            on:dblclick={() => playItem(i)}>
+                    <div
+                        class="item-row"
+                        class:active={item.active}
+                        class:focused={item.focused}
+                        on:dblclick={() => playItem(i)}
+                    >
                         <div class="cell tracknum">{item.tracknumber}.</div>
                         <div class="cell title">
                             {#if i === 0 || item.albumArtist !== $playlistData.tracks[i - 1].albumArtist || item.album !== $playlistData.tracks[i - 1].album}
                                 {item.title}
-                                <span class="dimmed" title="{item.artist} / {item.date} / {item.album}">
+                                <span
+                                    class="dimmed"
+                                    title="{item.artist} / {item.date} / {item.album}"
+                                >
                                     / {item.artist} / {item.date} / {item.album}</span
                                 >
                             {:else}
@@ -42,7 +57,9 @@
                         <div class="cell rating">
                             <span class="dimmed">| </span>
                             <span class="star">{item.ratingStars}</span>
-                            <span class="empty dimmed" class:nostars={!item.ratingStars}>{item.ratingEmpty}</span>
+                            <span class="empty dimmed" class:nostars={!item.ratingStars}
+                                >{item.ratingEmpty}</span
+                            >
                         </div>
                         <div class="cell length">{item.displayLength}</div>
                     </div>
@@ -50,10 +67,20 @@
             </div>
         {/await}
     </div>
+    <div class="search-container">
+        <div class="search-string">
+            <Textfield bind:value={searchString} on:keyup={doSearch} label="Search">
+                <Icon class="material-icons" slot="leadingIcon">search</Icon>
+                <!-- <span class="material-symbols-outlined"> search </span> -->
+                <!-- <HelperText slot="helper">Helper Text</HelperText> -->
+            </Textfield>
+        </div>
+    </div>
 </div>
 
 <style lang="scss">
     @import '@css/constants.scss';
+    @import '@css/colors.scss';
 
     .main-container {
         z-index: 100;
@@ -61,7 +88,7 @@
 
         .playlist-container {
             width: fit-content;
-            background-color: rgb(40, 44, 47);
+            background-color: $panel-bg;
             border: 1px solid black;
             padding: 3px;
             border-radius: 6px;
@@ -117,7 +144,8 @@
                             text-overflow: ellipsis;
                             white-space: nowrap;
                             max-width: calc(
-                                $playlist-width - $pl-track-w - $pl-playcount-w - $pl-rating-w - $pl-length-w
+                                $playlist-width - $pl-track-w - $pl-playcount-w - $pl-rating-w -
+                                    $pl-length-w
                             );
                         }
                         &.playcount {
@@ -154,6 +182,16 @@
                     }
                 }
             }
+        }
+
+        .search-container {
+            position: absolute;
+            right: 1rem;
+            top: 20vh;
+            background-color: $panel-bg;
+            padding: 1rem;
+            border: 1px solid black;
+            border-radius: 6px;
         }
     }
 </style>

@@ -12,7 +12,6 @@
 
     const unsubscribe = playlistData.subscribe(data => {
         currentPage = data?.page ?? 1;
-        console.log(currentPage);
     });
 
     function updatePage() {

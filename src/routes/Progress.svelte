@@ -13,7 +13,7 @@
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
 
-    let interval: number | any;
+    let interval: ReturnType<typeof setInterval>;
 
     function updateTime(value: number) {
         clearTimeout(interval);

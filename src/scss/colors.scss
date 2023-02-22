@@ -1,7 +1,9 @@
 // georgia-colors
-$bg-color: RGB(50, 54, 57);
-$menu-bg: RGB(23, 23, 23);
-$progress-bar: RGB(23, 22, 25);
-$now-playing: RGB(255, 255, 255); // tracknumber, title, and time
-$shadow: RGBA(128, 128, 128, 54);
+$bg-color: rgb(50, 54, 57);
+$menu-bg: rgb(23, 23, 23);
+$progress-bar: rgb(23, 22, 25);
+$now-playing: rgb(255, 255, 255); // tracknumber, title, and time
+$shadow: rgba(128, 128, 128, 54);
 $dim-text: rgb(90, 94, 97); // Georgia version in lower left
+
+$panel-bg: rgb(40, 44, 47);
