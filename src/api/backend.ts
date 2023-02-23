@@ -1,6 +1,7 @@
 import { get_store_value } from 'svelte/internal';
 import { userSettings } from '@stores/stores';
 import { rebounce } from '@square/svelte-store';
+import { sendCommand } from './commands';
 
 const timeout = (ms: number) => {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -14,9 +15,7 @@ const refreshPlayingInfoCall = async (): Promise<Response> => {
         return await fetch('/mockdata/fake-backend-data.json');
     } else {
         // return await fetch('/mockdata/fake-backend-data2.json');
-        return await fetch(
-            window.location.origin + '/georgia/?cmd=RefreshPlayingInfo&param3=schema/state.json'
-        );
+        return await sendCommand('RefreshPlayingInfo', undefined, undefined, 'schema/state.json');
     }
 };
 

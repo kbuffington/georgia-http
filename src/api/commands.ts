@@ -14,51 +14,60 @@ export function debounce<T extends unknown[], U>(
     };
 }
 
-const sendCommand = async (
+export const sendCommand = (
     command: string,
     p1?: string | number,
     p2?: string | number,
     p3?: string
 ) => {
     const url =
-        `/georgia/?cmd=${command}` +
+        `${window?.location.origin}/georgia/?cmd=${command}` +
         `${p1 !== undefined ? `&param1=${p1}` : ''}` +
         `${p2 !== undefined ? `&param2=${p2}` : ''}` +
         `${p3 !== undefined ? `&param3=${p3}` : ''}`;
-    await fetch(url);
+    return fetch(url);
+};
+
+const sendCommandAndRefresh = async (
+    command: string,
+    p1?: string | number,
+    p2?: string | number,
+    p3?: string
+) => {
+    await sendCommand(command, p1, p2, p3);
     rebouncedInfoPlayingRefresh();
 };
 
 export const playOrPause = () => {
-    sendCommand('PlayOrPause');
+    sendCommandAndRefresh('PlayOrPause');
 };
 
 export const startNext = () => {
-    sendCommand('StartNext');
+    sendCommandAndRefresh('StartNext');
 };
 
 export const startPrevious = () => {
-    sendCommand('StartPrevious');
+    sendCommandAndRefresh('StartPrevious');
 };
 
 export const stop = () => {
-    sendCommand('Stop');
+    sendCommandAndRefresh('Stop');
 };
 
 export const setPlaylistPage = (page: number) => {
-    sendCommand('P', page.toString());
+    sendCommandAndRefresh('P', page.toString());
 };
 
 export const switchPlaylist = (plIndex: number) => {
-    sendCommand('SwitchPlaylist', plIndex);
+    sendCommandAndRefresh('SwitchPlaylist', plIndex);
 };
 
 export const playPlaylistItem = (index: number) => {
-    sendCommand('Start', index);
+    sendCommandAndRefresh('Start', index);
 };
 
 const searchLibrary = (searchStr: string) => {
-    sendCommand('SearchMediaLibrary', searchStr, undefined, 'NoResponse');
+    sendCommandAndRefresh('SearchMediaLibrary', searchStr, undefined, 'NoResponse');
 };
 
 export const librarySearch = debounce(searchLibrary, 250);
