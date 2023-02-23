@@ -15,12 +15,8 @@
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;1,100;1,300&display=swap"
-        rel="stylesheet"
-    />
     <!-- Roboto Mono -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono" />
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono" /> -->
 
     <!-- SMUI Styles -->
     <link rel="stylesheet" href="/georgia/smui.css" media="(prefers-color-scheme: light)" />
@@ -31,11 +27,13 @@
     />
 </svelte:head>
 
-<div class="app"
-        use:visibilityChange
-        on:visibilitychange={({ detail }) => {
-            visibilityChanged(detail.visible);
-        }}>
+<div
+    class="app"
+    use:visibilityChange
+    on:visibilitychange={({ detail }) => {
+        visibilityChanged(detail.visible);
+    }}
+>
     <Header />
 
     <main>
@@ -54,6 +52,7 @@
 </div>
 
 <style lang="scss">
+    @import '@css/roboto/roboto.scss';
     @import '@css/colors.scss';
     @import '@css/constants.scss';
 
