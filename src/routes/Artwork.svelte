@@ -5,12 +5,15 @@
 
     let w: number;
 
-    extractColors($trackInfo.artwork)
-        .then(c => {
-            // console.log(c);
-            artColor.set(c[0].hex);
-        })
-        .catch(console.error);
+    function imageLoaded() {
+        extractColors($trackInfo.artwork)
+            .then(c => {
+                const sortedCols = c.sort((a, b) => b.area - a.area);
+                console.log(sortedCols[0].hex, sortedCols[0].area, sortedCols);
+                artColor.set(sortedCols[0].hex);
+            })
+            .catch(console.error);
+    }
 </script>
 
 <div class="artwork" style="--color:{$artColor}; --artwidth:{w}px">
@@ -46,7 +49,14 @@
         </div>
     </div>
     <div class="art-wrapper" bind:clientWidth={w}>
-        <img class="albumart" src={$trackInfo.artwork} alt="album art" />
+        <img
+            class="albumart"
+            src={$trackInfo.artwork}
+            alt="album art"
+            on:load={() => {
+                imageLoaded();
+            }}
+        />
     </div>
 </div>
 
