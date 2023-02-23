@@ -9,7 +9,6 @@
     let searchString = '';
 
     function doSearch() {
-        console.log('searching for:', searchString);
         librarySearch(searchString);
     }
 

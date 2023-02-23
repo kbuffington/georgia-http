@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
     import { extractColors } from 'extract-colors';
     import { trackInfo } from '@stores/fb-store';
     import { artColor } from '@stores/stores';
 
-    // const imgSrc = '/images/albumart_0000.jpeg';
+    let w: number;
 
     extractColors($trackInfo.artwork)
         .then(c => {
@@ -13,7 +13,7 @@
         .catch(console.error);
 </script>
 
-<div class="artwork" style="--color:{$artColor}">
+<div class="artwork" style="--color:{$artColor}; --artwidth:{w}px">
     <div class="metadata">
         <div class="album">{$trackInfo.album}</div>
         <div class="grid">
@@ -45,23 +45,30 @@
             {/if}
         </div>
     </div>
-    <img class="albumart" src={$trackInfo.artwork} alt="album art" />
+    <div class="art-wrapper" bind:clientWidth={w}>
+        <img class="albumart" src={$trackInfo.artwork} alt="album art" />
+    </div>
 </div>
 
 <style lang="scss">
     @import '@css/constants.scss';
 
+    $left-padding: 1rem;
+
     .artwork {
         background-color: var(--color);
-        padding-left: 1rem;
+        padding-left: $left-padding;
         width: fit-content;
         display: flex;
 
         .metadata {
+            min-width: calc(50vw - var(--artwidth) / 2 - #{$left-padding});
+            max-width: calc(50vw - var(--artwidth) / 2 - #{$left-padding});
             display: inline-block;
             font-size: 2rem;
             font-weight: 300;
             padding: 1rem 1rem 1rem 0;
+            box-sizing: border-box;
 
             .album {
                 // font-family: 'Helvetica Neue LT Pro';
@@ -93,8 +100,13 @@
         }
 
         img.albumart {
-            max-width: calc(50vw - 2rem); // TODO figure out max-width/height
-            max-height: calc(100vh - $header-height - $progress-bar-time-font-size - $progress-bar-height - 150px);
+            max-width: calc(55vw);
+            max-height: calc(
+                100vh - $header-height - $progress-bar-time-font-size - $progress-bar-height - 150px
+            );
+            min-height: calc(
+                100vh - $header-height - $progress-bar-time-font-size - $progress-bar-height - 150px
+            );
             display: block; // fix the extra 4 pixels of parent space
         }
     }
