@@ -5,8 +5,18 @@
 
     let w: number;
 
+    const extractOptions = {
+        pixels: 10000,
+        distance: 0.1,
+        splitPower: 10,
+        colorValidator: (red, green, blue, alpha = 255) => alpha > 250,
+        saturationDistance: 0.1,
+        lightnessDistance: 0.1,
+        hueDistance: 0.063333333,
+    };
+
     function imageLoaded() {
-        extractColors($trackInfo.artwork)
+        extractColors($trackInfo.artwork, extractOptions)
             .then(c => {
                 const sortedCols = c.sort((a, b) => b.area - a.area);
                 console.log(sortedCols[0].hex, sortedCols[0].area, sortedCols);
