@@ -1,6 +1,6 @@
 <script>
     import Artwork from './Artwork.svelte';
-    import { fb, playingInfo, trackInfo }  from '@stores/fb-store';
+    import { fb, playingInfo, trackInfo } from '@stores/fb-store';
 </script>
 
 <div id="main-content">
@@ -9,7 +9,7 @@
             Loading...
         {:then}
             {#if !$fb.isStopped}
-                <div class="artist">{ $trackInfo.artist }</div>
+                <div class="artist">{$trackInfo.artist}</div>
                 <Artwork />
             {/if}
         {/await}
@@ -17,7 +17,7 @@
 </div>
 
 <style lang="scss">
-    @import "@css/colors.scss";
+    @import '@css/colors.scss';
 
     #main-content {
         flex: 1;
@@ -30,7 +30,7 @@
             flex-grow: 1;
 
             .artist {
-                padding: 0 1rem;
+                padding: 0 1rem 0.5rem;
                 font-size: 38px;
                 font-weight: 500;
             }
