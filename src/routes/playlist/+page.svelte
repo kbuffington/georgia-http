@@ -1,15 +1,15 @@
 <script lang="ts">
     import { playingInfo, playlistData } from '@stores/fb-store';
-    import { artColor } from '@stores/stores';
+    import { artColor, searchString } from '@stores/stores';
     import PlaylistHeader from './PlaylistHeader.svelte';
     import { librarySearch, playPlaylistItem } from '@api/commands';
     import Textfield from '@smui/textfield';
     import Icon from '@smui/textfield/icon';
 
-    let searchString = '';
-
     function doSearch() {
-        librarySearch(searchString);
+        if ($searchString.length) {
+            librarySearch($searchString);
+        }
     }
 
     function playItem(index: number) {
@@ -72,7 +72,7 @@
         <div class="search-string">
             <Textfield
                 variant="outlined"
-                bind:value={searchString}
+                bind:value={$searchString}
                 on:keyup={doSearch}
                 label="Search"
             >
@@ -98,7 +98,7 @@
             border: 1px solid black;
             padding: 3px;
             border-radius: 6px;
-            height: calc($pl-row-height * 30 + $pl-slider-height + $pl-header-height + 8px);
+            height: calc($pl-row-height * 30 + $pl-slider-height + $pl-header-height + 30px);
 
             .playlist-header {
                 width: calc($playlist-width - 8px);
@@ -126,6 +126,7 @@
                     line-height: calc($pl-row-height - 2px);
                     cursor: default;
                     user-select: none;
+                    box-sizing: border-box;
 
                     &.active {
                         background-color: var(--color) !important;
@@ -136,6 +137,9 @@
                     }
                     &:not(.focused).newalbum .cell {
                         border-top: 1px solid var(--color);
+                    }
+                    &:not(.newalbum) .cell {
+                        border-top: 1px solid rgba(0, 0, 0, 0); // need an invisible border so height doesn't get screwed up
                     }
 
                     div.cell {
