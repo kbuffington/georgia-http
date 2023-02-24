@@ -1,6 +1,8 @@
 static/fonts/**/*.ttf
 static/fonts/**/*.woff
 
+.vscode
+
 .DS_Store
 node_modules
 /build

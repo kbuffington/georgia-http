@@ -9,7 +9,7 @@
         pixels: 10000,
         distance: 0.1,
         splitPower: 10,
-        colorValidator: (red, green, blue, alpha = 255) => alpha > 250,
+        colorValidator: (red: number, green: number, blue: number, alpha = 255) => alpha > 250,
         saturationDistance: 0.1,
         lightnessDistance: 0.1,
         hueDistance: 0.063333333,

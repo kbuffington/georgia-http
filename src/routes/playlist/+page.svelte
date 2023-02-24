@@ -12,6 +12,9 @@
         }
     }
 
+    /**
+     * @param index The plIndex from the playlistData
+     */
     function playItem(index: number) {
         playPlaylistItem(index);
     }
@@ -34,7 +37,7 @@
                         class:newalbum={i > 0 &&
                             (item.albumArtist !== $playlistData.tracks[i - 1].albumArtist ||
                                 item.album !== $playlistData.tracks[i - 1].album)}
-                        on:dblclick={() => playItem(i)}
+                        on:dblclick={() => playItem(item.plIndex)}
                     >
                         <div class="cell tracknum">{item.tracknumber}.</div>
                         <div class="cell title">
@@ -136,7 +139,8 @@
                         box-shadow: inset 0px 0px 0px 1px grey;
                     }
                     &:not(.focused).newalbum .cell {
-                        border-top: 1px solid var(--color);
+                        // border-top: 1px solid var(--color);
+                        border-top: 1px solid rgb(220, 220, 220);
                     }
                     &:not(.newalbum) .cell {
                         border-top: 1px solid rgba(0, 0, 0, 0); // need an invisible border so height doesn't get screwed up
@@ -185,7 +189,6 @@
                         &.length {
                             width: $pl-length-w;
                             text-align: right;
-                            // font-family: 'Helvetica Monospaced Pro';
                             padding-right: 1rem;
                             font-weight: 500;
                         }
