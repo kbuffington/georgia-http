@@ -14,7 +14,7 @@ export const playingInfo = asyncReadable(
             return new Promise<any>(resolve => {
                 const obj: PlayingInfo = json;
                 obj.playbackState = new PlaybackState(json.fb);
-                obj.trackInfo = new TrackInfo(json.helper1, json.albumArt);
+                obj.trackInfo = new TrackInfo(json.helper1, json.albumArt, json);
                 obj.playlistsInfo = new PlaylistsInfo(json.playlists);
                 obj.playlistData = new PlaylistData(json.playlist, obj.playlistsInfo);
                 console.log(obj.playlistsInfo);

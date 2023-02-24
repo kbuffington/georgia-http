@@ -18,7 +18,7 @@
     function imageLoaded() {
         extractColors($trackInfo.artwork, extractOptions)
             .then(c => {
-                const sortedCols = c.sort((a, b) => b.area - a.area);
+                const sortedCols = c.sort((a, b) => b.area - a.area).filter(c => c.lightness < 0.7);
                 console.log(sortedCols[0].hex, sortedCols[0].area, sortedCols);
                 artColor.set(sortedCols[0].hex);
             })
@@ -41,6 +41,16 @@
             {#if $trackInfo.genre}
                 <div class="label">Genre</div>
                 <div class="data">{$trackInfo.genre}</div>
+            {/if}
+
+            {#if $trackInfo.added}
+                <div class="label">Added</div>
+                <div class="data">{$trackInfo.added}</div>
+            {/if}
+
+            {#if $trackInfo.lastPlayed}
+                <div class="label">Last Played</div>
+                <div class="data">{$trackInfo.lastPlayed}</div>
             {/if}
 
             {#if $trackInfo.playcount > 0}
@@ -103,7 +113,7 @@
                 display: grid;
                 grid-template-columns: 2fr 3fr;
                 grid-auto-rows: auto;
-                gap: 0.2rem 0.5rem;
+                gap: 0.3rem 0.5rem;
 
                 .label {
                     // width: 5vw;

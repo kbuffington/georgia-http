@@ -10,18 +10,22 @@ export class TrackInfo {
     artwork = '';
     album = '';
     albumArtist = '';
+    added = '';
+    codecInfo = '';
     genre = '';
     labels = '';
     title = '';
     rating = 0;
     ratingStars = '';
     playcount = 0;
+    lastPlayed = '';
     length = 0;
     date = '';
+    year = '';
     tracknumber = '';
     displayLength = '';
 
-    constructor(obj: any, artwork: string) {
+    constructor(obj: any, artwork: string, json: any) {
         // if (jsonStr.trim().length) {
         // const escaped = jsonStr.replace(/&#92;&quot;/g, '\\"').replace(/&quot;/g, '"');
         // const obj = JSON.parse(escaped);
@@ -40,6 +44,12 @@ export class TrackInfo {
             this.tracknumber = obj.n;
             this.displayLength = secondsToTime(this.length);
             this.artwork = artwork;
+            this.year = json.helper2;
+            this.codecInfo = json.helper3
+                .replace('DCA (DTS Coherent Acoustics)', 'dts')
+                .replace(' | stereo', '');
+            this.added = json.helper4;
+            this.lastPlayed = json.helper5;
             console.log(this);
         }
     }
@@ -176,6 +186,10 @@ export interface PlayingInfo {
     helper3: string;
     helper4: string;
     helper5: string;
+    helper6: string;
+    helper7: string;
+    helper8: string;
+    helper9: string;
     albumArt: string;
     playbackState: PlaybackState;
     playlistsInfo: PlaylistsInfo;
