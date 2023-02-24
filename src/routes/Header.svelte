@@ -80,12 +80,12 @@
             top: 0px;
             left: 0;
             right: 0;
-            width: 200px;
             margin-left: auto;
             margin-right: auto;
+            padding: 0;
+            display: inline-block;
+            text-align: center;
 
-            justify-content: center;
-            align-items: center;
             list-style: none;
 
             li {
