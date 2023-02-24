@@ -11,9 +11,11 @@
 </script>
 
 <header>
-    <a href="/georgia/playlist"><button>Playlists</button></a>
-    <a href="/georgia"><button>Search</button></a>
-    <a href="/georgia"><button>Now Playing</button></a>
+    <div class="routing">
+        <a href="/georgia/playlist"><button>Playlists</button></a>
+        <!-- <a href="/georgia"><button>Search</button></a> -->
+        <a href="/georgia"><button>Now Playing</button></a>
+    </div>
 
     <ul id="transport">
         <li>
@@ -75,6 +77,11 @@
         height: calc($header-height - 2 * $padding);
         padding: $padding;
 
+        .routing {
+            position: relative;
+            z-index: 100;
+        }
+
         #transport {
             position: absolute;
             top: 0px;
@@ -85,6 +92,7 @@
             padding: 0;
             display: inline-block;
             text-align: center;
+            z-index: 99; // behind routing links
 
             list-style: none;
 
@@ -100,6 +108,7 @@
             right: 20px;
             top: 20px;
             font-family: sans-serif;
+            z-index: 100;
         }
     }
 </style>
