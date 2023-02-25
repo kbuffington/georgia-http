@@ -101,7 +101,6 @@
             box-sizing: border-box;
 
             .album {
-                // font-family: 'Helvetica Neue LT Pro';
                 font-size: 26px;
                 font-weight: 500;
                 margin-bottom: 2px;
@@ -109,16 +108,13 @@
 
             .grid {
                 font-size: 20px;
-                max-width: 25vw;
                 display: grid;
-                grid-template-columns: 2fr 3fr;
+                grid-template-columns: fit-content(6vw) auto;
                 grid-auto-rows: auto;
-                gap: 0.3rem 0.5rem;
+                gap: 0.3rem 1rem;
 
-                .label {
-                    // width: 5vw;
-                    // flex: 1 35%;
-                }
+                // .label {
+                // }
                 .data {
                     &.rating {
                         color: orange;
