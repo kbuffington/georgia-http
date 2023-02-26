@@ -1,10 +1,11 @@
 <script lang="ts">
-    import { playingInfo, playlistData } from '@stores/fb-store';
+    import { fb, playingInfo, playlistData } from '@stores/fb-store';
     import { artColor, searchString } from '@stores/stores';
     import PlaylistHeader from './PlaylistHeader.svelte';
     import { librarySearch, playPlaylistItem } from '@api/commands';
     import Textfield from '@smui/textfield';
     import Icon from '@smui/textfield/icon';
+    import MiniArtwork from '../MiniArtwork.svelte';
 
     function doSearch() {
         if ($searchString.length) {
@@ -20,6 +21,11 @@
     }
 </script>
 
+{#await playingInfo.load() then}
+    {#if !$fb.isStopped}
+        <MiniArtwork />
+    {/if}
+{/await}
 <div class="main-container" style="--color:{$artColor}">
     <div class="playlist-container">
         {#await playingInfo.load()}
@@ -93,7 +99,7 @@
 
     .main-container {
         z-index: 100;
-        margin-top: 2rem;
+        margin-top: 1.5rem;
 
         .playlist-container {
             width: fit-content;
