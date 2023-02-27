@@ -76,23 +76,25 @@
                 {/each}
             </div>
             <div class="playlist-footer">
-                <div class="item-row">
-                    <div class="cell tracknum">
-                        {#if $fb.isPlaying}
-                            Playing
-                        {:else if $fb.isPaused}
-                            Paused
-                        {/if}
+                <div class="playlist-footer-content">
+                    <div class="item-row">
+                        <div class="cell tracknum">
+                            {#if $fb.isPlaying}
+                                Playing
+                            {:else if $fb.isPaused}
+                                Paused
+                            {/if}
+                        </div>
+                        <div class="cell title">
+                            {#if !$fb.isStopped}
+                                {$playlistData.playingItem + 1} of {$playlistData.numItems} tracks
+                                <span class="dimmed"> &mdash; {$trackInfo.codecInfo}</span>
+                            {:else}
+                                {$playlistData.numItems} tracks
+                            {/if}
+                        </div>
+                        <div class="cell length">{$playlistData.totalTime}</div>
                     </div>
-                    <div class="cell title">
-                        {#if !$fb.isStopped}
-                            {$playlistData.playingItem + 1} of {$playlistData.numItems} tracks
-                            <span class="dimmed"> &mdash; {$trackInfo.codecInfo}</span>
-                        {:else}
-                            {$playlistData.numItems} tracks
-                        {/if}
-                    </div>
-                    <div class="cell length">{$playlistData.totalTime}</div>
                 </div>
             </div>
         {/await}
@@ -127,7 +129,10 @@
             border: 1px solid black;
             padding: 3px;
             border-radius: 6px;
-            height: calc($pl-row-height * 31 + $pl-slider-height + $pl-header-height + 26px);
+            height: calc($pl-row-height * 31 + $pl-slider-height + $pl-header-height + 27px);
+
+            display: flex;
+            flex-direction: column;
 
             .playlist-header {
                 width: calc($playlist-width - 8px);
@@ -140,12 +145,19 @@
             }
 
             .playlist-footer {
-                border-top: 1px solid black;
-                background-color: rgba(0, 0, 0, 0.15); // doubles up effect of :odd below
+                flex-grow: 1;
+                display: flex;
+                align-items: flex-end;
+                background: none;
+
+                .playlist-footer-content {
+                    border-top: 1px solid black;
+                    background-color: rgba(0, 0, 0, 0.15); // doubles up effect of :odd below
+                }
             }
 
             .playlist-data,
-            .playlist-footer {
+            .playlist-footer-content {
                 width: $playlist-width;
                 display: table;
 
