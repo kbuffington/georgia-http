@@ -113,8 +113,11 @@
                 grid-auto-rows: auto;
                 gap: 0.3rem 1rem;
 
-                // .label {
-                // }
+                .label {
+                    max-width: 7.5rem;
+                    min-width: 6.5rem;
+                }
+
                 .data {
                     &.rating {
                         color: orange;

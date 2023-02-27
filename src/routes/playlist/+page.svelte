@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { fb, playingInfo, playlistData } from '@stores/fb-store';
+    import { fb, playingInfo, playlistData, trackInfo } from '@stores/fb-store';
     import { artColor, searchString } from '@stores/stores';
     import PlaylistHeader from './PlaylistHeader.svelte';
     import { librarySearch, playPlaylistItem } from '@api/commands';
@@ -75,6 +75,26 @@
                     </div>
                 {/each}
             </div>
+            <div class="playlist-footer">
+                <div class="item-row">
+                    <div class="cell tracknum">
+                        {#if $fb.isPlaying}
+                            Playing
+                        {:else if $fb.isPaused}
+                            Paused
+                        {/if}
+                    </div>
+                    <div class="cell title">
+                        {#if !$fb.isStopped}
+                            {$playlistData.playingItem + 1} of {$playlistData.numItems} tracks
+                            <span class="dimmed"> &mdash; {$trackInfo.codecInfo}</span>
+                        {:else}
+                            {$playlistData.numItems} tracks
+                        {/if}
+                    </div>
+                    <div class="cell length">{$playlistData.totalTime}</div>
+                </div>
+            </div>
         {/await}
     </div>
     <div class="search-container">
@@ -107,7 +127,7 @@
             border: 1px solid black;
             padding: 3px;
             border-radius: 6px;
-            height: calc($pl-row-height * 30 + $pl-slider-height + $pl-header-height + 30px);
+            height: calc($pl-row-height * 31 + $pl-slider-height + $pl-header-height + 26px);
 
             .playlist-header {
                 width: calc($playlist-width - 8px);
@@ -119,7 +139,13 @@
                 margin-bottom: 2px;
             }
 
-            .playlist-data {
+            .playlist-footer {
+                border-top: 1px solid black;
+                background-color: rgba(0, 0, 0, 0.15); // doubles up effect of :odd below
+            }
+
+            .playlist-data,
+            .playlist-footer {
                 width: $playlist-width;
                 display: table;
 
@@ -200,7 +226,7 @@
                         }
                     }
                     &:nth-of-type(odd) {
-                        background-color: rgba(0, 0, 0, 0.2);
+                        background-color: rgba(0, 0, 0, 0.15);
                     }
                 }
             }

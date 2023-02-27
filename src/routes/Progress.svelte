@@ -78,6 +78,7 @@
 
     #progress-bar {
         padding: 0 1rem;
+        margin-bottom: 1.25rem;
     }
     .time-bar {
         display: flex;

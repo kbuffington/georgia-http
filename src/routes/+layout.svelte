@@ -47,7 +47,7 @@
         {:then}
             <Progress />
         {/await}
-        <p class="version-string">Georgia-HTTP</p>
+        <!-- <p class="version-string">Georgia-HTTP</p> -->
     </footer>
 </div>
 
@@ -93,9 +93,9 @@
             font-size: 12px;
             padding: 0;
 
-            .version-string {
-                text-align: center;
-            }
+            // .version-string {
+            //     text-align: center;
+            // }
         }
     }
 
