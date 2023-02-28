@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "vite dev --open",
         "build": "vite build",
+        "build-debug": "vite build --debug",
         "build-watch": "vite build --watch",
         "preview": "vite preview",
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
