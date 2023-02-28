@@ -79,7 +79,12 @@
 
         .routing {
             position: relative;
+            display: inline-block;
             z-index: 100;
+
+            button {
+                cursor: pointer;
+            }
         }
 
         #transport {

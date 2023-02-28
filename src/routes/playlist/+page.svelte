@@ -264,7 +264,7 @@
                         }
                         &.title {
                             font-weight: 300;
-                            padding-left: 1rem;
+                            padding-left: 0.4rem;
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
