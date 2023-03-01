@@ -2,7 +2,7 @@
     import { trackInfo } from '@stores/fb-store';
     import { artColor } from '@stores/stores';
     import { theme } from '@stores/art-store';
-    import { extractOptions } from '@api/artwork';
+    import Timeline from './Timeline.svelte';
 
     let w: number;
 
@@ -14,6 +14,7 @@
 <div class="artwork" style="--color:{$artColor}; --artwidth:{w}px">
     <div class="metadata">
         <div class="album">{$trackInfo.album}</div>
+        <Timeline />
         <div class="grid">
             <div class="label">Date</div>
             <div class="data">{$trackInfo.date}</div>

@@ -107,13 +107,14 @@ export class Color {
 //     }
 // }
 
-export const createFinalColor = (color: Color, pixels: number) => {
+export const createFinalColor = (red: number, green: number, blue: number, pixels?: number) => {
+    const color = new Color(red, green, blue);
     return {
         hex: `#${'0'.repeat(6 - color._hex.toString(16).length)}${color._hex.toString(16)}`,
         red: color._red,
         green: color._green,
         blue: color._blue,
-        area: color._count / pixels,
+        area: pixels ? color._count / pixels : 0,
         hue: color._hue,
         saturation: color._saturation,
         lightness: color._lightness,
@@ -133,3 +134,38 @@ export declare type FinalColor = {
     intensity: number;
     weight?: number;
 };
+
+export function shadeColor(color: FinalColor, percent: number) {
+    const red = color.red;
+    const green = color.green;
+    const blue = color.blue;
+
+    return createFinalColor(
+        darkenColorVal(red, percent),
+        darkenColorVal(green, percent),
+        darkenColorVal(blue, percent)
+    );
+}
+
+export function tintColor(color: FinalColor, percent: number) {
+    const red = color.red;
+    const green = color.green;
+    const blue = color.blue;
+
+    return createFinalColor(
+        lightenColorVal(red, percent),
+        lightenColorVal(green, percent),
+        lightenColorVal(blue, percent)
+    );
+}
+
+function darkenColorVal(color: number, percent: number) {
+    const shift = Math.max((color * percent) / 100, percent / 2);
+    const val = Math.round(color - shift);
+    return Math.max(val, 0);
+}
+
+function lightenColorVal(color: number, percent: number) {
+    const val = Math.round(color + (255 - color) * (percent / 100));
+    return Math.min(val, 255);
+}

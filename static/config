@@ -8,12 +8,12 @@ url=/index.html
 playlist_row={"a":"$fix_eol($replace(%artist%,\,\\,",\"))","aa":"$fix_eol($replace(%album artist%,\,\\,",\"))","b":"$fix_eol($replace(%album%,\,\\,",\"))","n":"$if(%queue_indexes%,'('%queue_indexes%') ',)$ifgreater(%totaldiscs%,1,$repeat(I,%discnumber%)-,)%tracknumber%","t":"$fix_eol($replace(%title%,\,\\,",\"))","l":"%length%","r":"[%rating_stars%]","rn":"[%rating%]","pc":"[%play_count%]","ls":"%length_seconds%","d":"%date%"}
 ; defines formatting of a helper macros using foobar2000 titleformatting.
 ; cannot have more than 3
-helper1=["a":"$fix_eol($replace(%artist%,\,\\,",\"))","aa":"$fix_eol($replace(%album artist%,\,\\,",\"))","b":"$fix_eol($replace(%album%,\,\\,",\"))","g":"$fix_eol($replace(%genre%,\,\\,",\"))","l":"$fix_eol($replace($if2(%label%,%publisher%),\,\\,",\"))","n":"$if(%queue_indexes%,'('%queue_indexes%') ',)$ifgreater(%totaldiscs%,1,$repeat(I,%discnumber%)-,)%tracknumber%","t":"$fix_eol($replace(%title%,\,\\,",\"))","r":"[%rating_stars%]","rn":"[%rating%]","pc":$if2(%play_count%,0),"ls":$if2(%length_seconds%,""),"d":"%date%"]
+helper1=["a":"$fix_eol($replace(%artist%,\,\\,",\"))","aa":"$fix_eol($replace(%album artist%,\,\\,",\"))","b":"$fix_eol($replace(%album%,\,\\,",\"))","g":"$fix_eol($replace(%genre%,\,\\,",\"))","l":"$fix_eol($replace($if2(%label%,%publisher%),\,\\,",\"))","n":"$if(%queue_indexes%,'('%queue_indexes%') ',)$ifgreater(%totaldiscs%,1,$repeat(I,%discnumber%)-,)%tracknumber%","t":"$fix_eol($replace(%title%,\,\\,",\"))","r":"[%rating_stars%]","rn":"[%rating%]","pc":$if2($max(%play_count%,%lastfm_play_count%),0),"ls":$if2(%length_seconds%,""),"d":"%date%"]
 ;helper1={"a":"$fix_eol($replace(%artist%,\,\\,",\"))","aa":"$fix_eol($replace(%album artist%,\,\\,",\"))","b":"$fix_eol($replace(%album%,\,\\,",\"))","n":"$if(%queue_indexes%,'('%queue_indexes%') ',)$ifgreater(%totaldiscs%,1,$repeat(I,%discnumber%)-,)%tracknumber%","t":"$fix_eol($replace(%title%,\,\\,",\"))","r":"[%rating_stars%]","rn":"[%rating%]","pc":"[%play_count%]","ls":$if2(%length_seconds%,""),"d":"%date%"}
 helper2=[$year(%date%)]
 @REM helper3=[%codec% | %bitrate%kbps | $puts(srh,$div(%samplerate%,100))$put(sr,$div(%samplerate%,1000)).$sub($get(srh),$mul($get(sr),10))kHz | %channels%]
 helper3=[%codec% | %bitrate%kbps | $puts(srh,$div(%samplerate%,100))$put(sr,$div(%samplerate%,1000))$puts(hz,$sub($get(srh),$mul($get(sr),10)))$ifgreater($get(hz),0,.$get(hz),)kHz | %channels%]
-helper4=%played_times_js%
+helper4=["fbpt": %played_times_js%, "lfmpt": %lastfm_played_times_js%, "fp": "$if2(%first_played_enhanced%, %first_played%)", "lp": "$if2(%last_played_enhanced%, %last_played%)", "add": "$if2(%added_enhanced%, %added%)"]
 helper5=$if2($date(%added_enhanced%),$date(%added%))
 helper6=$if2($date(%last_played_enhanced%),$date(%last_played%))
 ; specifies wildcards where we should look for albumart files, separated by |. foobar2000 titleformatting is available there as well.

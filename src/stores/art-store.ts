@@ -1,5 +1,12 @@
 // import Color from 'extract-colors/lib/color/Color';
-import { createFinalColor, Color, type FinalColor, extractOptions } from '@api/artwork';
+import {
+    createFinalColor,
+    Color,
+    type FinalColor,
+    extractOptions,
+    shadeColor,
+    tintColor,
+} from '@api/color';
 import { extractColors } from 'extract-colors';
 // import { createFinalColor } from 'extract-colors/lib/color/FinalColor';
 // import type { FinalColor } from 'extract-colors/lib/types/Color';
@@ -8,30 +15,34 @@ import { artColor } from './stores';
 
 interface ThemeColors {
     color: FinalColor;
-    shade: FinalColor;
-    tint: FinalColor;
+    accent: FinalColor;
+    darkAccent: FinalColor;
+    lightAccent: FinalColor;
 }
 
 const defaultTheme: ThemeColors = {
-    color: createFinalColor(new Color(0, 0, 0), 1),
-    shade: createFinalColor(new Color(0, 0, 0), 1),
-    tint: createFinalColor(new Color(0, 0, 0), 1),
+    color: createFinalColor(0, 0, 0),
+    accent: createFinalColor(0, 0, 0),
+    darkAccent: createFinalColor(0, 0, 0),
+    lightAccent: createFinalColor(0, 0, 0),
 };
 
 class ThemeStore {
     subscribe: StartStopNotifier<ThemeColors>;
+    primary: FinalColor;
     _set: any;
     _update: any;
 
     constructor() {
         const { subscribe, set, update } = writable(defaultTheme);
+        this.primary = defaultTheme.color;
         this.subscribe = subscribe;
         this._set = set;
         this._update = update;
     }
 
-    public setColor(color: number) {
-        this._set(this.getNewThemeColors(color));
+    public setColor(red: number, green: number, blue: number, color?: number) {
+        this._set(this.getNewThemeColors(red, green, blue));
     }
 
     public getArtColors(path: string) {
@@ -65,14 +76,44 @@ class ThemeStore {
         // console.log(selectedCol);
         console.log(colors.sort((a, b) => b.weight! - a.weight!));
         artColor.set(selectedCol.hex);
+        if (selectedCol.hex !== this.primary.hex) {
+            console.log('color changed');
+            this.setColor(selectedCol.red, selectedCol.green, selectedCol.blue);
+        }
     }
 
-    private getNewThemeColors(color: number): ThemeColors {
-        const themeCol = createFinalColor(new Color(0, 0, 0, color), 1);
+    private getNewThemeColors(
+        red: number,
+        green: number,
+        blue: number,
+        color?: number
+    ): ThemeColors {
+        const primary = createFinalColor(red, green, blue);
+        let accent: FinalColor;
+        let darkAccent: FinalColor;
+        let lightAccent: FinalColor;
+
+        if (primary.lightness < 0.16) {
+            darkAccent = shadeColor(primary, 35);
+            accent = tintColor(primary, 10);
+            lightAccent = tintColor(primary, 20);
+        } else if (primary.lightness > 0.825) {
+            // very bright
+            darkAccent = shadeColor(primary, 30);
+            accent = shadeColor(primary, 20);
+            lightAccent = shadeColor(primary, 10);
+        } else {
+            // default
+            darkAccent = shadeColor(primary, 30);
+            accent = shadeColor(primary, 15);
+            lightAccent = tintColor(primary, 20);
+        }
+
         return {
-            color: themeCol,
-            shade: themeCol,
-            tint: themeCol,
+            color: primary,
+            accent,
+            darkAccent,
+            lightAccent,
         };
     }
 }

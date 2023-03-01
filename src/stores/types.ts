@@ -4,6 +4,26 @@ function secondsToTime(time: number) {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
+class PlayTimeInfo {
+    added = -1;
+    firstPlayed = -1;
+    lastPlayed = -1;
+    playTimes: number[] = [];
+
+    constructor(json: any) {
+        if (Object.keys(json).length) {
+            this.added = json.add === '' ? -1 : new Date(json.add).getTime();
+            this.firstPlayed = json.fp === '' ? -1 : new Date(json.fp).getTime();
+            this.lastPlayed = json.lp === '' ? -1 : new Date(json.lp).getTime();
+            // round times to nearest minute
+            const playTimes = json.fbpt.map((t: number) => Math.floor(t / 60000) * 60000);
+            const lfm = json.lfmpt.map((t: number) => Math.floor(t / 60000) * 60000);
+            // remove duplicates
+            this.playTimes = [...new Set([...playTimes, ...lfm])].sort((a, b) => a - b);
+        }
+    }
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class TrackInfo {
     artist = '';
@@ -19,6 +39,7 @@ export class TrackInfo {
     ratingStars = '';
     playcount = 0;
     playtimes: number[] = [];
+    timeInfo: PlayTimeInfo = new PlayTimeInfo({});
     lastPlayed = '';
     length = 0;
     date = '';
@@ -49,7 +70,10 @@ export class TrackInfo {
             this.codecInfo = json.helper3
                 .replace('DCA (DTS Coherent Acoustics)', 'dts')
                 .replace(' | stereo', '');
-            this.playtimes = json.helper4 == '' ? [] : JSON.parse(json.helper4);
+            // this.playtimes = json.helper4 == '' ? [] : JSON.parse(json.helper4);
+            if (json.helper4 !== '') {
+                this.timeInfo = new PlayTimeInfo(json.helper4);
+            }
             this.added = json.helper5;
             this.lastPlayed = json.helper6;
             console.log(this);
