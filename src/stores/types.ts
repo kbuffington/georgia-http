@@ -18,6 +18,7 @@ export class TrackInfo {
     rating = 0;
     ratingStars = '';
     playcount = 0;
+    playtimes: number[] = [];
     lastPlayed = '';
     length = 0;
     date = '';
@@ -48,8 +49,9 @@ export class TrackInfo {
             this.codecInfo = json.helper3
                 .replace('DCA (DTS Coherent Acoustics)', 'dts')
                 .replace(' | stereo', '');
-            this.added = json.helper4;
-            this.lastPlayed = json.helper5;
+            this.playtimes = json.helper4 == '' ? [] : JSON.parse(json.helper4);
+            this.added = json.helper5;
+            this.lastPlayed = json.helper6;
             console.log(this);
         }
     }
@@ -71,6 +73,7 @@ export class PlTrackData {
     tracknumber = '';
     active = false;
     focused = false;
+    selected = false;
 
     constructor(json: any, index: number, plInfo: PlaylistsInfo, pData: PlaylistData) {
         if (Object.keys(json)) {
@@ -115,7 +118,7 @@ export class PlaylistData {
         this.numItems = json.numItems === '?' ? 0 : parseInt(json.numItems);
         this.focusedItem = json.focused === '?' ? -1 : parseInt(json.focused);
         this.playingItem = json.itemPlaying === '?' ? -1 : parseInt(json.itemPlaying);
-        this.totalTime = json.playlistTotalTime;
+        this.totalTime = json.totalTime;
         this.tracks = json.js.map((t: any, i: number) => new PlTrackData(t, i, pi, this));
         console.log(this);
     }
