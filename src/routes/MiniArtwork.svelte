@@ -1,29 +1,13 @@
 <script lang="ts">
-    import { extractColors } from 'extract-colors';
     import { trackInfo } from '@stores/fb-store';
     import { artColor } from '@stores/stores';
+    import { theme } from '@stores/art-store';
     import MenuSurface from '@smui/menu-surface';
 
     let w: number;
 
-    const extractOptions = {
-        pixels: 10000,
-        distance: 0.1,
-        splitPower: 10,
-        colorValidator: (red: number, green: number, blue: number, alpha = 255) => alpha > 250,
-        saturationDistance: 0.1,
-        lightnessDistance: 0.1,
-        hueDistance: 0.063333333,
-    };
-
     function imageLoaded() {
-        extractColors($trackInfo.artwork, extractOptions)
-            .then(c => {
-                const sortedCols = c.sort((a, b) => b.area - a.area).filter(c => c.lightness < 0.7);
-                console.log(sortedCols[0].hex, sortedCols[0].area, sortedCols);
-                artColor.set(sortedCols[0].hex);
-            })
-            .catch(console.error);
+        theme.getArtColors($trackInfo.artwork);
     }
 </script>
 
