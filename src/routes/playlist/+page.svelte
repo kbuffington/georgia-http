@@ -7,6 +7,7 @@
     import Icon from '@smui/textfield/icon';
     import MiniArtwork from '../MiniArtwork.svelte';
     import type { PlTrackData } from '@stores/types';
+    import { theme } from '@stores/art-store';
 
     let selection: number[] = [];
     let anchor: number = -1;
@@ -73,7 +74,7 @@
         <MiniArtwork />
     {/if}
 {/await}
-<div class="main-container" style="--color:{$artColor}">
+<div class="main-container" style="--color:{$theme.color}; --selectedText:{$theme.textColor};">
     <div class="playlist-container">
         {#await playingInfo.load()}
             Loading...
@@ -232,6 +233,7 @@
 
                     &.active {
                         background-color: var(--color) !important;
+                        color: var(--selectedText);
                     }
 
                     &:not(.selected).newalbum .cell {

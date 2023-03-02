@@ -11,7 +11,10 @@
     }
 </script>
 
-<div class="artwork" style="--color:{$artColor}; --artwidth:{w}px">
+<div
+    class="artwork"
+    style="--color:{$theme.color}; --textColor:{$theme.textColor}; --artwidth:{w}px"
+>
     <div class="metadata">
         <div class="album">{$trackInfo.album}</div>
         <Timeline />
@@ -73,6 +76,7 @@
 
     .artwork {
         background-color: var(--color);
+        color: var(--textColor);
         padding-left: $left-padding;
         width: fit-content;
         display: flex;
@@ -84,6 +88,7 @@
             font-size: 2rem;
             font-weight: 300;
             padding: 1rem 1rem 1rem 0;
+            border-right: 1px solid rgba(0, 0, 0, 0.2);
             box-sizing: border-box;
 
             .album {

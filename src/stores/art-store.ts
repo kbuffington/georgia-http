@@ -8,32 +8,25 @@ import {
     tintColor,
 } from '@api/color';
 import { extractColors } from 'extract-colors';
-// import { createFinalColor } from 'extract-colors/lib/color/FinalColor';
-// import type { FinalColor } from 'extract-colors/lib/types/Color';
 import { writable, type StartStopNotifier } from 'svelte/store';
 import { artColor } from './stores';
 
 interface ThemeColors {
-    color: FinalColor;
-    accent: FinalColor;
-    darkAccent: FinalColor;
-    lightAccent: FinalColor;
+    color: string;
+    accent: string;
+    darkAccent: string;
+    lightAccent: string;
+    textColor: string;
 }
-
-const defaultTheme: ThemeColors = {
-    color: createFinalColor(0, 0, 0),
-    accent: createFinalColor(0, 0, 0),
-    darkAccent: createFinalColor(0, 0, 0),
-    lightAccent: createFinalColor(0, 0, 0),
-};
 
 class ThemeStore {
     subscribe: StartStopNotifier<ThemeColors>;
-    primary: FinalColor;
+    primary: string;
     _set: any;
     _update: any;
 
     constructor() {
+        const defaultTheme = this.getNewThemeColors(0, 0, 128);
         const { subscribe, set, update } = writable(defaultTheme);
         this.primary = defaultTheme.color;
         this.subscribe = subscribe;
@@ -74,10 +67,10 @@ class ThemeStore {
             }
         });
         // console.log(selectedCol);
-        console.log(colors.sort((a, b) => b.weight! - a.weight!));
+        // console.log(colors.sort((a, b) => b.weight! - a.weight!));
         artColor.set(selectedCol.hex);
-        if (selectedCol.hex !== this.primary.hex) {
-            console.log('color changed');
+        if (selectedCol.hex !== this.primary) {
+            console.log(`color changed from: ${this.primary} => ${selectedCol.hex}`);
             this.setColor(selectedCol.red, selectedCol.green, selectedCol.blue);
         }
     }
@@ -92,6 +85,7 @@ class ThemeStore {
         let accent: FinalColor;
         let darkAccent: FinalColor;
         let lightAccent: FinalColor;
+        let textColor = createFinalColor(255, 255, 255);
 
         if (primary.lightness < 0.16) {
             darkAccent = shadeColor(primary, 35);
@@ -102,6 +96,7 @@ class ThemeStore {
             darkAccent = shadeColor(primary, 30);
             accent = shadeColor(primary, 20);
             lightAccent = shadeColor(primary, 10);
+            textColor = createFinalColor(0, 0, 0);
         } else {
             // default
             darkAccent = shadeColor(primary, 30);
@@ -110,10 +105,11 @@ class ThemeStore {
         }
 
         return {
-            color: primary,
-            accent,
-            darkAccent,
-            lightAccent,
+            color: primary.hex,
+            accent: accent.hex,
+            darkAccent: darkAccent.hex,
+            lightAccent: lightAccent.hex,
+            textColor: textColor.hex,
         };
     }
 }

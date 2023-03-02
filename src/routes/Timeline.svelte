@@ -33,8 +33,7 @@
 
 <div
     class="timeline"
-    style="--start:{firstRatio}%; --end:{lastRatio}%; --dark:{$theme.darkAccent
-        .hex}; --accent:{$theme.accent.hex}; --light:{$theme.lightAccent.hex};"
+    style="--start:{firstRatio}%; --end:{lastRatio}%; --dark:{$theme.darkAccent}; --accent:{$theme.accent}; --light:{$theme.lightAccent};"
 >
     <div class="played" />
     <div class="unplayed" />

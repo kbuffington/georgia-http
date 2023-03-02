@@ -11,7 +11,10 @@
     }
 </script>
 
-<div class="mini-artwork" style="--color:{$artColor}; --artwidth:{w}px">
+<div
+    class="mini-artwork"
+    style="--color:{$theme.color}; --textColor:{$theme.textColor}; --artwidth:{w}px"
+>
     <div class="metadata">
         <div class="info">{$trackInfo.artist}</div>
         <div class="info">{$trackInfo.album}</div>
@@ -48,9 +51,12 @@
             0px 3px 14px 2px rgb(0 0 0 / 12%);
 
         .metadata {
-            min-width: calc(20vw - var(--artwidth));
-            max-width: calc(20vw - var(--artwidth));
+            min-width: calc(20rem - var(--artwidth));
+            max-width: calc(20rem - var(--artwidth));
             padding: 0.5rem;
+            color: var(--textColor);
+            border-right: 1px solid rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
 
             .info {
                 margin-bottom: 0.2rem;
