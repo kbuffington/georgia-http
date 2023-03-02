@@ -1,7 +1,6 @@
 // import Color from 'extract-colors/lib/color/Color';
 import {
     createFinalColor,
-    Color,
     type FinalColor,
     extractOptions,
     shadeColor,
@@ -34,16 +33,17 @@ class ThemeStore {
         this._update = update;
     }
 
-    public setColor(red: number, green: number, blue: number, color?: number) {
+    public setColor(red: number, green: number, blue: number) {
         this._set(this.getNewThemeColors(red, green, blue));
     }
 
-    public getArtColors(path: string) {
-        extractColors(path, extractOptions)
-            .then(cols => {
-                this.processColors(cols);
-            })
-            .catch(console.error);
+    public async getArtColors(path: string) {
+        try {
+            const cols = await extractColors(path, extractOptions);
+            this.processColors(cols);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     public processColors(colors: FinalColor[]) {
@@ -51,7 +51,7 @@ class ThemeStore {
         let maxWeight = 0;
         let selectedCol: FinalColor = colors[0];
         const filteredCols = colors.sort((a, b) => b.area - a.area).filter(c => c.area > 0.001);
-        filteredCols.forEach((c, i) => {
+        filteredCols.forEach(c => {
             const midLightness = 0.5 - Math.abs(0.5 - c.lightness);
             c.weight = midLightness * c.area;
 
@@ -75,12 +75,7 @@ class ThemeStore {
         }
     }
 
-    private getNewThemeColors(
-        red: number,
-        green: number,
-        blue: number,
-        color?: number
-    ): ThemeColors {
+    private getNewThemeColors(red: number, green: number, blue: number): ThemeColors {
         const primary = createFinalColor(red, green, blue);
         let accent: FinalColor;
         let darkAccent: FinalColor;
