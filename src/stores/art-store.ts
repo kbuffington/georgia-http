@@ -55,7 +55,7 @@ class ThemeStore {
             const midLightness = 0.5 - Math.abs(0.5 - c.lightness);
             c.weight = midLightness * c.area;
 
-            // Quadratic lightness regression: 0.35 + 2.34x - 2.8x^2
+            // Quadratic lightness regression: 0.35 + 2.34x -2.8x^2
             const regLightness = 0.26 + 2.34 * c.lightness - 2.8 * c.lightness * c.lightness;
             c.weight = regLightness * c.area;
             // console.log(
@@ -66,11 +66,10 @@ class ThemeStore {
                 maxWeight = c.weight;
             }
         });
-        // console.log(selectedCol);
-        // console.log(colors.sort((a, b) => b.weight! - a.weight!));
         artColor.set(selectedCol.hex);
         if (selectedCol.hex !== this.primary) {
             console.log(`color changed from: ${this.primary} => ${selectedCol.hex}`);
+            this.primary = selectedCol.hex;
             this.setColor(selectedCol.red, selectedCol.green, selectedCol.blue);
         }
     }
