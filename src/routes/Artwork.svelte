@@ -1,6 +1,5 @@
 <script lang="ts">
     import { trackInfo } from '@stores/fb-store';
-    import { artColor } from '@stores/stores';
     import { theme } from '@stores/art-store';
     import Timeline from './Timeline.svelte';
 

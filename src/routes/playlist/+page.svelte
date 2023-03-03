@@ -1,6 +1,6 @@
 <script lang="ts">
     import { fb, playingInfo, playlistData, trackInfo } from '@stores/fb-store';
-    import { artColor, searchString } from '@stores/stores';
+    import { searchString } from '@stores/stores';
     import PlaylistHeader from './PlaylistHeader.svelte';
     import { librarySearch, playPlaylistItem } from '@api/commands';
     import Textfield from '@smui/textfield';

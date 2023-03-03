@@ -8,7 +8,6 @@ import {
 } from '@api/color';
 import { extractColors } from 'extract-colors';
 import { writable, type StartStopNotifier } from 'svelte/store';
-import { artColor } from './stores';
 
 interface ThemeColors {
     color: string;
@@ -66,7 +65,6 @@ class ThemeStore {
                 maxWeight = c.weight;
             }
         });
-        artColor.set(selectedCol.hex);
         if (selectedCol.hex !== this.primary) {
             console.log(`color changed from: ${this.primary} => ${selectedCol.hex}`);
             this.primary = selectedCol.hex;

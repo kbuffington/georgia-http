@@ -2,8 +2,8 @@
     import { onDestroy } from 'svelte';
     import { writable } from 'svelte/store';
     import { fb, currentTime, trackInfo } from '@stores/fb-store';
-    import { artColor } from '@stores/stores';
     import { rebouncedInfoPlayingRefresh } from '@api/refresh-data';
+    import { theme } from '@stores/art-store';
 
     const progress = writable(0);
 
@@ -69,7 +69,7 @@
             {/if}
         {/await}
     </div>
-    <progress value={$progress} style="--fill-color:{$artColor}" />
+    <progress value={$progress} style="--fill-color:{$theme.color}" />
 </div>
 
 <style lang="scss">

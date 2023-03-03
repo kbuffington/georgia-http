@@ -1,8 +1,6 @@
 import { writable } from 'svelte/store';
 import storage from './persistent-store';
 
-export const artColor = writable('#00007f');
-
 export const searchString = writable('');
 
 interface UserSettings {
