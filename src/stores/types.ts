@@ -184,8 +184,11 @@ enum PlaybackStates {
 
 export class PlaybackState {
     private state: PlaybackStates = PlaybackStates.STOPPED;
-    constructor(json: any) {
-        if (json.isPlaying === '1') {
+    constructor(json: any, itemPlaylingLen: string) {
+        if (itemPlaylingLen === '0') {
+            // sometimes isPlaying is true but there's no length
+            this.state = PlaybackStates.STOPPED;
+        } else if (json.isPlaying === '1') {
             this.state = PlaybackStates.PLAYING;
         } else if (json.isPaused === '1') {
             this.state = PlaybackStates.PAUSED;
