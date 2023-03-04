@@ -34,6 +34,9 @@ const sendCommandAndRefresh = async (
     p2?: string | number,
     p3?: string
 ) => {
+    if (!p3) {
+        p3 = 'NoResponse';
+    }
     await sendCommand(command, p1, p2, p3);
     rebouncedInfoPlayingRefresh();
 };
@@ -67,7 +70,7 @@ export const playPlaylistItem = (index: number) => {
 };
 
 const searchLibrary = (searchStr: string) => {
-    sendCommandAndRefresh('SearchMediaLibrary', searchStr, undefined, 'NoResponse');
+    sendCommandAndRefresh('SearchMediaLibrary', searchStr);
 };
 
 export const librarySearch = debounce(searchLibrary, 250);
