@@ -12,9 +12,9 @@
 
 <header>
     <div class="routing">
+        <a href="/georgia"><button>Now Playing</button></a>
         <a href="/georgia/playlist"><button>Playlists</button></a>
         <!-- <a href="/georgia"><button>Search</button></a> -->
-        <a href="/georgia"><button>Now Playing</button></a>
     </div>
 
     <ul id="transport">
