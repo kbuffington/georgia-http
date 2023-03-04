@@ -1,7 +1,9 @@
 <script lang="ts">
-    import { trackInfo } from '@stores/fb-store';
+    import { fb, trackInfo } from '@stores/fb-store';
     import { theme } from '@stores/art-store';
     import MenuSurface from '@smui/menu-surface';
+    import PauseButton from './PauseButton.svelte';
+    import { playOrPause } from '@api/commands';
 
     let w: number;
 
@@ -24,10 +26,15 @@
             class="albumart"
             src={$trackInfo.artwork}
             alt="album art"
+            on:click={playOrPause}
+            on:keydown={() => {}}
             on:load={() => {
                 imageLoaded();
             }}
         />
+        {#if $fb.isPaused}
+            <PauseButton size={w * 0.75} />
+        {/if}
     </div>
 </div>
 
