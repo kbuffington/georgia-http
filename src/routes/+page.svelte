@@ -1,6 +1,6 @@
 <script>
-    import Artwork from './Artwork.svelte';
     import { fb, playingInfo, trackInfo } from '@stores/fb-store';
+    import Artwork from '@components/Artwork.svelte';
 </script>
 
 <div id="main-content">

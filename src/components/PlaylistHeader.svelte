@@ -1,11 +1,11 @@
 <script lang="ts">
     import { playlistData, playlistsInfo } from '@stores/fb-store';
     import { setPlaylistPage, switchPlaylist } from '@api/commands';
+    import { onDestroy } from 'svelte';
     import Button from '@smui/button';
     import Menu from '@smui/menu';
     import Slider from '@smui/slider';
-    import List, { Item, Text, PrimaryText, SecondaryText, Meta } from '@smui/list';
-    import { onDestroy } from 'svelte';
+    import List, { Item, Text, Meta } from '@smui/list';
 
     let menu: Menu;
     let currentPage = 1;

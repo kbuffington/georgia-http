@@ -1,9 +1,9 @@
 <script lang="ts">
     import { fb, trackInfo } from '@stores/fb-store';
     import { theme } from '@stores/art-store';
-    import Timeline from './Timeline.svelte';
-    import PauseButton from './PauseButton.svelte';
-    import { playOrPause, sendCommand } from '@api/commands';
+    import Timeline from '@components/Timeline.svelte';
+    import PauseButton from '@components/PauseButton.svelte';
+    import { playOrPause } from '@api/commands';
 
     let w: number;
 

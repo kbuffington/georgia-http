@@ -1,7 +1,7 @@
 <script>
     import { playingInfo } from '@stores/fb-store';
-    import Header from './Header.svelte';
-    import Progress from './Progress.svelte';
+    import Header from '@components/Header.svelte';
+    import Progress from '@components/Progress.svelte';
     import { visibilityChange } from 'svelte-visibility-change';
     import { visibilityChanged } from '@api/refresh-data';
 </script>

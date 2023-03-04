@@ -1,13 +1,14 @@
 <script lang="ts">
+    import { theme } from '@stores/art-store';
     import { fb, playingInfo, playlistData, trackInfo } from '@stores/fb-store';
+    import type { PlTrackData } from '@stores/types';
     import { searchString } from '@stores/stores';
-    import PlaylistHeader from './PlaylistHeader.svelte';
     import { librarySearch, playPlaylistItem } from '@api/commands';
+    import MiniArtwork from '@components/MiniArtwork.svelte';
+    import PlaylistHeader from '@components/PlaylistHeader.svelte';
+
     import Textfield from '@smui/textfield';
     import Icon from '@smui/textfield/icon';
-    import MiniArtwork from '../MiniArtwork.svelte';
-    import type { PlTrackData } from '@stores/types';
-    import { theme } from '@stores/art-store';
 
     let selection: number[] = [];
     let anchor: number = -1;
