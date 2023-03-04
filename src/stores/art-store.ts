@@ -1,10 +1,11 @@
 // import Color from 'extract-colors/lib/color/Color';
 import {
-    createFinalColor,
-    type FinalColor,
+    createColor,
+    type Color,
     extractOptions,
     shadeColor,
     tintColor,
+    getBrightness,
 } from '@api/color';
 import { extractColors } from 'extract-colors';
 import { writable, type StartStopNotifier } from 'svelte/store';
@@ -22,6 +23,7 @@ class ThemeStore {
     primary: string;
     _set: any;
     _update: any;
+    weightSort = (a: Color, b: Color) => (b.weight ?? 0) - (a.weight ?? 0);
 
     constructor() {
         const defaultTheme = this.getNewThemeColors(0, 0, 128);
@@ -39,32 +41,49 @@ class ThemeStore {
     public async getArtColors(path: string) {
         try {
             const cols = await extractColors(path, extractOptions);
-            this.processColors(cols);
+            this.processColors(cols.map(fc => createColor(fc.red, fc.green, fc.blue, fc.area)));
         } catch (e) {
             console.error(e);
         }
     }
 
-    public processColors(colors: FinalColor[]) {
+    public processColors(colors: Color[]) {
         // do something
         let maxWeight = 0;
-        let selectedCol: FinalColor = colors[0];
+        let selectedCol: Color = colors[0];
         const filteredCols = colors.sort((a, b) => b.area - a.area).filter(c => c.area > 0.001);
         filteredCols.forEach(c => {
             const midLightness = 0.5 - Math.abs(0.5 - c.lightness);
             c.weight = midLightness * c.area;
+            c.brightness = getBrightness(c.red, c.green, c.blue);
 
             // Quadratic lightness regression: 0.35 + 2.34x -2.8x^2
             const regLightness = 0.26 + 2.34 * c.lightness - 2.8 * c.lightness * c.lightness;
-            c.weight = regLightness * c.area;
+            const regBrightness = 0.26 + 2.34 * c.brightness - 2.8 * c.brightness * c.brightness;
+            const midBrightness = 0.5 - Math.abs(0.5 - c.brightness);
+            const euler = 2.71828;
+            const areaWeight = 1 - Math.pow(10 * euler, -5 * c.area);
+            // c.weight = regLightness * areaWeight * c.saturation * 10;
+            c.weight = midBrightness * areaWeight * Math.sqrt(c.saturation) * 10;
+            if (c.isCloseToGreyscale) {
+                c.weight /= 2;
+            }
+            // c.weight = midBrightness * areaWeight * 10;
             // console.log(
-            //     `rgb(${c.red}, ${c.green}, ${c.blue}, lightness: ${c.lightness}, weight: ${c.weight}`
+            //     c,
+            //     `weight: ${c.weight.toFixed(3)}, lightW: ${regLightness.toFixed(
+            //         3
+            //     )}, areaW: ${areaWeight.toFixed(3)}, sat: ${c.saturation.toFixed(
+            //         3
+            //     )}, bright: ${regBrightness.toFixed(3)}`
+            //     // `rgb(${c.red}, ${c.green}, ${c.blue}, lightness: ${c.lightness}, weight: ${c.weight}`
             // );
             if (c.weight > maxWeight) {
                 selectedCol = c;
                 maxWeight = c.weight;
             }
         });
+        console.log(filteredCols.sort(this.weightSort));
         if (selectedCol.hex !== this.primary) {
             console.log(`color changed from: ${this.primary} => ${selectedCol.hex}`);
             this.primary = selectedCol.hex;
@@ -73,22 +92,22 @@ class ThemeStore {
     }
 
     private getNewThemeColors(red: number, green: number, blue: number): ThemeColors {
-        const primary = createFinalColor(red, green, blue);
-        let accent: FinalColor;
-        let darkAccent: FinalColor;
-        let lightAccent: FinalColor;
-        let textColor = createFinalColor(255, 255, 255);
+        const primary = createColor(red, green, blue);
+        let accent: Color;
+        let darkAccent: Color;
+        let lightAccent: Color;
+        let textColor = createColor(255, 255, 255);
 
-        if (primary.lightness < 0.16) {
+        if (primary.brightness < 0.16) {
             darkAccent = shadeColor(primary, 35);
             accent = tintColor(primary, 10);
             lightAccent = tintColor(primary, 20);
-        } else if (primary.lightness > 0.825) {
+        } else if (primary.brightness > 0.825) {
             // very bright
             darkAccent = shadeColor(primary, 30);
             accent = shadeColor(primary, 20);
             lightAccent = shadeColor(primary, 10);
-            textColor = createFinalColor(0, 0, 0);
+            textColor = createColor(0, 0, 0);
         } else {
             // default
             darkAccent = shadeColor(primary, 30);

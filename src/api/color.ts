@@ -1,19 +1,17 @@
-// import Color from 'extract-colors';
-
 import type { BrowserOptions } from 'extract-colors/lib/types/Options';
 
 export const extractOptions: BrowserOptions = {
     pixels: 10000,
-    distance: 0.1,
-    splitPower: 10,
+    distance: 0.1, // default: 0.2
+    splitPower: 15, // default: 10 [2-15]
     colorValidator: (red: number, green: number, blue: number, alpha = 255) => alpha > 250,
-    saturationDistance: 0.1,
-    lightnessDistance: 0.1,
-    hueDistance: 0.063333333,
+    saturationDistance: 0.1, // default: 0.2
+    lightnessDistance: 0.1, // default: 0.2
+    hueDistance: 0.063333333, // default: 0.083333
 };
 
 // taken from node_modules\extract-colors\lib\extract-colors.node.es.js
-export class Color {
+export class BaseColor {
     _red: number;
     _green: number;
     _blue: number;
@@ -35,7 +33,7 @@ export class Color {
         this._blue = blue;
         this._hex = hex;
     }
-    static distance(colorA: Color, colorB: Color) {
+    static distance(colorA: BaseColor, colorB: BaseColor) {
         return (
             (Math.abs(colorB._red - colorA._red) +
                 Math.abs(colorB._green - colorA._green) +
@@ -107,52 +105,77 @@ export class Color {
 //     }
 // }
 
-export const createFinalColor = (red: number, green: number, blue: number, pixels?: number) => {
-    const color = new Color(red, green, blue);
+// calculates brightness in range of 0-1
+export const getBrightness = (red: number, green: number, blue: number) => {
+    return (
+        Math.round(Math.sqrt(0.299 * red * red + 0.587 * green * green + 0.114 * blue * blue)) / 255
+    );
+};
+
+function isCloseToGreyscale(red: number, green: number, blue: number): boolean {
+    const threshold = 6;
+    const avg = Math.round((red + green + blue) / 3);
+    if (
+        Math.abs(red - avg) < threshold &&
+        Math.abs(green - avg) < threshold &&
+        Math.abs(blue - avg) < threshold
+    )
+        return true;
+    else return false;
+}
+
+export const createColor = (red: number, green: number, blue: number, area?: number) => {
+    const color = new BaseColor(red, green, blue);
+    const brightness = getBrightness(red, green, blue);
+    const closeToGreyscale = isCloseToGreyscale(red, green, blue);
     return {
         hex: `#${'0'.repeat(6 - color._hex.toString(16).length)}${color._hex.toString(16)}`,
         red: color._red,
         green: color._green,
         blue: color._blue,
-        area: pixels ? color._count / pixels : 0,
+        area: area ?? 0,
         hue: color._hue,
+        isCloseToGreyscale: closeToGreyscale,
         saturation: color._saturation,
         lightness: color._lightness,
+        brightness,
         intensity: color._intensity,
     };
 };
 
-export declare type FinalColor = {
+export declare type Color = {
     hex: string;
     red: number;
     green: number;
     blue: number;
     area: number;
     hue: number;
+    isCloseToGreyscale: boolean;
     saturation: number;
     lightness: number;
+    brightness: number;
     intensity: number;
     weight?: number;
 };
 
-export function shadeColor(color: FinalColor, percent: number) {
+export function shadeColor(color: Color, percent: number) {
     const red = color.red;
     const green = color.green;
     const blue = color.blue;
 
-    return createFinalColor(
+    return createColor(
         darkenColorVal(red, percent),
         darkenColorVal(green, percent),
         darkenColorVal(blue, percent)
     );
 }
 
-export function tintColor(color: FinalColor, percent: number) {
+export function tintColor(color: Color, percent: number) {
     const red = color.red;
     const green = color.green;
     const blue = color.blue;
 
-    return createFinalColor(
+    return createColor(
         lightenColorVal(red, percent),
         lightenColorVal(green, percent),
         lightenColorVal(blue, percent)
