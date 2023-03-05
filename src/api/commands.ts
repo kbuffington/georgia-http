@@ -74,3 +74,11 @@ const searchLibrary = (searchStr: string) => {
 };
 
 export const librarySearch = debounce(searchLibrary, 250);
+
+export const queueItems = (items: number[]) => {
+    sendCommandAndRefresh('QueueItems', items.join(','));
+};
+
+export const dequeueItems = (items: number[]) => {
+    sendCommandAndRefresh('DequeueItems', items.join(','));
+};

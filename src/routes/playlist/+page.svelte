@@ -1,9 +1,9 @@
 <script lang="ts">
     import { theme } from '@stores/art-store';
-    import { fb, playingInfo, playlistData, trackInfo } from '@stores/fb-store';
+    import { fb, playingInfo, playlistData, playlistsInfo, trackInfo } from '@stores/fb-store';
     import type { PlTrackData } from '@stores/types';
     import { searchString } from '@stores/stores';
-    import { librarySearch, playPlaylistItem } from '@api/commands';
+    import { dequeueItems, librarySearch, playPlaylistItem, queueItems } from '@api/commands';
     import MiniArtwork from '@components/MiniArtwork.svelte';
     import PlaylistHeader from '@components/PlaylistHeader.svelte';
 
@@ -12,6 +12,7 @@
 
     let selection: number[] = [];
     let anchor: number = -1;
+    let focus = -1;
 
     const forceUpdate = async (_: any) => {};
     let doRerender = 0;
@@ -29,8 +30,9 @@
         playPlaylistItem(index);
     }
 
-    function selectItem(evt: MouseEvent, index: number, item: PlTrackData) {
-        console.log(evt);
+    function selectItem(evt: MouseEvent | KeyboardEvent, index: number, item: PlTrackData) {
+        focus = index;
+        // console.log(evt);
         if (evt.ctrlKey) {
             const found = selection.indexOf(item.plIndex);
             if (found === -1) {
@@ -65,17 +67,43 @@
         }
     }
 
-    function testClick(evt: MouseEvent) {
-        console.log('test!', evt);
+    function keyHandler(evt: KeyboardEvent) {
+        switch (evt.code) {
+            case 'KeyQ':
+                queueItems(selection);
+                break;
+            case 'KeyW':
+                dequeueItems(selection);
+                break;
+            case 'ArrowUp':
+                focus = Math.max(0, focus - 1);
+                selectItem(evt, focus, $playlistData.tracks[focus]);
+                break;
+            case 'ArrowDown':
+                focus = Math.min(
+                    $playlistData.tracks.length - 1,
+                    Math.min($playlistsInfo.playlistItemsPerPage - 1, focus + 1)
+                );
+                selectItem(evt, focus, $playlistData.tracks[focus]);
+                break;
+            default:
+                console.log(evt);
+                break;
+        }
     }
 </script>
+
+<svelte:window on:keydown={keyHandler} />
 
 {#await playingInfo.load() then}
     {#if !$fb.isStopped}
         <MiniArtwork />
     {/if}
 {/await}
-<div class="main-container" style="--color:{$theme.color}; --selectedText:{$theme.textColor};">
+<div
+    class="main-container"
+    style="--color:{$theme.color}; --selectedText:{$theme.textColor}; --accentColor:{$theme.darkAccent};"
+>
     <div class="playlist-container">
         {#await playingInfo.load()}
             Loading...
@@ -89,7 +117,7 @@
                         <div
                             class="item-row"
                             class:active={item.active}
-                            class:focused={item.focused}
+                            class:focused={focus === i}
                             class:selected={selection.includes(item.plIndex)}
                             class:newalbum={i > 0 &&
                                 (item.albumArtist !== $playlistData.tracks[i - 1].albumArtist ||
@@ -252,7 +280,7 @@
                             color: white;
                         }
                         .cell.tracknum {
-                            border-left: 5px solid var(--color);
+                            border-left: 5px solid var(--accentColor);
                         }
                     }
 
