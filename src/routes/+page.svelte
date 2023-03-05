@@ -9,7 +9,16 @@
             Loading...
         {:then}
             {#if !$fb.isStopped}
-                <div class="artist">{$trackInfo.artist}</div>
+                <div class="artist-container">
+                    <div class="artist">
+                        {$trackInfo.artist}
+                    </div>
+                    <img
+                        class="artist-flag"
+                        src="/georgia/images/flags/64/{$trackInfo.artistCountry}.png"
+                        alt="Flag: {$trackInfo.artistCountry}"
+                    />
+                </div>
                 <div class="right-info">
                     <div class="year">{$trackInfo.year}</div>
                     <div class="codec">{$trackInfo.codecInfo}</div>
@@ -34,10 +43,19 @@
         .top-content {
             flex-grow: 1;
 
-            .artist {
-                padding: 0 1rem 0.5rem;
-                font-size: 38px;
-                font-weight: 500;
+            .artist-container {
+                .artist {
+                    display: inline-block;
+                    padding: 0 0.5rem 0.5rem 1rem;
+                    font-size: 38px;
+                    font-weight: 500;
+                }
+
+                .artist-flag {
+                    display: inline-block;
+                    height: 34px;
+                    vertical-align: text-bottom;
+                }
             }
 
             .right-info {

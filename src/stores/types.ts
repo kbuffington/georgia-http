@@ -30,6 +30,7 @@ export class TrackInfo {
     artwork = '';
     album = '';
     albumArtist = '';
+    artistCountry = '';
     added = '';
     codecInfo = '';
     genre = '';
@@ -55,6 +56,7 @@ export class TrackInfo {
             this.artist = obj.a;
             this.album = obj.b;
             this.albumArtist = obj.aa;
+            this.artistCountry = obj.ac.replace(/ /g, '-'); // TODO: create lookup to handle ISO codes etc.
             this.genre = obj.g;
             this.labels = obj.l;
             this.title = obj.t;
