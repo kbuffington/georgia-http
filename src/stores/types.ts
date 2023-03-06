@@ -56,7 +56,7 @@ export class TrackInfo {
             this.artist = obj.a;
             this.album = obj.b;
             this.albumArtist = obj.aa;
-            this.artistCountry = obj.ac.replace(/ /g, '-'); // TODO: create lookup to handle ISO codes etc.
+            this.artistCountry = obj.ac?.replace(/ /g, '-'); // TODO: create lookup to handle ISO codes etc.
             this.genre = obj.g;
             this.labels = obj.l;
             this.title = obj.t;
@@ -86,6 +86,7 @@ export class TrackInfo {
 export class PlTrackData {
     artist = '';
     albumArtist = '';
+    featured = '';
     album = '';
     date = '';
     displayLength = '';
@@ -105,6 +106,9 @@ export class PlTrackData {
         if (Object.keys(json)) {
             this.artist = json.a;
             this.albumArtist = json.aa;
+            if (this.artist.startsWith(this.albumArtist)) {
+                this.featured = this.artist.replace(this.albumArtist, '').trim();
+            }
             this.album = json.b;
             this.date = json.d;
             this.length = json.ls;

@@ -132,14 +132,20 @@
                             <div class="cell title">
                                 {#if i === 0 || item.albumArtist !== $playlistData.tracks[i - 1].albumArtist || item.album !== $playlistData.tracks[i - 1].album}
                                     {item.title}
+                                    {#if item.featured}
+                                        <span class="featured">· {item.featured}</span>
+                                    {/if}
                                     <span
                                         class="dimmed"
-                                        title="{item.artist} / {item.date} / {item.album}"
+                                        title="{item.albumArtist} / {item.date} / {item.album}"
                                     >
-                                        / {item.artist} / {item.date} / {item.album}</span
+                                        / {item.albumArtist} / {item.date} / {item.album}</span
                                     >
                                 {:else}
                                     {item.title}
+                                    {#if item.featured}
+                                        <span class="featured">· {item.featured}</span>
+                                    {/if}
                                 {/if}
                             </div>
                             <div class="cell playcount">
@@ -177,7 +183,7 @@
                                 {$playlistData.numItems} tracks
                             {/if}
                         </div>
-                        <div class="cell length">{$playlistData.totalTime}</div>
+                        <div class="cell length playlist-length">{$playlistData.totalTime}</div>
                     </div>
                 </div>
             </div>
@@ -237,6 +243,10 @@
                 .playlist-footer-content {
                     border-top: 1px solid black;
                     background-color: rgba(0, 0, 0, 0.15); // doubles up effect of :odd below
+                }
+
+                .playlist-length {
+                    width: 10rem !important;
                 }
             }
 
@@ -303,6 +313,10 @@
                                 $playlist-width - $pl-track-w - $pl-playcount-w - $pl-rating-w -
                                     $pl-length-w
                             );
+
+                            .featured {
+                                font-weight: 400;
+                            }
                         }
                         &.playcount {
                             font-size: 10px;
