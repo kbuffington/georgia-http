@@ -3,7 +3,13 @@
     import { fb, playingInfo, playlistData, playlistsInfo, trackInfo } from '@stores/fb-store';
     import type { PlTrackData } from '@stores/types';
     import { searchString } from '@stores/stores';
-    import { dequeueItems, librarySearch, playPlaylistItem, queueItems } from '@api/commands';
+    import {
+        deleteItems,
+        dequeueItems,
+        librarySearch,
+        playPlaylistItem,
+        queueItems,
+    } from '@api/commands';
     import MiniArtwork from '@components/MiniArtwork.svelte';
     import PlaylistHeader from '@components/PlaylistHeader.svelte';
 
@@ -70,10 +76,17 @@
     function keyHandler(evt: KeyboardEvent) {
         switch (evt.code) {
             case 'KeyQ':
-                queueItems(selection);
+                selection.length && queueItems(selection);
                 break;
             case 'KeyW':
-                dequeueItems(selection);
+                selection.length && dequeueItems(selection);
+                break;
+            case 'Delete':
+            case 'Backspace':
+                // TODO: hide rows before refresh?
+                selection.length && deleteItems(selection);
+                focus = Math.max(0, focus + 1 - selection.length);
+                selectItem(evt, focus, $playlistData.tracks[focus]);
                 break;
             case 'ArrowUp':
                 focus = Math.max(0, focus - 1);

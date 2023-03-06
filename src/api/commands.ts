@@ -82,3 +82,7 @@ export const queueItems = (items: number[]) => {
 export const dequeueItems = (items: number[]) => {
     sendCommandAndRefresh('DequeueItems', items.join(','));
 };
+
+export const deleteItems = (items: number[]) => {
+    sendCommandAndRefresh('Del', items.join(','));
+};
