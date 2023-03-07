@@ -1,3 +1,5 @@
+import { loadCountryFlags } from '@api/country';
+
 function secondsToTime(time: number) {
     const minutes = Math.floor(time / 60);
     const seconds = Math.max(time - minutes * 60, 0);
@@ -30,7 +32,7 @@ export class TrackInfo {
     artwork = '';
     album = '';
     albumArtist = '';
-    artistCountry = '';
+    artistCountryFlags: string[] = [];
     added = '';
     codecInfo = '';
     genre = '';
@@ -49,14 +51,11 @@ export class TrackInfo {
     displayLength = '';
 
     constructor(obj: any, artwork: string, json: any) {
-        // if (jsonStr.trim().length) {
-        // const escaped = jsonStr.replace(/&#92;&quot;/g, '\\"').replace(/&quot;/g, '"');
-        // const obj = JSON.parse(escaped);
         if (Object.keys(obj)) {
             this.artist = obj.a;
             this.album = obj.b;
             this.albumArtist = obj.aa;
-            this.artistCountry = obj.ac?.replace(/ /g, '-'); // TODO: create lookup to handle ISO codes etc.
+            this.artistCountryFlags = obj.ac ? loadCountryFlags(obj.ac) : [];
             this.genre = obj.g;
             this.labels = obj.l;
             this.title = obj.t;
@@ -70,7 +69,7 @@ export class TrackInfo {
             this.artwork = artwork;
             this.year = json.helper2;
             this.codecInfo = json.helper3
-                .replace('DCA (DTS Coherent Acoustics)', 'dts')
+                ?.replace('DCA (DTS Coherent Acoustics)', 'dts')
                 .replace(' | stereo', '');
             // this.playtimes = json.helper4 == '' ? [] : JSON.parse(json.helper4);
             if (json.helper4 !== '') {

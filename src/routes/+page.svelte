@@ -13,11 +13,13 @@
                     <div class="artist">
                         {$trackInfo.artist}
                     </div>
-                    <img
-                        class="artist-flag"
-                        src="/georgia/images/flags/64/{$trackInfo.artistCountry}.png"
-                        alt="Flag: {$trackInfo.artistCountry}"
-                    />
+                    {#each $trackInfo.artistCountryFlags as flag}
+                        <img
+                            class="artist-flag"
+                            src="/georgia/images/flags/64/{flag}.png"
+                            alt="{flag} flag"
+                        />
+                    {/each}
                 </div>
                 <div class="right-info">
                     <div class="year">{$trackInfo.year}</div>
