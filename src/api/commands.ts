@@ -69,6 +69,11 @@ export const playPlaylistItem = (index: number) => {
     sendCommandAndRefresh('Start', index);
 };
 
+export const setPlaylistItemsPerPage = (numItems: number) => {
+    numItems = Math.max(10, Math.min(numItems, 60));
+    sendCommandAndRefresh('PlaylistItemsPerPage', numItems);
+};
+
 const searchLibrary = (searchStr: string) => {
     sendCommandAndRefresh('SearchMediaLibrary', searchStr);
 };

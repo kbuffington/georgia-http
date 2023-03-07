@@ -9,6 +9,7 @@
         librarySearch,
         playPlaylistItem,
         queueItems,
+        setPlaylistItemsPerPage,
     } from '@api/commands';
     import MiniArtwork from '@components/MiniArtwork.svelte';
     import PlaylistHeader from '@components/PlaylistHeader.svelte';
@@ -81,6 +82,9 @@
             case 'KeyW':
                 selection.length && dequeueItems(selection);
                 break;
+            case 'KeyP':
+                // setPlaylistItemsPerPage(30);
+                break;
             case 'Delete':
             case 'Backspace':
                 // TODO: hide rows before refresh?
@@ -117,7 +121,7 @@
     class="main-container"
     style="--color:{$theme.color}; --selectedText:{$theme.textColor}; --accentColor:{$theme.darkAccent};"
 >
-    <div class="playlist-container">
+    <div class="playlist-container" style="--maxRows:{$playlistsInfo?.playlistItemsPerPage ?? 30}">
         {#await playingInfo.load()}
             Loading...
         {:then}
@@ -232,7 +236,9 @@
             border: 1px solid black;
             padding: 3px;
             border-radius: 6px;
-            height: calc($pl-row-height * 31 + $pl-slider-height + $pl-header-height + 27px);
+            height: calc(
+                $pl-row-height * (var(--maxRows) + 1) + $pl-slider-height + $pl-header-height + 27px
+            );
 
             display: flex;
             flex-direction: column;
