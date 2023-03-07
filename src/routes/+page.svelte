@@ -57,6 +57,7 @@
                     display: inline-block;
                     height: 34px;
                     vertical-align: text-bottom;
+                    padding-right: 0.25rem;
                 }
             }
 
