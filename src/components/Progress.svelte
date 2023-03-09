@@ -1,11 +1,10 @@
 <script lang="ts">
     import { onDestroy } from 'svelte';
-    import { writable } from 'svelte/store';
     import { fb, currentTime, trackInfo } from '@stores/fb-store';
-    import { rebouncedInfoPlayingRefresh } from '@api/refresh-data';
     import { theme } from '@stores/art-store';
-
-    const progress = writable(0);
+    import { noop } from '@api/callbacks';
+    import { seekSecond } from '@api/commands';
+    import { progressUseTransition, progressVal } from '@stores/stores';
 
     function secondsToTime(time: number) {
         const minutes = Math.floor(time / 60);
@@ -13,40 +12,32 @@
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
 
-    let interval: ReturnType<typeof setInterval>;
-
-    function updateTime(value: number) {
-        clearTimeout(interval);
-        if (value !== undefined) {
-            if ($fb.isStopped) {
-                progress.set(0);
-            } else if ($trackInfo.length) {
-                progress.set(value / $trackInfo.length);
-            }
-            interval = setInterval(() => {
-                if (value < $trackInfo.length && $fb.isPlaying) {
-                    currentTime.update(n => n + 1);
-                } else if (value == $trackInfo.length) {
-                    rebouncedInfoPlayingRefresh();
-                }
-            }, 1000);
-        }
-    }
-
-    const unsubscribe = currentTime.subscribe(updateTime);
+    const unsubscribe = currentTime.subscribe(val => progressVal.updateTime(val));
     const unsubscribeStatus = fb.subscribe(fb => {
-        console.log(fb.isPlaying);
         if (fb.isPlaying) {
-            updateTime($currentTime);
+            progressVal.updateTime($currentTime);
         } else if (fb.isPaused) {
-            clearTimeout(interval);
+            progressVal.stopUpdating();
         } else if (fb.isStopped) {
-            clearTimeout(interval);
+            progressVal.stopUpdating();
         }
     });
 
+    function handleClick(evt: MouseEvent) {
+        if (!$fb.isStopped) {
+            const progress = evt.target as HTMLProgressElement;
+            const percentage = evt.offsetX / progress.clientWidth;
+            const seconds = Math.round($trackInfo.length * percentage);
+            progressUseTransition.set(false);
+            progressVal.updateTime(seconds);
+            seekSecond(seconds, () => {
+                progressUseTransition.set(true);
+            });
+        }
+    }
+
     onDestroy(() => {
-        clearTimeout(interval);
+        progressVal.stopUpdating();
         unsubscribe();
         unsubscribeStatus();
     });
@@ -69,7 +60,13 @@
             {/if}
         {/await}
     </div>
-    <progress value={$progress} style="--fill-color:{$theme.color}" />
+    <progress
+        class:transition={$progressUseTransition}
+        value={$progressVal}
+        style="--fill-color:{$theme.color}"
+        on:click={handleClick}
+        on:keydown={noop}
+    />
 </div>
 
 <style lang="scss">
@@ -126,7 +123,9 @@
         }
         &::-webkit-progress-value {
             background-color: var(--fill-color);
-            transition: 1s linear;
+        }
+        &.transition::-webkit-progress-value {
+            transition: width 1s linear;
         }
     }
 </style>

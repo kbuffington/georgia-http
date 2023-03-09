@@ -32,29 +32,37 @@ const sendCommandAndRefresh = async (
     command: string,
     p1?: string | number,
     p2?: string | number,
-    p3?: string
+    p3?: string,
+    cb?: () => void
 ) => {
     if (!p3) {
         p3 = 'NoResponse';
     }
     await sendCommand(command, p1, p2, p3);
-    rebouncedInfoPlayingRefresh();
+    await rebouncedInfoPlayingRefresh();
+    if (cb) {
+        cb();
+    }
 };
 
 export const playOrPause = () => {
     sendCommandAndRefresh('PlayOrPause');
 };
 
-export const startNext = () => {
-    sendCommandAndRefresh('StartNext');
+export const startNext = (cb: () => void) => {
+    sendCommandAndRefresh('StartNext', undefined, undefined, undefined, cb);
 };
 
-export const startPrevious = () => {
-    sendCommandAndRefresh('StartPrevious');
+export const startPrevious = (cb: () => void) => {
+    sendCommandAndRefresh('StartPrevious', undefined, undefined, undefined, cb);
 };
 
-export const stop = () => {
-    sendCommandAndRefresh('Stop');
+export const stop = (cb: () => void) => {
+    sendCommandAndRefresh('Stop', undefined, undefined, undefined, cb);
+};
+
+export const seekSecond = (seconds: number, cb: () => void) => {
+    sendCommandAndRefresh('SeekSecond', seconds, undefined, undefined, cb);
 };
 
 export const setPlaylistPage = (page: number) => {

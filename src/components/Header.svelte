@@ -3,11 +3,52 @@
     import Fab from '@smui/fab';
     import { playOrPause, startNext, startPrevious, stop } from '@api/commands';
     import { fb, playingInfo } from '@stores/fb-store';
-    import { userSettings } from '@stores/stores';
+    import { progressUseTransition, progressVal, userSettings } from '@stores/stores';
+    import { refreshPlayingInfo } from '@api/backend';
 
     function reloadData() {
-        // setTimeout(playingInfo.reload!, 100);
+        refreshPlayingInfo();
     }
+
+    function handleTransportClick(type: string) {
+        const cb = () => {
+            progressUseTransition.set(true);
+        };
+
+        progressUseTransition.set(false);
+        progressVal.updateTime(0);
+        switch (type) {
+            case 'stop':
+                stop(cb);
+                break;
+            case 'prev':
+                startNext(cb);
+                break;
+            case 'next':
+                startPrevious(cb);
+                break;
+        }
+    }
+
+    // function handleStop() {
+    //     stop(() => {});
+    // }
+
+    // function handleNext() {
+    //     progressUseTransition.set(false);
+    //     startNext(() => {
+    //         progressVal.updateTime(0);
+    //         progressUseTransition.set(true);
+    //     });
+    // }
+
+    // function handlePrev() {
+    //     progressUseTransition.set(false);
+    //     startPrevious(() => {
+    //         progressVal.updateTime(0);
+    //         progressUseTransition.set(true);
+    //     });
+    // }
 </script>
 
 <header>
@@ -19,12 +60,12 @@
 
     <ul id="transport">
         <li>
-            <Fab on:click={stop} mini>
+            <Fab on:click={() => handleTransportClick('stop')} mini>
                 <span class="material-symbols-outlined"> stop </span>
             </Fab>
         </li>
         <li>
-            <Fab on:click={startPrevious} mini>
+            <Fab on:click={() => handleTransportClick('prev')} mini>
                 <span class="material-symbols-outlined"> skip_previous </span>
             </Fab>
         </li>
@@ -46,7 +87,7 @@
             </div> -->
         </li>
         <li>
-            <Fab on:click={startNext} mini>
+            <Fab on:click={() => handleTransportClick('next')} mini>
                 <span class="material-symbols-outlined"> skip_next </span>
             </Fab>
         </li>
