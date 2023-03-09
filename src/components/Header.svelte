@@ -29,26 +29,6 @@
                 break;
         }
     }
-
-    // function handleStop() {
-    //     stop(() => {});
-    // }
-
-    // function handleNext() {
-    //     progressUseTransition.set(false);
-    //     startNext(() => {
-    //         progressVal.updateTime(0);
-    //         progressUseTransition.set(true);
-    //     });
-    // }
-
-    // function handlePrev() {
-    //     progressUseTransition.set(false);
-    //     startPrevious(() => {
-    //         progressVal.updateTime(0);
-    //         progressUseTransition.set(true);
-    //     });
-    // }
 </script>
 
 <header>
@@ -80,11 +60,7 @@
                         <span class="material-symbols-outlined"> pause </span>
                     {/if}
                 {/await}
-                <!-- <Icon class="material-icons">play_arrow</Icon> -->
             </Fab>
-            <!-- <div class="button" on:click={playOrPause}>
-                <span class="material-symbols-outlined"> play_arrow </span>
-            </div> -->
         </li>
         <li>
             <Fab on:click={() => handleTransportClick('next')} mini>
