@@ -24,7 +24,6 @@ class ProgressStore {
     }
 
     updateTime(value: number) {
-        console.log(value);
         this.stopUpdating();
         if (value !== undefined) {
             const trackLen = get(trackInfo).length;
