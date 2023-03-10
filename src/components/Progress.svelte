@@ -63,7 +63,6 @@
     <progress
         class:transition={$progressUseTransition}
         value={$progressVal}
-        style="--fill-color:{$theme.color}"
         on:click={handleClick}
         on:keydown={noop}
     />
@@ -122,7 +121,7 @@
             background-color: $header-bg;
         }
         &::-webkit-progress-value {
-            background-color: var(--fill-color);
+            background-color: var(--primary);
         }
         &.transition::-webkit-progress-value {
             transition: width 1s linear;

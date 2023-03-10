@@ -31,10 +31,7 @@
     });
 </script>
 
-<div
-    class="timeline"
-    style="--start:{firstRatio}%; --end:{lastRatio}%; --dark:{$theme.darkAccent}; --accent:{$theme.accent}; --light:{$theme.lightAccent};"
->
+<div class="timeline" style="--start:{firstRatio}%; --end:{lastRatio}%;">
     <div class="played" />
     <div class="unplayed" />
     {#each tickRatios as t}
@@ -51,7 +48,7 @@
         width: calc(100% + 2rem);
         height: $timeline-height;
         margin: $spacing 0 $spacing -1rem;
-        background-color: var(--light);
+        background-color: var(--lightAccent);
         position: relative;
         box-sizing: border-box;
 
@@ -67,7 +64,7 @@
         // overlays played
         .unplayed {
             position: absolute;
-            background-color: var(--dark);
+            background-color: var(--darkAccent);
             height: $timeline-height;
             left: 0;
             width: var(--start);

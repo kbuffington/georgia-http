@@ -118,10 +118,7 @@
         <MiniArtwork />
     {/if}
 {/await}
-<div
-    class="main-container"
-    style="--color:{$theme.color}; --selectedText:{$theme.textColor}; --accentColor:{$theme.darkAccent};"
->
+<div class="main-container">
     <div class="playlist-container" style="--maxRows:{$playlistsInfo?.playlistItemsPerPage ?? 30}">
         {#await playingInfo.load()}
             Loading...
@@ -291,8 +288,8 @@
                     box-sizing: border-box;
 
                     &.active {
-                        background-color: var(--color) !important;
-                        color: var(--selectedText);
+                        background-color: var(--primary) !important;
+                        color: var(--textColor);
                     }
 
                     &:not(.selected).newalbum .cell {
@@ -310,7 +307,7 @@
                             color: white;
                         }
                         .cell.tracknum {
-                            border-left: 5px solid var(--accentColor);
+                            border-left: 5px solid var(--darkAccent);
                         }
                     }
 

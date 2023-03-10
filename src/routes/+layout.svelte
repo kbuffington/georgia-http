@@ -4,6 +4,7 @@
     import Progress from '@components/Progress.svelte';
     import { visibilityChange } from 'svelte-visibility-change';
     import { visibilityChanged } from '@api/refresh-data';
+    import { theme } from '@stores/art-store';
 </script>
 
 <svelte:head>
@@ -33,6 +34,11 @@
     on:visibilitychange={({ detail }) => {
         visibilityChanged(detail.visible);
     }}
+    style="--primary:{$theme.color};
+           --accent:{$theme.accent};
+           --darkAccent:{$theme.darkAccent};
+           --lightAccent:{$theme.lightAccent};
+           --textColor:{$theme.textColor};"
 >
     <Header />
 
@@ -77,7 +83,7 @@
                 position: absolute;
                 top: $header-height;
                 left: 0px;
-                background: $menu-bg;
+                background: $header-bg;
                 width: 100%;
                 height: $extended-header-bg-height;
                 z-index: 0;
