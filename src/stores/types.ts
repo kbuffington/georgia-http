@@ -107,6 +107,11 @@ export class PlTrackData {
             this.albumArtist = json.aa;
             if (this.artist.startsWith(this.albumArtist)) {
                 this.featured = this.artist.replace(this.albumArtist, '').trim();
+            } else if (
+                this.albumArtist === 'Various Artists' ||
+                this.albumArtist === 'Soundtrack'
+            ) {
+                this.featured = this.artist;
             }
             this.album = json.b;
             this.date = json.d;
