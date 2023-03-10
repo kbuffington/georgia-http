@@ -26,7 +26,7 @@ class ThemeStore {
     weightSort = (a: Color, b: Color) => (b.weight ?? 0) - (a.weight ?? 0);
 
     constructor() {
-        const defaultTheme = this.getNewThemeColors(0, 0, 128);
+        const defaultTheme = this.getNewThemeColors(0, 120, 120);
         const { subscribe, set, update } = writable(defaultTheme);
         this.primary = defaultTheme.color;
         this.subscribe = subscribe;

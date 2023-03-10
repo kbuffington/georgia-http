@@ -5,6 +5,7 @@
     import { fb, playingInfo } from '@stores/fb-store';
     import { progressUseTransition, progressVal, userSettings } from '@stores/stores';
     import { refreshPlayingInfo } from '@api/backend';
+    import RoutingTabs from './RoutingTabs.svelte';
 
     function reloadData() {
         refreshPlayingInfo();
@@ -32,11 +33,7 @@
 </script>
 
 <header>
-    <div class="routing">
-        <a href="/georgia"><button>Now Playing</button></a>
-        <a href="/georgia/playlist"><button>Playlists</button></a>
-        <!-- <a href="/georgia"><button>Search</button></a> -->
-    </div>
+    <RoutingTabs />
 
     <ul id="transport">
         <li>
@@ -67,9 +64,6 @@
                 <span class="material-symbols-outlined"> skip_next </span>
             </Fab>
         </li>
-        <!-- <li>
-            <span class="material-symbols-outlined"> shuffle </span>
-        </li> -->
     </ul>
 
     <div class="switch-wrapper">
@@ -90,23 +84,13 @@
     $padding: 1rem;
 
     header {
-        background-color: $menu-bg;
-        height: calc($header-height - 2 * $padding);
-        padding: $padding;
-
-        .routing {
-            position: relative;
-            display: inline-block;
-            z-index: 100;
-
-            button {
-                cursor: pointer;
-            }
-        }
+        background-color: $header-bg;
+        height: calc($header-height - $padding); // no padding on top
+        padding: 0 $padding $padding $padding;
 
         #transport {
             position: absolute;
-            top: 0px;
+            top: 2rem;
             left: 0;
             right: 0;
             margin-left: auto;

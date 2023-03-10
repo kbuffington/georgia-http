@@ -119,7 +119,7 @@
         border: 0.5px solid black;
 
         &::-webkit-progress-bar {
-            background-color: $menu-bg;
+            background-color: $header-bg;
         }
         &::-webkit-progress-value {
             background-color: var(--fill-color);
