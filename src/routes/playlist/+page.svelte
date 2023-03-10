@@ -24,10 +24,11 @@
     const forceUpdate = async (_: any) => {};
     let doRerender = 0;
 
-    function doSearch() {
+    function doSearch(evt: KeyboardEvent) {
         if ($searchString.length) {
             librarySearch($searchString);
         }
+        evt.stopPropagation();
     }
 
     /**
@@ -110,7 +111,7 @@
     }
 </script>
 
-<svelte:window on:keydown={keyHandler} />
+<svelte:window on:keyup={keyHandler} />
 
 {#await playingInfo.load() then}
     {#if !$fb.isStopped}
@@ -139,7 +140,7 @@
                             class:newalbum={i > 0 &&
                                 (item.albumArtist !== $playlistData.tracks[i - 1].albumArtist ||
                                     item.album !== $playlistData.tracks[i - 1].album)}
-                            on:keydown={() => {}}
+                            on:keydown
                             on:contextmenu|preventDefault={evt =>
                                 rightClickContextMenu(evt, i, item)}
                             on:click={evt => selectItem(evt, i, item)}
