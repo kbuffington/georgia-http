@@ -6,6 +6,7 @@
     import { progressUseTransition, progressVal, userSettings } from '@stores/stores';
     import { refreshPlayingInfo } from '@api/backend';
     import RoutingTabs from './RoutingTabs.svelte';
+    import Search from './Search.svelte';
 
     function reloadData() {
         refreshPlayingInfo();
@@ -34,6 +35,7 @@
 
 <header>
     <RoutingTabs />
+    <Search />
 
     <ul id="transport">
         <li>
