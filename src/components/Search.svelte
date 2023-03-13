@@ -1,19 +1,71 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { onMount } from 'svelte/internal';
+    import { noop, onDestroy, onMount } from 'svelte/internal';
+    import { searchString, setFocus } from '@stores/stores';
+    import { librarySearch } from '@api/commands';
+    import { goto } from '$app/navigation';
+    import type { Unsubscriber } from 'svelte/store';
+
+    let inputRef: HTMLElement;
+    let showInput = false;
+    const unsubscribe: Unsubscriber[] = [];
+
+    unsubscribe.push(
+        setFocus.subscribe(val => {
+            // set the focus
+            setTimeout(() => {
+                console.log('>>> here', val, inputRef);
+                inputRef?.focus();
+            }, 100);
+        })
+    );
+
+    const showSearch = async () => {
+        if ($page.url.pathname !== '/georgia/playlist') {
+            await goto('/georgia/playlist');
+        }
+        setFocus.update(n => n + 1);
+    };
+
+    function doSearch(evt: KeyboardEvent) {
+        if ($searchString.length) {
+            librarySearch($searchString);
+        }
+        evt.stopPropagation();
+    }
+
+    const watchPage = (page: any) => {
+        const newPage = page.route.id;
+        showInput = newPage === '/playlist';
+    };
 
     onMount(() => {
+        unsubscribe.push(page.subscribe(watchPage));
+        if ($page.url.pathname.startsWith('/georgia/playlist')) {
+        }
         // console.log('search loaded:', page);
+    });
+
+    onDestroy(() => {
+        unsubscribe.forEach(u => u());
     });
 </script>
 
 <div class="playlist-search">
-    <span class="material-symbols-outlined"> search </span>
-    <div class="input-box">
-        <input type="search" placeholder="Search" />
-        <span class="underline-not-focused" />
-        <span class="underline" />
-    </div>
+    <span class="material-symbols-outlined magnifier" on:click={showSearch}> search </span>
+    {#if showInput}
+        <div class="input-box">
+            <input
+                type="search"
+                placeholder="Search"
+                bind:value={$searchString}
+                on:keyup={doSearch}
+                bind:this={inputRef}
+            />
+            <span class="underline-not-focused" />
+            <span class="underline" />
+        </div>
+    {/if}
 </div>
 
 <style lang="scss">
@@ -23,6 +75,14 @@
         left: 1rem;
         top: 2rem;
         display: flex;
+
+        .magnifier {
+            font-size: 20px;
+            top: 3px;
+            position: relative;
+            line-height: unset;
+            cursor: pointer;
+        }
 
         input {
             width: 100%;

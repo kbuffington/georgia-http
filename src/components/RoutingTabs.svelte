@@ -1,24 +1,41 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
-    import { noop, onMount } from 'svelte/internal';
+    import { noop, onDestroy, onMount } from 'svelte/internal';
+    import type { Unsubscriber } from 'svelte/store';
+
+    let currentPage = '/';
 
     const routes = [
         {
             label: 'Now Playing',
             link: '/georgia',
+            id: '/',
         },
         {
             label: 'Playlist',
             link: '/georgia/playlist',
+            id: '/playlist',
         },
     ];
 
     let selectedRoute = routes[0].link;
+    let unsubscribe: Unsubscriber;
 
     function goToRoute(path: string, replaceState: boolean) {
         goto(path, { replaceState });
     }
+
+    const watchPage = (page: any) => {
+        const newPage = page.route.id;
+        if (newPage !== currentPage) {
+            const routeLink = routes.find(r => r.id === newPage)?.link;
+            if (routeLink) {
+                selectedRoute = routeLink;
+            }
+            currentPage = newPage;
+        }
+    };
 
     onMount(() => {
         const pathname = $page.url.pathname;
@@ -33,6 +50,11 @@
             }
         });
         goToRoute(selectedRoute, true);
+        unsubscribe = page.subscribe(watchPage);
+    });
+
+    onDestroy(() => {
+        unsubscribe && unsubscribe();
     });
 </script>
 

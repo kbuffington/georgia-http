@@ -5,6 +5,7 @@ import { fb, currentTime, trackInfo } from '@stores/fb-store';
 import { rebouncedInfoPlayingRefresh } from '@api/refresh-data';
 
 export const searchString = writable('');
+export const setFocus = writable(0);
 export const progressUseTransition = writable(true);
 
 class ProgressStore {
