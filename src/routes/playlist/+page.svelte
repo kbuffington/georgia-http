@@ -7,8 +7,10 @@
         deleteItems,
         dequeueItems,
         librarySearch,
+        moveItems,
         playPlaylistItem,
         queueItems,
+        setFocus,
         setPlaylistItemsPerPage,
     } from '@api/commands';
     import MiniArtwork from '@components/MiniArtwork.svelte';
@@ -16,15 +18,17 @@
 
     import Textfield from '@smui/textfield';
     import Icon from '@smui/textfield/icon';
+    import { flip } from 'svelte/animate';
 
     let selection: number[] = [];
     let anchor: number = -1;
     let focus = -1;
+    let hovering: number | null = null;
 
     const forceUpdate = async (_: any) => {};
     let doRerender = 0;
 
-    function doSearch(evt: KeyboardEvent) {
+    function doSearch(evt: CustomEvent) {
         if ($searchString.length) {
             librarySearch($searchString);
         }
@@ -74,6 +78,28 @@
             console.log(evt);
         }
     }
+
+    const dragStart = (event: DragEvent, index: number, plIndex: number) => {
+        event.dataTransfer!.effectAllowed = 'move';
+        event.dataTransfer!.dropEffect = 'move';
+        event.dataTransfer!.setData('text/plain', `${index}`);
+        const target = event.target as Element;
+        if (!selection.length) {
+            selection = [plIndex];
+        }
+        setFocus(selection[selection.length - 1]);
+    };
+
+    const drop = (event: DragEvent, targetIndex: number) => {
+        event.dataTransfer!.dropEffect = 'move';
+        const start = parseInt(event.dataTransfer!.getData('text/plain'));
+        hovering = null;
+        const diff = targetIndex - start;
+        if (diff !== 0) {
+            moveItems(selection, diff);
+            selection = [];
+        }
+    };
 
     function keyHandler(evt: KeyboardEvent) {
         switch (evt.code) {
@@ -128,7 +154,7 @@
             </div>
             {#await forceUpdate(doRerender) then _}
                 <div class="playlist-data">
-                    {#each $playlistData.tracks as item, i}
+                    {#each $playlistData.tracks as item, i (item.plIndex)}
                         <div
                             class="item-row"
                             class:active={item.active}
@@ -137,6 +163,13 @@
                             class:newalbum={i > 0 &&
                                 (item.albumArtist !== $playlistData.tracks[i - 1].albumArtist ||
                                     item.album !== $playlistData.tracks[i - 1].album)}
+                            class:is-drop-target={hovering === i}
+                            animate:flip
+                            draggable={!$playlistData.locked}
+                            on:dragstart={event => dragStart(event, i, item.plIndex)}
+                            on:drop|preventDefault={event => drop(event, i)}
+                            on:dragover={evt => evt.preventDefault()}
+                            on:dragenter={() => (hovering = i)}
                             on:keydown
                             on:contextmenu|preventDefault={evt =>
                                 rightClickContextMenu(evt, i, item)}
@@ -286,6 +319,10 @@
                     cursor: default;
                     user-select: none;
                     box-sizing: border-box;
+
+                    &.is-drop-target {
+                        background-color: var(--lightAccent) !important;
+                    }
 
                     &.active {
                         background-color: var(--primary) !important;

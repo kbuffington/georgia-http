@@ -138,6 +138,7 @@ export class PlTrackData {
 
 export class PlaylistData {
     tracks: PlTrackData[] = [];
+    locked = false;
     focusedItem = -1;
     numItems = 0;
     page = 1;
@@ -153,6 +154,7 @@ export class PlaylistData {
         this.focusedItem = json.focused === '?' ? -1 : parseInt(json.focused);
         this.playingItem = json.itemPlaying === '?' ? -1 : parseInt(json.itemPlaying);
         this.totalTime = json.totalTime;
+        this.locked = pi.playlists[pi.playlistActive].locked;
         this.tracks = json.js.map((t: any, i: number) => new PlTrackData(t, i, pi, this));
         console.log(this);
     }

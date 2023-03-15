@@ -14,7 +14,6 @@
         setFocus.subscribe(val => {
             // set the focus
             setTimeout(() => {
-                console.log('>>> here', val, inputRef);
                 inputRef?.focus();
             }, 100);
         })

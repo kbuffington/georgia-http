@@ -99,3 +99,11 @@ export const dequeueItems = (items: number[]) => {
 export const deleteItems = (items: number[]) => {
     sendCommandAndRefresh('Del', items.join(','));
 };
+
+export const moveItems = (items: number[], diff: number) => {
+    sendCommandAndRefresh('Move', items.join(','), diff);
+};
+
+export const setFocus = (item: number) => {
+    sendCommand('SetFocus', item);
+};
