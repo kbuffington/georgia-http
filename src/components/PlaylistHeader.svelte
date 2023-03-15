@@ -33,6 +33,9 @@
     <div class="playlist-title">
         {#if $playlistsInfo.playlists.length}
             {$playlistsInfo.playlists[$playlistsInfo.playlistActive].name}
+            {#if $playlistsInfo.playlists[$playlistsInfo.playlistActive].locked}
+                <span class="lock-icon material-symbols-outlined"> lock </span>
+            {/if}
         {/if}
     </div>
     <div class="menu-container">
@@ -70,6 +73,7 @@
 <div class="page-selection">
     <!-- .pages can be 0 if the playlist is empty -->
     {#if $playlistData.pages <= 1}
+        <div class="page-num">-</div>
         <Slider
             class="page-slider"
             bind:value={currentPage}
@@ -78,7 +82,9 @@
             disabled
             input$aria-label="Playlist page slider"
         />
+        <div class="page-num">-</div>
     {:else}
+        <div class="page-num">1</div>
         <Slider
             class="page-slider"
             bind:value={currentPage}
@@ -89,6 +95,7 @@
             tickMarks
             input$aria-label="Playlist page slider"
         />
+        <div class="page-num">{$playlistData.pages}</div>
     {/if}
 </div>
 
@@ -96,7 +103,26 @@
     @import '@css/constants.scss';
     @import '@css/colors.scss';
 
+    .page-selection {
+        display: flex;
+
+        .page-num {
+            font-size: 13px;
+            width: 1.75rem;
+            top: 10px;
+            position: relative;
+            text-align: right;
+            padding-right: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        div:first-of-type() {
+            width: 1rem;
+            padding: 0;
+            // text-align: right;
+        }
+    }
     .page-selection :global(.page-slider) {
+        flex-grow: 1;
         height: $pl-slider-height !important;
     }
     .page-selection :global(.mdc-slider .mdc-slider__thumb) {
@@ -125,6 +151,13 @@
             flex-grow: 1;
             border-right: 1px dotted $dim-text;
             margin-right: 0.25rem;
+
+            .lock-icon {
+                width: 20px;
+                font-size: 14px;
+                line-height: unset;
+                color: $dim-text;
+            }
         }
 
         .playlist-item {
