@@ -1,7 +1,10 @@
 $header-height: 80px; // guaranteed to be this height regardless of padding
 $extended-header-bg-height: 100px;
+$total-header-height: calc($header-height + $extended-header-bg-height);
 $progress-bar-height: 1.5rem;
 $progress-bar-time-font-size: 2rem;
+$progress-bar-bottom-margin: 1.25rem;
+$total-progress-height: calc($progress-bar-height + $progress-bar-time-font-size + $progress-bar-bottom-margin);
 
 $playlist-width: 65vw;
 
