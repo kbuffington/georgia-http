@@ -51,7 +51,9 @@
 </script>
 
 <div class="playlist-search">
-    <span class="material-symbols-outlined magnifier" on:click={showSearch}> search </span>
+    <span class="material-symbols-outlined magnifier" on:click={showSearch} on:keydown={showSearch}>
+        search
+    </span>
     {#if showInput}
         <div class="input-box">
             <input

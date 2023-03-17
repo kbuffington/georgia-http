@@ -16,9 +16,8 @@
     import MiniArtwork from '@components/MiniArtwork.svelte';
     import PlaylistHeader from '@components/PlaylistHeader.svelte';
 
-    import Textfield from '@smui/textfield';
-    import Icon from '@smui/textfield/icon';
     import { flip } from 'svelte/animate';
+    import Query from '@components/Query.svelte';
 
     let selection: number[] = [];
     let anchor: number = -1;
@@ -237,20 +236,8 @@
             </div>
         {/await}
     </div>
-    <div class="search-container">
-        <div class="search-string">
-            <Textfield
-                variant="outlined"
-                bind:value={$searchString}
-                on:keyup={doSearch}
-                label="Search"
-            >
-                <Icon class="material-icons" slot="leadingIcon">search</Icon>
-                <!-- <span class="material-symbols-outlined"> search </span> -->
-                <!-- <HelperText slot="helper">Helper Text</HelperText> -->
-            </Textfield>
-        </div>
-    </div>
+
+    <Query />
 </div>
 
 <style lang="scss">
@@ -405,16 +392,6 @@
                     }
                 }
             }
-        }
-
-        .search-container {
-            position: absolute;
-            right: 1rem;
-            top: 20vh;
-            background-color: $panel-bg;
-            padding: 1rem;
-            border: 1px solid black;
-            border-radius: 6px;
         }
     }
 </style>

@@ -20,3 +20,33 @@ const refreshPlayingInfoCall = async (): Promise<Response> => {
 };
 
 export const refreshPlayingInfo = rebounce(refreshPlayingInfoCall, 100);
+
+class StripXmlEntities {
+    public values: { [key: string]: string } = {
+        '&#39;': "'",
+        '&#92;': '\\',
+        '&quot;': '"',
+        '&gt;': '>',
+        '&lt;': '<',
+        '&amp;': '&',
+    };
+    private regexp: RegExp;
+
+    constructor() {
+        let regexp_str = '';
+        Object.keys(this.values).forEach(key => {
+            if (regexp_str != '') regexp_str += '|';
+            else regexp_str = '(';
+            regexp_str += key;
+        });
+        regexp_str += ')';
+        this.regexp = new RegExp(regexp_str, 'g');
+    }
+
+    public perform = (str: string) => {
+        return str.replace(this.regexp, (match: string): string => {
+            return this.values[match];
+        });
+    };
+}
+export const stripXmlEntities = new StripXmlEntities();

@@ -1,3 +1,5 @@
+import type { QueryResponse } from '@stores/types';
+import { stripXmlEntities } from './backend';
 import { rebouncedInfoPlayingRefresh } from './refresh-data';
 
 export function debounce<T extends unknown[], U>(
@@ -107,3 +109,27 @@ export const moveItems = (items: number[], diff: number) => {
 export const setFocus = (item: number) => {
     sendCommand('SetFocus', item);
 };
+
+export const queryRetrace = async (): Promise<QueryResponse> => {
+    const results = await sendCommand('QueryRetrace', undefined, undefined, 'schema/library.json');
+    const json: QueryResponse = await results.json();
+    return processQueryResponse(json);
+};
+
+export const queryAdvance = async (queryVal: string): Promise<QueryResponse> => {
+    const encodedVal = encodeURIComponent(queryVal);
+    const results = await sendCommand('QueryAdvance', encodedVal, undefined, 'schema/library.json');
+    const json: QueryResponse = await results.json();
+    return processQueryResponse(json);
+};
+
+function processQueryResponse(json: QueryResponse) {
+    // response double encodes escaped characters, so double unencode
+    json.query = json.query
+        .map(item => (item = stripXmlEntities.perform(stripXmlEntities.perform(item))))
+        .filter(item => item.length);
+    json.queryInfo = json.queryInfo.map(
+        item => (item = stripXmlEntities.perform(stripXmlEntities.perform(item)))
+    );
+    return json;
+}

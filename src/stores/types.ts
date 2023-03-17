@@ -156,7 +156,6 @@ export class PlaylistData {
         this.totalTime = json.totalTime;
         this.locked = pi.playlists[pi.playlistActive].locked;
         this.tracks = json.js.map((t: any, i: number) => new PlTrackData(t, i, pi, this));
-        console.log(this);
     }
 }
 
@@ -205,7 +204,6 @@ export class PlaybackState {
         } else if (json.isPaused === '1') {
             this.state = PlaybackStates.PAUSED;
         }
-        console.log(this.isPlaying);
     }
 
     get isPlaying() {
@@ -237,4 +235,9 @@ export interface PlayingInfo {
     playlistsInfo: PlaylistsInfo;
     playlistData: PlaylistData;
     trackInfo: TrackInfo;
+}
+
+export interface QueryResponse {
+    query: string[];
+    queryInfo: string[];
 }
