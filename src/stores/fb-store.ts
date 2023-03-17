@@ -2,6 +2,7 @@ import { asyncReadable, asyncWritable } from '@square/svelte-store';
 import { derived } from 'svelte/store';
 import { refreshPlayingInfo } from '@api/backend';
 import { PlaybackState, PlaylistData, PlaylistsInfo, TrackInfo, type PlayingInfo } from './types';
+import { searchString } from './stores';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const playingInfo = asyncReadable(
@@ -17,6 +18,7 @@ export const playingInfo = asyncReadable(
                 obj.trackInfo = new TrackInfo(json.helper1, json.albumArt, json);
                 obj.playlistsInfo = new PlaylistsInfo(json.playlists);
                 obj.playlistData = new PlaylistData(json.playlist, obj.playlistsInfo);
+                searchString.set(json.search);
                 console.log(obj.playlistsInfo);
                 resolve(obj);
             });

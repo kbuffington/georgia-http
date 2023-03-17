@@ -31,6 +31,7 @@
 "queueTotalTime":"[QUEUE_TOTAL_TIME]",
 "SAC":"[SAC]",
 "SAQ":"[SAQ]",
+"search":"[SEARCH_REQUEST]",
 "helper1":{[HELPER1]},
 "helper2":"[HELPER2X]",
 "helper3":"[HELPER3X]",
