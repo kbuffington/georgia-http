@@ -10,7 +10,7 @@
     {/if}
 {/await}
 <div class="main-container">
-    <Playlist />
+    <Playlist position="right" />
 </div>
 
 <style lang="scss">

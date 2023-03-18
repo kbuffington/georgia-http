@@ -115,8 +115,8 @@
             padding-right: 0.75rem;
             color: rgba(255, 255, 255, 0.7);
         }
-        div:first-of-type() {
-            width: 1rem;
+        div:first-of-type {
+            width: 1.25rem;
             padding: 0;
             // text-align: right;
         }

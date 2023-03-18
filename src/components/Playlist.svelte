@@ -15,6 +15,9 @@
         setFocus,
         setPlaylistItemsPerPage,
     } from '@api/commands';
+    // import { send, receive } from '@api/crossfade';
+
+    export let position: string;
 
     let selection: number[] = [];
     let anchor: number = -1;
@@ -135,7 +138,12 @@
 
 <svelte:window on:keyup={keyHandler} />
 
-<div class="playlist-container" style="--maxRows:{$playlistsInfo?.playlistItemsPerPage ?? 30}">
+<div
+    class="playlist-container"
+    class:left={position === 'left'}
+    class:right={position === 'right'}
+    style="--maxRows:{$playlistsInfo?.playlistItemsPerPage ?? 30}"
+>
     {#await playingInfo.load()}
         Loading...
     {:then}
@@ -240,9 +248,17 @@
         height: calc(
             $pl-row-height * (var(--maxRows) + 1) + $pl-slider-height + $pl-header-height + 27px
         );
-
         display: flex;
         flex-direction: column;
+        position: absolute;
+
+        &.left {
+            left: 0px;
+        }
+
+        &.right {
+            right: 0px;
+        }
 
         .playlist-header {
             width: calc($playlist-width - 8px);

@@ -11,7 +11,7 @@
     {/if}
 {/await}
 <div class="main-container">
-    <Playlist />
+    <Playlist position="left" />
 
     <Query />
 </div>
