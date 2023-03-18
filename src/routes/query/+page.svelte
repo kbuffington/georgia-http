@@ -1,6 +1,7 @@
 <script lang="ts">
     import MiniArtwork from '@components/MiniArtwork.svelte';
     import Playlist from '@components/Playlist.svelte';
+    import Query from '@components/Query.svelte';
     import { fb, playingInfo } from '@stores/fb-store';
 </script>
 
@@ -11,6 +12,8 @@
 {/await}
 <div class="main-container">
     <Playlist />
+
+    <Query />
 </div>
 
 <style lang="scss">

@@ -20,7 +20,7 @@
     );
 
     const showSearch = async () => {
-        if ($page.url.pathname !== '/georgia/playlist') {
+        if ($page.url.pathname !== '/georgia/playlist' && $page.url.pathname !== '/georgia/query') {
             await goto('/georgia/playlist');
         }
         setFocus.update(n => n + 1);
@@ -35,7 +35,7 @@
 
     const watchPage = (page: any) => {
         const newPage = page.route.id;
-        showInput = newPage === '/playlist';
+        showInput = newPage !== '/';
     };
 
     onMount(() => {

@@ -17,6 +17,11 @@
             link: '/georgia/playlist',
             id: '/playlist',
         },
+        {
+            label: 'Query',
+            link: '/georgia/query',
+            id: '/query',
+        },
     ];
 
     let selectedRoute = routes[0].link;
@@ -85,7 +90,7 @@
 <style lang="scss">
     @import '@css/colors';
 
-    $num-of-tabs: 2;
+    $num-of-tabs: 3; // this seemingly can only be set as a string using css variables
 
     @mixin tabs {
         // @for $i from 1 through var(--num-of-tabs) {
@@ -106,7 +111,7 @@
         position: relative;
         display: flex;
         top: 0px;
-        width: 250px;
+        width: calc(125px * #{$num-of-tabs});
         z-index: 100;
     }
 
@@ -118,9 +123,6 @@
                 label {
                     color: white;
                 }
-                // .tab-content {
-                //     display: block;
-                // }
             }
         }
         @include tabs;
