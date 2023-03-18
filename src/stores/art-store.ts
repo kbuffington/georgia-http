@@ -16,6 +16,7 @@ interface ThemeColors {
     darkAccent: string;
     lightAccent: string;
     textColor: string;
+    dimTextColor: string;
 }
 
 class ThemeStore {
@@ -97,17 +98,19 @@ class ThemeStore {
         let darkAccent: Color;
         let lightAccent: Color;
         let textColor = createColor(255, 255, 255);
+        let dimTextColor = rgbaToHex(255, 255, 255, 0.7);
 
         if (primary.brightness < 0.16) {
             darkAccent = shadeColor(primary, 35);
             accent = tintColor(primary, 10);
             lightAccent = tintColor(primary, 20);
-        } else if (primary.brightness > 0.825) {
+        } else if (primary.brightness > 0.78) {
             // very bright
             darkAccent = shadeColor(primary, 30);
             accent = shadeColor(primary, 20);
             lightAccent = shadeColor(primary, 10);
             textColor = createColor(0, 0, 0);
+            dimTextColor = rgbaToHex(0, 0, 0, 0.7);
         } else {
             // default
             darkAccent = shadeColor(primary, 30);
@@ -121,8 +124,23 @@ class ThemeStore {
             darkAccent: darkAccent.hex,
             lightAccent: lightAccent.hex,
             textColor: textColor.hex,
+            dimTextColor,
         };
     }
 }
 
 export const theme = new ThemeStore();
+
+function rgbaToHex(r: number, g: number, b: number, a: number) {
+    let rVal = r.toString(16);
+    let gVal = g.toString(16);
+    let bVal = b.toString(16);
+    let aVal = Math.round(a * 255).toString(16);
+
+    if (rVal.length == 1) rVal = '0' + rVal;
+    if (gVal.length == 1) gVal = '0' + gVal;
+    if (bVal.length == 1) bVal = '0' + bVal;
+    if (aVal.length == 1) aVal = '0' + aVal;
+
+    return '#' + rVal + gVal + bVal + aVal;
+}

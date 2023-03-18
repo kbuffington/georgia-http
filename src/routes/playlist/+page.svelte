@@ -203,7 +203,7 @@
                             <div class="cell rating">
                                 <span class="dimmed">| </span>
                                 <span class="star">{item.ratingStars}</span>
-                                <span class="empty dimmed" class:nostars={!item.ratingStars}
+                                <span class="empty" class:nostars={!item.ratingStars}
                                     >{item.ratingEmpty}</span
                                 >
                             </div>
@@ -293,7 +293,7 @@
                 display: table;
 
                 span.dimmed {
-                    color: rgb(200, 200, 200);
+                    color: var(--dimTextColor);
                 }
 
                 .item-row {
