@@ -113,16 +113,18 @@
         }
 
         &.left {
+            $art-left: calc(0.75rem + (50vw - 0.75rem) / 2 - (var(--artwidth) / 2));
+
             .art-wrapper {
-                left: $left-padding;
+                left: $art-left;
 
                 img.albumart {
-                    max-width: calc(50vw - 1rem);
+                    max-width: calc(50vw - 0.75rem);
                 }
             }
             .metadata {
-                min-width: $left-padding;
-                max-width: $left-padding;
+                min-width: $art-left;
+                max-width: $art-left;
             }
         }
 
