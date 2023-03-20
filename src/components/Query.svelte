@@ -7,6 +7,7 @@
     import { onMount } from 'svelte';
     import { noop } from 'svelte/internal';
 
+    export let hidden = true;
     let queryResults: QueryResponse = { queryInfo: [], query: [] };
     let depth = 0;
 
@@ -31,31 +32,29 @@
     });
 </script>
 
-{#await playingInfo.load() then}
-    <div class="query-container">
-        <div class="breadcrumbs">
-            {#if queryResults.queryInfo.length}
-                {#each queryResults.queryInfo as breadcrumb, i}
-                    {#if i > 0}
-                        &nbsp;/
-                    {/if}
-                    <span class="breadcrumb" on:click={() => retraceQuery(i)} on:keydown={noop}>
-                        {breadcrumb}
-                    </span>
-                {/each}
-            {:else}
-                <span class="no-query">Library Genres</span>
-            {/if}
-        </div>
-        <div class="query">
-            {#each queryResults.query as queryItem, i}
-                <div class="item" on:click={() => advanceQuery(queryItem)} on:keydown={noop}>
-                    {queryItem}
-                </div>
+<div class="query-container" class:hidden>
+    <div class="breadcrumbs">
+        {#if queryResults.queryInfo.length}
+            {#each queryResults.queryInfo as breadcrumb, i}
+                {#if i > 0}
+                    &nbsp;/
+                {/if}
+                <span class="breadcrumb" on:click={() => retraceQuery(i)} on:keydown={noop}>
+                    {breadcrumb}
+                </span>
             {/each}
-        </div>
+        {:else}
+            <span class="no-query">Library Genres</span>
+        {/if}
     </div>
-{/await}
+    <div class="query">
+        {#each queryResults.query as queryItem, i}
+            <div class="item" on:click={() => advanceQuery(queryItem)} on:keydown={noop}>
+                {queryItem}
+            </div>
+        {/each}
+    </div>
+</div>
 
 <style lang="scss">
     @import '@css/colors.scss';
@@ -73,6 +72,11 @@
         border-radius: 6px;
         width: $query-width;
         max-width: $query-width;
+        transition: right 1.5s;
+
+        &.hidden {
+            right: calc(0px - 50vw);
+        }
 
         .breadcrumbs {
             // height: 1.5rem;

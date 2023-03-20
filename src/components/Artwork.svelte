@@ -5,6 +5,8 @@
     import PauseButton from '@components/PauseButton.svelte';
     import { playOrPause } from '@api/commands';
 
+    export let position = 'center';
+
     let w: number;
 
     function imageLoaded() {
@@ -13,65 +15,72 @@
 </script>
 
 <div
+    class:off={position === 'off'}
+    class:left={position === 'left'}
+    class:center={position === 'center'}
     class="artwork"
-    style="--color:{$theme.color}; --textColor:{$theme.textColor}; --artwidth:{w}px"
+    style="--artwidth:{w}px"
 >
     <div class="metadata">
-        <div class="album">{$trackInfo.album}</div>
-        <Timeline />
-        <div class="grid">
-            <div class="label">Date</div>
-            <div class="data">{$trackInfo.date}</div>
+        {#if position !== 'left'}
+            <div class="album">{$trackInfo.album}</div>
+            <Timeline />
+            <div class="grid">
+                <div class="label">Date</div>
+                <div class="data">{$trackInfo.date}</div>
 
-            {#if $trackInfo.labels}
-                <div class="label">Label</div>
-                <div class="data">{$trackInfo.labels}</div>
-            {/if}
+                {#if $trackInfo.labels}
+                    <div class="label">Label</div>
+                    <div class="data">{$trackInfo.labels}</div>
+                {/if}
 
-            {#if $trackInfo.genre}
-                <div class="label">Genre</div>
-                <div class="data">{$trackInfo.genre}</div>
-            {/if}
+                {#if $trackInfo.genre}
+                    <div class="label">Genre</div>
+                    <div class="data">{$trackInfo.genre}</div>
+                {/if}
 
-            {#if $trackInfo.added}
-                <div class="label">Added</div>
-                <div class="data">{$trackInfo.added}</div>
-            {/if}
+                {#if $trackInfo.added}
+                    <div class="label">Added</div>
+                    <div class="data">{$trackInfo.added}</div>
+                {/if}
 
-            {#if $trackInfo.lastPlayed}
-                <div class="label">Last Played</div>
-                <div class="data">{$trackInfo.lastPlayed}</div>
-            {/if}
+                {#if $trackInfo.lastPlayed}
+                    <div class="label">Last Played</div>
+                    <div class="data">{$trackInfo.lastPlayed}</div>
+                {/if}
 
-            {#if $trackInfo.playcount > 0}
-                <div class="label">Playcount</div>
-                <div class="data">{$trackInfo.playcount}</div>
-            {/if}
+                {#if $trackInfo.playcount > 0}
+                    <div class="label">Playcount</div>
+                    <div class="data">{$trackInfo.playcount}</div>
+                {/if}
 
-            {#if $trackInfo.rating > 0}
-                <div class="label">Rating</div>
-                <div class="data rating">
-                    {#each { length: $trackInfo.rating } as _}
-                        <span class="material-symbols-outlined"> grade </span>
-                    {/each}
-                </div>
+                {#if $trackInfo.rating > 0}
+                    <div class="label">Rating</div>
+                    <div class="data rating">
+                        {#each { length: $trackInfo.rating } as _}
+                            <span class="material-symbols-outlined"> grade </span>
+                        {/each}
+                    </div>
+                {/if}
+            </div>
+        {/if}
+    </div>
+    <div class="art-wrapper">
+        <div class="art-measure" bind:clientWidth={w}>
+            <img
+                class="albumart"
+                src={$trackInfo.artwork}
+                alt="album art"
+                on:click={playOrPause}
+                on:keydown={() => {}}
+                on:load={() => {
+                    imageLoaded();
+                }}
+            />
+            {#if $fb.isPaused}
+                <PauseButton size={Math.max(100, w / 4)} />
             {/if}
         </div>
-    </div>
-    <div class="art-wrapper" bind:clientWidth={w}>
-        <img
-            class="albumart"
-            src={$trackInfo.artwork}
-            alt="album art"
-            on:click={playOrPause}
-            on:keydown={() => {}}
-            on:load={() => {
-                imageLoaded();
-            }}
-        />
-        {#if $fb.isPaused}
-            <PauseButton size={Math.max(100, w / 4)} />
-        {/if}
     </div>
 </div>
 
@@ -79,17 +88,50 @@
     @import '@css/constants.scss';
 
     $left-padding: 1rem;
+    $max-artwidth: 55vw;
+    $art-top: 7rem;
+
+    $art-height: calc(100vh - $art-top - $total-progress-height - 2rem);
 
     .artwork {
-        background-color: var(--color);
+        background-color: var(--primary);
         color: var(--textColor);
         padding-left: $left-padding;
         width: fit-content;
         display: flex;
+        position: absolute;
+        left: 0;
+        top: $art-top;
+        transition-property: left, min-width, max-width;
+        transition-duration: 1s;
+
+        &.off {
+            left: calc(0px - #{$max-artwidth});
+            .art-wrapper {
+                left: calc(0px - #{$max-artwidth});
+            }
+        }
+
+        &.left {
+            .art-wrapper {
+                left: $left-padding;
+
+                img.albumart {
+                    max-width: calc(50vw - 1rem);
+                }
+            }
+            .metadata {
+                min-width: $left-padding;
+                max-width: $left-padding;
+            }
+        }
 
         .metadata {
+            transition: min-width 1s;
             min-width: calc(50vw - var(--artwidth) / 2 - #{$left-padding});
             max-width: calc(50vw - var(--artwidth) / 2 - #{$left-padding});
+            max-height: $art-height;
+            min-height: $art-height;
             display: inline-block;
             font-size: 2rem;
             font-weight: 300;
@@ -125,14 +167,16 @@
             // background:red;
         }
 
+        .art-wrapper {
+            position: absolute;
+            left: calc(50vw - var(--artwidth) / 2);
+            transition: left 1s;
+        }
+
         img.albumart {
-            max-width: calc(55vw);
-            max-height: calc(
-                100vh - $header-height - $progress-bar-time-font-size - $progress-bar-height - 150px
-            );
-            min-height: calc(
-                100vh - $header-height - $progress-bar-time-font-size - $progress-bar-height - 150px
-            );
+            max-width: $max-artwidth;
+            max-height: $art-height;
+            min-height: $art-height;
             display: block; // fix the extra 4 pixels of parent space
         }
     }

@@ -1,10 +1,10 @@
 <script lang="ts">
     import { fb, trackInfo } from '@stores/fb-store';
     import { theme } from '@stores/art-store';
-    import MenuSurface from '@smui/menu-surface';
     import PauseButton from './PauseButton.svelte';
     import { playOrPause } from '@api/commands';
 
+    export let hidden = true;
     let w: number;
 
     function imageLoaded() {
@@ -14,6 +14,7 @@
 
 <div
     class="mini-artwork"
+    class:hidden
     style="--color:{$theme.color}; --textColor:{$theme.textColor}; --artwidth:{w}px"
 >
     <div class="metadata">
@@ -52,10 +53,15 @@
         line-height: 19px;
         position: absolute;
         right: 1rem;
-        top: 4rem;
+        top: 1.5rem;
+        transition: right 1s;
         // material design shadows
         box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%), 0px 8px 10px 1px rgb(0 0 0 / 14%),
             0px 3px 14px 2px rgb(0 0 0 / 12%);
+
+        &.hidden {
+            right: calc(0px - 40rem);
+        }
 
         .metadata {
             min-width: calc(20rem - var(--artwidth));

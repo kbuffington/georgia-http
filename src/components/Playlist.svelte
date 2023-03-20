@@ -140,6 +140,7 @@
 
 <div
     class="playlist-container"
+    class:off={position === 'off'}
     class:left={position === 'left'}
     class:right={position === 'right'}
     style="--maxRows:{$playlistsInfo?.playlistItemsPerPage ?? 30}"
@@ -251,13 +252,18 @@
         display: flex;
         flex-direction: column;
         position: absolute;
+        transition-property: left, right;
+        transition-duration: 1s;
 
         &.left {
             left: 0px;
         }
 
         &.right {
-            right: 0px;
+            left: calc(100vw - $playlist-width);
+        }
+        &.off {
+            left: 100vw;
         }
 
         .playlist-header {

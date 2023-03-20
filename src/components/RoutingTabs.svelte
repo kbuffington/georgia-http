@@ -1,45 +1,41 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
+    import { routingState } from '@stores/stores';
     import { noop, onDestroy, onMount } from 'svelte/internal';
     import type { Unsubscriber } from 'svelte/store';
-
-    let currentPage = '/';
 
     const routes = [
         {
             label: 'Now Playing',
             link: '/georgia',
-            id: '/',
+            id: 'now-playing',
         },
         {
             label: 'Playlist',
             link: '/georgia/playlist',
-            id: '/playlist',
+            id: 'playlist',
         },
         {
             label: 'Query',
             link: '/georgia/query',
-            id: '/query',
+            id: 'query',
         },
     ];
 
-    let selectedRoute = routes[0].link;
+    let selectedRoute = routes[0].id;
     let unsubscribe: Unsubscriber;
 
-    function goToRoute(path: string, replaceState: boolean) {
+    function goToRoute(state: string, replaceState: boolean) {
+        routingState.set(state);
+        const path = `/georgia?route=${state}`;
         goto(path, { replaceState });
     }
 
     const watchPage = (page: any) => {
-        const newPage = page.route.id;
-        if (newPage !== currentPage) {
-            const routeLink = routes.find(r => r.id === newPage)?.link;
-            if (routeLink) {
-                selectedRoute = routeLink;
-            }
-            currentPage = newPage;
-        }
+        // $routingState =
+        console.log('>>>', page);
+        selectedRoute = $routingState;
     };
 
     onMount(() => {
@@ -54,8 +50,8 @@
                 selectedRoute = path;
             }
         });
-        goToRoute(selectedRoute, true);
-        unsubscribe = page.subscribe(watchPage);
+        // goToRoute(selectedRoute, true);
+        unsubscribe = routingState.subscribe(watchPage);
     });
 
     onDestroy(() => {
@@ -77,7 +73,7 @@
             id="tab{i}-content"
             on:keydown={noop}
             on:click={() => {
-                goToRoute(tabRoute.link, false);
+                goToRoute(tabRoute.id, false);
             }}
         >
             <label for="tab{i}">{tabRoute.label}</label>

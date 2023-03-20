@@ -4,6 +4,7 @@ import storage from './persistent-store';
 import { fb, currentTime, trackInfo } from '@stores/fb-store';
 import { rebouncedInfoPlayingRefresh } from '@api/refresh-data';
 
+export const routingState = writable('now-playing');
 export const searchString = writable('');
 export const setFocus = writable(0);
 export const progressUseTransition = writable(true);

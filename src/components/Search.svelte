@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import { noop, onDestroy, onMount } from 'svelte/internal';
-    import { searchString, setFocus } from '@stores/stores';
+    import { onDestroy, onMount } from 'svelte/internal';
+    import { routingState, searchString, setFocus } from '@stores/stores';
     import { librarySearch } from '@api/commands';
     import { goto } from '$app/navigation';
     import type { Unsubscriber } from 'svelte/store';
@@ -20,8 +20,10 @@
     );
 
     const showSearch = async () => {
-        if ($page.url.pathname !== '/georgia/playlist' && $page.url.pathname !== '/georgia/query') {
-            await goto('/georgia/playlist');
+        if ($routingState !== 'playlist' && $routingState !== 'query') {
+            routingState.set('playlist');
+            const path = `/georgia?route=playlist`;
+            await goto(path, { replaceState: false });
         }
         setFocus.update(n => n + 1);
     };
@@ -33,18 +35,6 @@
         evt.stopPropagation();
     }
 
-    const watchPage = (page: any) => {
-        const newPage = page.route.id;
-        showInput = newPage !== '/';
-    };
-
-    onMount(() => {
-        unsubscribe.push(page.subscribe(watchPage));
-        if ($page.url.pathname.startsWith('/georgia/playlist')) {
-        }
-        // console.log('search loaded:', page);
-    });
-
     onDestroy(() => {
         unsubscribe.forEach(u => u());
     });
@@ -54,7 +44,7 @@
     <span class="material-symbols-outlined magnifier" on:click={showSearch} on:keydown={showSearch}>
         search
     </span>
-    {#if showInput}
+    {#if $routingState === 'playlist' || $routingState === 'query'}
         <div class="input-box">
             <input
                 type="search"

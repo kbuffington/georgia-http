@@ -68,7 +68,7 @@
         </li>
     </ul>
 
-    <div class="switch-wrapper">
+    <!-- <div class="switch-wrapper">
         <Switch
             class="switch"
             bind:checked={$userSettings.useMocks}
@@ -76,7 +76,7 @@
             label="Mocked data"
             size="md"
         />
-    </div>
+    </div> -->
 </header>
 
 <style lang="scss">
@@ -111,12 +111,12 @@
             }
         }
 
-        .switch-wrapper {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            font-family: sans-serif;
-            z-index: 100;
-        }
+        // .switch-wrapper {
+        //     position: absolute;
+        //     right: 20px;
+        //     top: 20px;
+        //     font-family: sans-serif;
+        //     z-index: 100;
+        // }
     }
 </style>

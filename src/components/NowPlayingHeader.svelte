@@ -1,5 +1,7 @@
 <script lang="ts">
     import { trackInfo } from '@stores/fb-store';
+
+    export let rightInfoHidden = true;
 </script>
 
 <div class="artist-container">
@@ -10,7 +12,7 @@
         <img class="artist-flag" src="/georgia/images/flags/64/{flag}.png" alt="{flag} flag" />
     {/each}
 </div>
-<div class="right-info">
+<div class="right-info" class:hidden={rightInfoHidden}>
     <div class="year">{$trackInfo.year}</div>
     <div class="codec">{$trackInfo.codecInfo}</div>
 </div>
@@ -19,6 +21,9 @@
     @import '@css/constants.scss';
 
     .artist-container {
+        position: relative;
+        top: -1rem;
+
         .artist {
             display: inline-block;
             padding: 0 0.5rem 0.5rem 1rem;
@@ -38,6 +43,7 @@
         position: absolute;
         right: 1rem;
         top: calc($header-height + 0.5rem);
+        transition: right 1s;
 
         .year {
             font-size: 42px;
@@ -48,6 +54,10 @@
 
         .codec {
             font-weight: 100;
+        }
+
+        &.hidden {
+            right: calc(0px - 25rem);
         }
     }
 </style>

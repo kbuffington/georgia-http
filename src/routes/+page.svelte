@@ -2,20 +2,43 @@
     import { fb, playingInfo } from '@stores/fb-store';
     import Artwork from '@components/Artwork.svelte';
     import NowPlayingHeader from '@components/NowPlayingHeader.svelte';
+    import { routingState } from '@stores/stores';
+    // playlist components
+    import MiniArtwork from '@components/MiniArtwork.svelte';
+    import Playlist from '@components/Playlist.svelte';
+    // query components
+    import Query from '@components/Query.svelte';
 </script>
 
-<div id="main-content">
-    <div class="top-content">
-        {#await playingInfo.load()}
-            Loading...
-        {:then}
-            {#if !$fb.isStopped}
-                <NowPlayingHeader />
-                <Artwork />
-            {/if}
-        {/await}
+{#await playingInfo.load()}
+    Loading...
+{:then}
+    <div id="main-content">
+        {#if !$fb.isStopped}
+            <div class="top-content">
+                <NowPlayingHeader rightInfoHidden={$routingState !== 'now-playing'} />
+                <Artwork
+                    position={$routingState === 'now-playing'
+                        ? 'center'
+                        : $routingState === 'playlist'
+                        ? 'left'
+                        : 'off'}
+                />
+            </div>
+        {/if}
+        <MiniArtwork hidden={$routingState === 'now-playing' || $fb.isStopped} />
+        <div class="playlist-view">
+            <Playlist
+                position={$routingState === 'now-playing'
+                    ? 'off'
+                    : $routingState === 'playlist'
+                    ? 'right'
+                    : 'left'}
+            />
+        </div>
+        <Query hidden={$routingState !== 'query'} />
     </div>
-</div>
+{/await}
 
 <style lang="scss">
     // @import '@css/colors.scss';
@@ -30,6 +53,11 @@
 
         .top-content {
             flex-grow: 1;
+        }
+
+        .playlist-view {
+            position: absolute;
+            top: 7rem;
         }
     }
 </style>
