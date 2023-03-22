@@ -100,7 +100,7 @@
             padding: 0;
             display: inline-block;
             text-align: center;
-            z-index: 99; // behind routing links
+            z-index: 1001; // above #main-content
 
             list-style: none;
 
