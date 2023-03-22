@@ -138,7 +138,6 @@
             font-size: 2rem;
             font-weight: 300;
             padding: 1rem 1rem 1rem 0;
-            border-right: 1px solid rgba(0, 0, 0, 0.2);
             box-sizing: border-box;
 
             .album {
@@ -166,13 +165,13 @@
                     }
                 }
             }
-            // background:red;
         }
 
         .art-wrapper {
             position: absolute;
             left: calc(50vw - var(--artwidth) / 2);
             transition: left 1s;
+            border-left: 1px solid rgba(0, 0, 0, 0.2);
         }
 
         img.albumart {
