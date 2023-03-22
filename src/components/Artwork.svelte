@@ -89,7 +89,7 @@
 
     $left-padding: 1rem;
     $max-artwidth: 55vw;
-    $art-top: 7rem;
+    $art-top: 2rem;
 
     $art-height: calc(100vh - $art-top - $total-progress-height - 2rem);
 

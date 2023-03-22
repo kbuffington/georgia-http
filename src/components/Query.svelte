@@ -63,7 +63,7 @@
     .query-container {
         position: absolute;
         right: 1rem;
-        top: 7rem;
+        top: 2rem;
         background-color: $panel-bg;
         padding: 0.5rem 1rem 1rem;
         border: 1px solid black;

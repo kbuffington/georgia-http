@@ -13,10 +13,11 @@
 {#await playingInfo.load()}
     Loading...
 {:then}
+    <MiniArtwork hidden={$routingState === 'now-playing' || $fb.isStopped} />
+    <NowPlayingHeader rightInfoHidden={$routingState !== 'now-playing'} />
     <div id="main-content">
         {#if !$fb.isStopped}
             <div class="top-content">
-                <NowPlayingHeader rightInfoHidden={$routingState !== 'now-playing'} />
                 <Artwork
                     position={$routingState === 'now-playing'
                         ? 'center'
@@ -26,7 +27,6 @@
                 />
             </div>
         {/if}
-        <MiniArtwork hidden={$routingState === 'now-playing' || $fb.isStopped} />
         <div class="playlist-view">
             <Playlist
                 position={$routingState === 'now-playing'
@@ -50,6 +50,11 @@
         flex-direction: column;
         min-height: 100%;
         z-index: 1000;
+        // these are needed for preventing elements scrolled off page from being visible
+        position: relative;
+        top: -3rem;
+        max-width: 100%;
+        overflow-x: hidden;
 
         .top-content {
             flex-grow: 1;
@@ -57,7 +62,7 @@
 
         .playlist-view {
             position: absolute;
-            top: 7rem;
+            top: 2rem;
         }
     }
 </style>
