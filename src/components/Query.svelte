@@ -60,12 +60,10 @@
     @import '@css/colors.scss';
     @import '@css/constants.scss';
 
-    $query-width: 25vw;
-
     .query-container {
         position: absolute;
         right: 1rem;
-        top: calc($total-header-height - 1rem);
+        top: 7rem;
         background-color: $panel-bg;
         padding: 0.5rem 1rem 1rem;
         border: 1px solid black;
@@ -73,6 +71,7 @@
         width: $query-width;
         max-width: $query-width;
         transition: right 1.5s;
+        box-sizing: border-box;
 
         &.hidden {
             right: calc(0px - 50vw);

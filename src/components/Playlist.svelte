@@ -257,6 +257,12 @@
 
         &.left {
             left: 0px;
+
+            .playlist-data,
+            .playlist-footer-content,
+            .playlist-header {
+                width: calc(99vw - 2rem - $query-width);
+            }
         }
 
         &.right {
@@ -268,6 +274,7 @@
 
         .playlist-header {
             width: calc($playlist-width - 8px);
+            transition: 1s width;
             padding: 3px;
             border: 1px solid black;
             border-radius: 6px;
@@ -295,6 +302,7 @@
         .playlist-data,
         .playlist-footer-content {
             width: $playlist-width;
+            transition: 1s width;
             display: table;
 
             span.dimmed {
