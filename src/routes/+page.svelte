@@ -13,8 +13,10 @@
 {#await playingInfo.load()}
     Loading...
 {:then}
-    <MiniArtwork hidden={$routingState === 'now-playing' || $fb.isStopped} />
-    <NowPlayingHeader rightInfoHidden={$routingState !== 'now-playing'} />
+    {#if !$fb.isStopped}
+        <MiniArtwork hidden={$routingState === 'now-playing' || $fb.isStopped} />
+        <NowPlayingHeader rightInfoHidden={$routingState !== 'now-playing'} />
+    {/if}
     <div id="main-content">
         {#if !$fb.isStopped}
             <div class="top-content">
