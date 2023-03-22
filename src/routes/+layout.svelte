@@ -70,6 +70,11 @@
         background: $bg-color;
         font-family: 'Roboto';
         color: white;
+        // these are needed for preventing elements scrolled off page from being visible
+        // TODO: remove similar from page.svelte?
+        position: relative;
+        max-width: 100%;
+        overflow-x: hidden;
 
         main {
             flex: 1;
