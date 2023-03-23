@@ -62,6 +62,7 @@
     @import '@css/roboto/roboto.scss';
     @import '@css/colors.scss';
     @import '@css/constants.scss';
+    @import '@css/fonts.scss';
 
     .app {
         display: flex;
@@ -120,5 +121,9 @@
     :global(.material-symbols-outlined) {
         // material symbols outlined
         font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+    }
+
+    :global(.noto-symbol) {
+        font-family: 'Noto Sans Symbol 2';
     }
 </style>

@@ -36,7 +36,14 @@
 
                 {#if $trackInfo.genre}
                     <div class="label">Genre</div>
-                    <div class="data">{$trackInfo.genre}</div>
+                    <div class="data">
+                        {#each $trackInfo.genre as genre, i}
+                            {#if i > 0}
+                                <div class="dot noto-symbol">⋅</div>
+                            {/if}
+                            {genre}
+                        {/each}
+                    </div>
                 {/if}
 
                 {#if $trackInfo.added}
@@ -163,6 +170,16 @@
                     &.rating {
                         color: orange;
                         text-shadow: 0px 0px 1px black;
+                    }
+
+                    .dot {
+                        font-weight: 100;
+                        font-size: 40px;
+                        line-height: 19px;
+                        display: inline-block;
+                        position: relative;
+                        top: 7px;
+                        padding-left: 0.35rem;
                     }
                 }
             }

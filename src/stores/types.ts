@@ -37,7 +37,7 @@ export class TrackInfo {
     artistCountryFlags: string[] = [];
     added = '';
     codecInfo = '';
-    genre = '';
+    genre: string[] = [];
     labels = '';
     title = '';
     rating = 0;
@@ -58,7 +58,7 @@ export class TrackInfo {
             this.album = obj.b ?? '';
             this.albumArtist = obj.aa ?? '';
             this.artistCountryFlags = obj.ac ? loadCountryFlags(obj.ac) : [];
-            this.genre = obj.g;
+            this.genre = obj.g ? obj.g.split(';') : [];
             this.labels = obj.l;
             this.title = obj.t;
             this.playcount = typeof obj.pc === 'number' ? obj.pc : parseInt(obj.pc); // TODO: remove
