@@ -217,6 +217,10 @@ export class PlaybackState {
     get isStopped() {
         return this.state === PlaybackStates.STOPPED;
     }
+
+    get isPausedOrPlaying() {
+        return this.state !== PlaybackStates.STOPPED;
+    }
 }
 
 export interface PlayingInfo {

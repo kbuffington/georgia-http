@@ -8,7 +8,9 @@
     let w: number;
 
     function imageLoaded() {
-        theme.getArtColors($trackInfo.artwork);
+        if ($fb.isPausedOrPlaying) {
+            theme.getArtColors($trackInfo.artwork);
+        }
     }
 </script>
 
