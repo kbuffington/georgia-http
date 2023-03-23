@@ -14,9 +14,11 @@ class PlayTimeInfo {
 
     constructor(json: any) {
         if (Object.keys(json).length) {
-            this.added = json.add === '' ? -1 : new Date(json.add).getTime();
-            this.firstPlayed = json.fp === '' ? -1 : new Date(json.fp).getTime();
-            this.lastPlayed = json.lp === '' ? -1 : new Date(json.lp).getTime();
+            this.added = json.add === '' || json.add === 'N/A' ? -1 : new Date(json.add).getTime();
+            this.firstPlayed =
+                json.fp === '' || json.fp === 'N/A' ? -1 : new Date(json.fp).getTime();
+            this.lastPlayed =
+                json.lp === '' || json.lp === 'N/A' ? -1 : new Date(json.lp).getTime();
             // round times to nearest minute
             const playTimes = json.fbpt.map((t: number) => Math.floor(t / 60000) * 60000);
             const lfm = json.lfmpt.map((t: number) => Math.floor(t / 60000) * 60000);

@@ -6,6 +6,7 @@
     let firstRatio: number;
     let lastRatio: number;
     let tickRatios: number[] = [];
+    let neverPlayed = true;
 
     const unsubscribe = trackInfo.subscribe(ti => {
         const timeInfo = ti.timeInfo;
@@ -16,12 +17,19 @@
 
         const total = now - added;
 
-        firstRatio = Math.max((100 * (first - added)) / total, 1); // make sure to have at least 1% between added and first played
-        tickRatios = timeInfo.playTimes.map(t => (100 * (t - added)) / total);
-        // remove first and last in case it doesn't match other ratios
-        tickRatios.pop();
-        tickRatios.shift();
-        lastRatio = (100 * (last - added)) / total;
+        if (first === -1) {
+            neverPlayed = true;
+            firstRatio = 33;
+            lastRatio = 66;
+        } else {
+            neverPlayed = false;
+            firstRatio = Math.max((100 * (first - added)) / total, 1); // make sure to have at least 1% between added and first played
+            tickRatios = timeInfo.playTimes.map(t => (100 * (t - added)) / total);
+            // remove first and last in case it doesn't match other ratios
+            tickRatios.pop();
+            tickRatios.shift();
+            lastRatio = (100 * (last - added)) / total;
+        }
         console.log('ratios:', firstRatio, lastRatio);
         console.log(tickRatios);
     });
@@ -32,8 +40,8 @@
 </script>
 
 <div class="timeline" style="--start:{firstRatio}%; --end:{lastRatio}%;">
-    <div class="played" />
-    <div class="unplayed" />
+    <div class="timeline-bar played" class:never-played={neverPlayed} />
+    <div class="timeline-bar unplayed" class:never-played={neverPlayed} />
     {#each tickRatios as t}
         <div class="tick" style="left:{t}%;" />
     {/each}
@@ -52,23 +60,24 @@
         position: relative;
         box-sizing: border-box;
 
-        .played {
+        .timeline-bar {
             position: absolute;
-            background-color: var(--accent);
-            height: $timeline-height;
-            // top: calc(0px - #{$timeline-height});
             left: 0;
-            width: calc(var(--end));
+            height: $timeline-height;
             border-right: 1px solid rgba(255, 255, 255, 0.5);
+
+            &.never-played {
+                border-right: none;
+            }
+        }
+        .played {
+            background-color: var(--accent);
+            width: calc(var(--end));
         }
         // overlays played
         .unplayed {
-            position: absolute;
             background-color: var(--darkAccent);
-            height: $timeline-height;
-            left: 0;
             width: var(--start);
-            border-right: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .tick {
