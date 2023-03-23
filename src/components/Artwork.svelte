@@ -91,7 +91,8 @@
     $max-artwidth: 55vw;
     $art-top: 2rem;
 
-    $art-height: calc(100vh - $art-top - $total-progress-height - 2rem);
+    // the -7.5rem is readding in what was the absolute positioning of the artwork + giving some space between elements
+    $art-height: calc(100vh - $art-top - $total-progress-height - 7.5rem);
 
     .artwork {
         background-color: var(--primary);

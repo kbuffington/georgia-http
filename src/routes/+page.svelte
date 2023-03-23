@@ -54,7 +54,6 @@
         position: relative;
         top: -3rem;
         max-width: 100%;
-        overflow-x: hidden;
 
         .top-content {
             flex-grow: 1;
