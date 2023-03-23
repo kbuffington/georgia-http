@@ -222,7 +222,7 @@
                         {/if}
                     </div>
                     <div class="cell title">
-                        {#if !$fb.isStopped}
+                        {#if $fb.isPausedOrPlaying}
                             {$playlistData.playingItem + 1} of {$playlistData.numItems} tracks
                             <span class="dimmed"> &mdash; {$trackInfo.codecInfo}</span>
                         {:else}

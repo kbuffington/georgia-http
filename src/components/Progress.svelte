@@ -24,7 +24,7 @@
     });
 
     function handleClick(evt: MouseEvent) {
-        if (!$fb.isStopped) {
+        if ($fb.isPausedOrPlaying) {
             const progress = evt.target as HTMLProgressElement;
             const percentage = evt.offsetX / progress.clientWidth;
             const seconds = Math.round($trackInfo.length * percentage);
@@ -48,7 +48,7 @@
         {#await currentTime.load()}
             <div class="loading">Georgia-HTTP</div>
         {:then}
-            {#if !$fb.isStopped}
+            {#if $fb.isPausedOrPlaying}
                 <div class="track-num">{$trackInfo.tracknumber}.</div>
                 <div class="track-name">{$trackInfo.title}</div>
                 <div class="elapsed">

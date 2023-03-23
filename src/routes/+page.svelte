@@ -16,7 +16,7 @@
     <MiniArtwork hidden={$routingState === 'now-playing' || $fb.isStopped} />
     <NowPlayingHeader rightInfoHidden={$routingState !== 'now-playing'} />
     <div id="main-content">
-        {#if !$fb.isStopped}
+        {#if $fb.isPausedOrPlaying}
             <div class="top-content">
                 <Artwork
                     position={$routingState === 'now-playing'
