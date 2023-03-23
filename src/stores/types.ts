@@ -52,9 +52,9 @@ export class TrackInfo {
 
     constructor(obj: any, artwork: string, json: any) {
         if (Object.keys(obj)) {
-            this.artist = obj.a;
-            this.album = obj.b;
-            this.albumArtist = obj.aa;
+            this.artist = obj.a ?? '';
+            this.album = obj.b ?? '';
+            this.albumArtist = obj.aa ?? '';
             this.artistCountryFlags = obj.ac ? loadCountryFlags(obj.ac) : [];
             this.genre = obj.g;
             this.labels = obj.l;

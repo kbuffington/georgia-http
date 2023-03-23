@@ -23,6 +23,8 @@
     .artist-container {
         position: relative;
         top: -1rem;
+        min-height: 53px;
+        max-height: 53px;
 
         .artist {
             display: inline-block;
