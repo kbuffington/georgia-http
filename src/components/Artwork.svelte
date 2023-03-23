@@ -29,12 +29,19 @@
                 <div class="label">Date</div>
                 <div class="data">{$trackInfo.date}</div>
 
-                {#if $trackInfo.labels}
+                {#if $trackInfo.labels.length}
                     <div class="label">Label</div>
-                    <div class="data">{$trackInfo.labels}</div>
+                    <div class="data">
+                        {#each $trackInfo.labels as label, i}
+                            {#if i > 0}
+                                <div class="dot noto-symbol">⋅</div>
+                            {/if}
+                            {label}
+                        {/each}
+                    </div>
                 {/if}
 
-                {#if $trackInfo.genre}
+                {#if $trackInfo.genre.length}
                     <div class="label">Genre</div>
                     <div class="data">
                         {#each $trackInfo.genre as genre, i}

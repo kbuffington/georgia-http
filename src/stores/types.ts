@@ -38,7 +38,7 @@ export class TrackInfo {
     added = '';
     codecInfo = '';
     genre: string[] = [];
-    labels = '';
+    labels: string[] = [];
     title = '';
     rating = 0;
     ratingStars = '';
@@ -59,7 +59,7 @@ export class TrackInfo {
             this.albumArtist = obj.aa ?? '';
             this.artistCountryFlags = obj.ac ? loadCountryFlags(obj.ac) : [];
             this.genre = obj.g ? obj.g.split(';') : [];
-            this.labels = obj.l;
+            this.labels = obj.l ? obj.l.split(';') : [];
             this.title = obj.t;
             this.playcount = typeof obj.pc === 'number' ? obj.pc : parseInt(obj.pc); // TODO: remove
             this.length = obj.ls;
