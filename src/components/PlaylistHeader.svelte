@@ -141,7 +141,7 @@
         left: unset !important;
         right: 0px;
         max-height: 72vh !important;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
 
     .active-playlist {

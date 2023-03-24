@@ -37,7 +37,7 @@
         {#if queryResults.queryInfo.length}
             {#each queryResults.queryInfo as breadcrumb, i}
                 {#if i > 0}
-                    &nbsp;/
+                    <span>/</span>
                 {/if}
                 <span class="breadcrumb" on:click={() => retraceQuery(i)} on:keydown={noop}>
                     {breadcrumb}
@@ -99,7 +99,7 @@
         .query {
             height: calc(100vh - $total-header-height - $total-progress-height - 6rem);
             max-height: calc(100vh - $total-header-height - $total-progress-height - 6rem);
-            overflow-y: scroll;
+            overflow-y: auto;
 
             .item {
                 font-size: 14px;
