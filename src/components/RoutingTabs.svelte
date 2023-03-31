@@ -32,10 +32,8 @@
         goto(path, { replaceState });
     }
 
-    const watchPage = (page: any) => {
-        // $routingState =
-        console.log('>>>', page);
-        selectedRoute = $routingState;
+    const watchRoutingState = (page: any) => {
+        selectedRoute = page;
     };
 
     onMount(() => {
@@ -51,7 +49,7 @@
             }
         });
         // goToRoute(selectedRoute, true);
-        unsubscribe = routingState.subscribe(watchPage);
+        unsubscribe = routingState.subscribe(watchRoutingState);
     });
 
     onDestroy(() => {
@@ -66,7 +64,7 @@
             name="tabs"
             id="tab{i}"
             bind:group={selectedRoute}
-            value={tabRoute.link}
+            value={tabRoute.id}
         />
         <div
             class="tab-label-content"
