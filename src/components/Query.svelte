@@ -1,8 +1,8 @@
 <script lang="ts">
     import { refreshPlayingInfo } from '@api/backend';
-    import { queryAdvance, queryRetrace } from '@api/commands';
+    import { queryAdvance, queryRetrace, switchPlaylist } from '@api/commands';
     import { rebouncedInfoPlayingRefresh } from '@api/refresh-data';
-    import { playingInfo } from '@stores/fb-store';
+    import { playingInfo, playlistData, playlistsInfo } from '@stores/fb-store';
     import type { QueryResponse } from '@stores/types';
     import { onMount } from 'svelte';
     import { noop } from 'svelte/internal';
@@ -28,7 +28,12 @@
     }
 
     onMount(async () => {
+        const active = $playlistsInfo.playlistActive;
         queryResults = await queryRetrace();
+        if (queryResults.queryInfo.length) {
+            await retraceQuery(0);
+        }
+        switchPlaylist(active);
     });
 </script>
 
