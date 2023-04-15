@@ -26,8 +26,7 @@
             min-height: var(--size);
             max-height: var(--size);
             color: rgba(255, 255, 255, 0.7);
-            // font-size: calc(var(--size) / 2);
-
+           
             .pause-text {
                 display: block;
                 font-size: var(--size);
