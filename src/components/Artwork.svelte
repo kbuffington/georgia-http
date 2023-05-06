@@ -134,6 +134,7 @@
                 left: $art-left;
 
                 img.albumart {
+                    cursor: pointer;
                     max-width: calc(50vw - 0.75rem);
                 }
             }

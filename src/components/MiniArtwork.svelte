@@ -48,7 +48,7 @@
 
     .mini-artwork {
         background-color: var(--color);
-        z-index: 1000;
+        z-index: 1002; // above transport
         width: fit-content;
         display: flex;
         font-size: 13px;
@@ -84,11 +84,15 @@
             }
         }
 
-        img.albumart {
-            max-width: calc(#{$mini-art-size} + 1.5rem);
-            max-height: $mini-art-size;
-            min-height: $mini-art-size;
-            display: block; // fix the extra 4 pixels of parent space
+        .art-wrapper {
+            cursor: pointer;
+
+            img.albumart {
+                max-width: calc(#{$mini-art-size} + 1.5rem);
+                max-height: $mini-art-size;
+                min-height: $mini-art-size;
+                display: block; // fix the extra 4 pixels of parent space
+            }
         }
     }
 </style>
