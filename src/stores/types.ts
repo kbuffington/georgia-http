@@ -53,7 +53,7 @@ export class TrackInfo {
     displayLength = '';
 
     constructor(obj: any, artwork: string, json: any) {
-        if (Object.keys(obj)) {
+        if (Object.keys(obj).length) {
             this.artist = obj.a ?? '';
             this.album = obj.b ?? '';
             this.albumArtist = obj.aa ?? '';
@@ -69,16 +69,17 @@ export class TrackInfo {
             this.tracknumber = obj.n;
             this.displayLength = secondsToTime(this.length);
             this.artwork = artwork;
-            this.year = json.helper2;
-            this.codecInfo = json.helper3
-                ?.replace('DCA (DTS Coherent Acoustics)', 'dts')
-                .replace(' | stereo', '');
-            // this.playtimes = json.helper4 == '' ? [] : JSON.parse(json.helper4);
-            if (json.helper4 !== '') {
-                this.timeInfo = new PlayTimeInfo(json.helper4);
+            if (Object.keys(json).length) {
+                this.year = json.helper2;
+                this.codecInfo = json.helper3
+                    ?.replace('DCA (DTS Coherent Acoustics)', 'dts')
+                    .replace(' | stereo', '');
+                if (json.helper4) {
+                    this.timeInfo = new PlayTimeInfo(json.helper4);
+                }
+                this.added = json.helper5;
+                this.lastPlayed = json.helper6;
             }
-            this.added = json.helper5;
-            this.lastPlayed = json.helper6;
             console.log(this);
         }
     }
@@ -156,7 +157,9 @@ export class PlaylistData {
         this.focusedItem = json.focused === '?' ? -1 : parseInt(json.focused);
         this.playingItem = json.itemPlaying === '?' ? -1 : parseInt(json.itemPlaying);
         this.totalTime = json.totalTime;
-        this.locked = pi.playlists[pi.playlistActive].locked;
+        if (pi.playlists.length) {
+            this.locked = pi.playlists[pi.playlistActive].locked;
+        }
         this.tracks = json.js.map((t: any, i: number) => new PlTrackData(t, i, pi, this));
     }
 }
