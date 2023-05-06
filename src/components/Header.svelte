@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { Switch } from '@svelteuidev/core';
     import Fab from '@smui/fab';
     import { playOrPause, startNext, startPrevious, stop } from '@api/commands';
     import { fb, playingInfo } from '@stores/fb-store';
@@ -24,10 +23,10 @@
                 stop(cb);
                 break;
             case 'prev':
-                startNext(cb);
+                startPrevious(cb);
                 break;
             case 'next':
-                startPrevious(cb);
+                startNext(cb);
                 break;
         }
     }
