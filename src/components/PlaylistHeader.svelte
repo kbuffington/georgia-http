@@ -5,6 +5,7 @@
     import Button from '@smui/button';
     import Menu from '@smui/menu';
     import Slider from '@smui/slider';
+    import MySlider from '@components/Slider.svelte';
     import List, { Item, Text, Meta } from '@smui/list';
 
     let menu: Menu;
@@ -85,7 +86,13 @@
         <div class="page-num">-</div>
     {:else}
         <div class="page-num">1</div>
-        <Slider
+        <MySlider
+            bind:value={currentPage}
+            on:change={updatePage}
+            min={1}
+            max={$playlistData.pages}
+        />
+        <!-- <Slider
             class="page-slider"
             bind:value={currentPage}
             on:click={updatePage}
@@ -94,7 +101,7 @@
             discrete
             tickMarks
             input$aria-label="Playlist page slider"
-        />
+        /> -->
         <div class="page-num">{$playlistData.pages}</div>
     {/if}
 </div>
@@ -104,8 +111,12 @@
     @import '@css/colors.scss';
 
     .page-selection {
+        // width: 100%;
         display: flex;
 
+        .slider-container {
+            // flex-grow: 1;
+        }
         .page-num {
             font-size: 13px;
             width: 1.75rem;
@@ -122,13 +133,14 @@
         }
     }
     .page-selection :global(.page-slider) {
-        flex-grow: 1;
-        height: $pl-slider-height !important;
+        // flex-grow: 1;
+        width: calc(100% - 4rem);
+        // height: $pl-slider-height !important;
     }
     .page-selection :global(.mdc-slider .mdc-slider__thumb) {
-        height: $pl-slider-height !important;
-        width: $pl-slider-height !important;
-        left: calc($pl-slider-height / -2) !important;
+        // height: $pl-slider-height !important;
+        // width: $pl-slider-height !important;
+        // left: calc($pl-slider-height / -2) !important;
     }
 
     .menu-container :global(.mdc-button.mini) {
