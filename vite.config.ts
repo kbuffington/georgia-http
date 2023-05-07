@@ -3,6 +3,9 @@ import type { UserConfig } from 'vite';
 
 const config: UserConfig = {
     plugins: [sveltekit()],
+    build: {
+        minify: false,
+    },
     // optimizeDeps: {
     // 	exclude: ['extract-colors']
     // }
