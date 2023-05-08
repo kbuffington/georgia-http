@@ -1,6 +1,6 @@
 <script lang="ts">
     // taken from https://svelte.dev/repl/7f0042a186ee4d8e949c46ca663dbe6c?version=3.33.0
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, onMount } from 'svelte';
     import { fly, fade } from 'svelte/transition';
 
     // Props
@@ -17,7 +17,6 @@
     let element: Element;
 
     // Internal State
-    let elementX: number;
     let currentThumb: HTMLElement | null = null;
     let holding = false;
     let thumbHover = false;
@@ -37,7 +36,11 @@
     });
 
     function resizeWindow() {
-        elementX = element.getBoundingClientRect().left;
+        let percent = ((value - min) * 100) / (max - min);
+        let offsetLeft = (container.clientWidth - 10) * (percent / 100) + 5;
+
+        // Update thumb position + active range track width
+        thumb.style.left = `${offsetLeft}px`;
     }
 
     // Allows both bind:value and on:change for parent value retrieval
@@ -110,6 +113,7 @@
     }
 
     function calculateNewValue(clientX: number) {
+        const elementX = element.getBoundingClientRect().left;
         // Find distance between cursor and element's left cord (20px / 2 = 10px) - Center of thumb
         let delta = clientX - (elementX + 10);
 
@@ -141,12 +145,12 @@
         } else {
             clientX = e.clientX;
         }
-
         calculateNewValue(clientX);
     }
 
-    // React to left position of element relative to window
-    $: if (element) elementX = element.getBoundingClientRect().left;
+    onMount(() => {
+        new ResizeObserver(resizeWindow).observe(element);
+    });
 
     // Set a class based on if dragging
     $: holding = Boolean(currentThumb);
