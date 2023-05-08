@@ -86,12 +86,14 @@
         <div class="page-num">-</div>
     {:else}
         <div class="page-num">1</div>
-        <MySlider
-            bind:value={currentPage}
-            on:change={updatePage}
-            min={1}
-            max={$playlistData.pages}
-        />
+        <div class="slider-container">
+            <MySlider
+                bind:value={currentPage}
+                on:change={updatePage}
+                min={1}
+                max={$playlistData.pages}
+            />
+        </div>
         <!-- <Slider
             class="page-slider"
             bind:value={currentPage}
@@ -125,6 +127,11 @@
             text-align: right;
             padding-right: 0.75rem;
             color: rgba(255, 255, 255, 0.7);
+        }
+        .slider-container {
+            flex-grow: 1;
+            margin-top: 7px;
+            margin-bottom: 5px;
         }
         div:first-of-type {
             width: 1.25rem;

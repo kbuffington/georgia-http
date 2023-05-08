@@ -11,18 +11,18 @@
     export let value = typeof initialValue === 'string' ? parseInt(initialValue) : initialValue;
 
     // Node Bindings
-    let container = null;
-    let thumb = null;
-    let progressBar = null;
-    let element: Element = null;
+    let container: HTMLElement;
+    let thumb: HTMLElement;
+    let progressBar: HTMLElement;
+    let element: Element;
 
     // Internal State
-    let elementX: number = null;
-    let currentThumb = null;
+    let elementX: number;
+    let currentThumb: HTMLElement | null = null;
     let holding = false;
     let thumbHover = false;
     let keydownAcceleration = 0;
-    let accelerationTimer = null;
+    let accelerationTimer: ReturnType<typeof setInterval>;
 
     // Dispatch 'change' events
     const dispatch = createEventDispatcher();
@@ -46,7 +46,7 @@
         dispatch('change', { value });
     }
 
-    function onTrackEvent(e) {
+    function onTrackEvent(e: MouseEvent | TouchEvent) {
         // Update value immediately before beginning drag
         updateValueOnEvent(e);
         onDragStart(e);
@@ -56,15 +56,15 @@
         thumbHover = thumbHover ? false : true;
     }
 
-    function onDragStart(e) {
+    function onDragStart(e: MouseEvent | TouchEvent) {
         // If mouse event add a pointer events shield
         if (e.type === 'mousedown') document.body.append(mouseEventShield);
         currentThumb = thumb;
     }
 
-    function onDragEnd(e) {
+    function onDragEnd(e: MouseEvent | TouchEvent) {
         // If using mouse - remove pointer event shield
-        if (e.type === 'mouseup') {
+        if (e instanceof MouseEvent) {
             if (document.body.contains(mouseEventShield))
                 document.body.removeChild(mouseEventShield);
             // Needed to check whether thumb and mouse overlap after shield removed
@@ -74,7 +74,7 @@
     }
 
     // Check if mouse event cords overlay with an element's area
-    function isMouseInElement(event, element) {
+    function isMouseInElement(event: MouseEvent, element: Element) {
         let rect = element.getBoundingClientRect();
         let { clientX: x, clientY: y } = event;
         if (x < rect.left || x >= rect.right) return false;
@@ -118,22 +118,29 @@
 
         // Limit percent 0 -> 100
         percent = percent < 0 ? 0 : percent > 100 ? 100 : percent;
+        console.log('>>>', percent + '%', (percent * (max - min)) / 100 + min);
 
         // Limit value min -> max
-        setValue(parseInt((percent * (max - min)) / 100) + min);
+        setValue(Math.floor((percent * (max - min)) / 100 + min + 0.5));
     }
 
     // Handles both dragging of touch/mouse as well as simple one-off click/touches
-    function updateValueOnEvent(e) {
+    function updateValueOnEvent(e: MouseEvent | TouchEvent) {
         // touchstart && mousedown are one-off updates, otherwise expect a currentPointer node
-        if (!currentThumb && e.type !== 'touchstart' && e.type !== 'mousedown') return false;
+        if (!currentThumb && e.type !== 'touchstart' && e.type !== 'mousedown') {
+            return false;
+        }
 
         if (e.stopPropagation) e.stopPropagation();
         if (e.preventDefault) e.preventDefault();
 
         // Get client's x cord either touch or mouse
-        const clientX =
-            e.type === 'touchmove' || e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+        let clientX: number;
+        if (e instanceof TouchEvent) {
+            clientX = e.touches[0].clientX;
+        } else {
+            clientX = e.clientX;
+        }
 
         calculateNewValue(clientX);
     }
@@ -156,6 +163,15 @@
         // Update thumb position + active range track width
         thumb.style.left = `${offsetLeft}px`;
         progressBar.style.width = `${offsetLeft}px`;
+    }
+
+    let ticksX: number[] = [];
+    $: {
+        ticksX = [];
+        const range = max - min;
+        for (let i = 1; i < range; i++) {
+            ticksX.push((i / range) * 100); // precentage
+        }
     }
 </script>
 
@@ -182,6 +198,11 @@
         on:touchstart={onTrackEvent}
     >
         <div class="range__track" bind:this={container}>
+            <div class="tick-container">
+                {#each ticksX as t, index}
+                    <div class="tick" class:above-val={index > value - 2} style="left:{t}%;" />
+                {/each}
+            </div>
             <div class="range__track--highlighted" bind:this={progressBar} />
             <div
                 class="range__thumb"
@@ -223,7 +244,7 @@
     </style>
 </svelte:head>
 
-<style>
+<style lang="scss">
     .range {
         position: relative;
         flex: 1;
@@ -245,6 +266,27 @@
         height: 6px;
         background-color: var(--track-bgcolor, #d0d0d0);
         border-radius: 999px;
+    }
+
+    .tick-container {
+        height: 6px;
+        display: inline-block;
+        position: absolute;
+        width: calc(100% - 27px);
+        top: 8px;
+        left: 14px;
+
+        .tick {
+            width: 2px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.7);
+            position: absolute;
+            z-index: 1;
+
+            &.above-val {
+                background: rgba(0, 0, 0, 0.7);
+            }
+        }
     }
 
     .range__track--highlighted {
