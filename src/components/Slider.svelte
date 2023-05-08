@@ -44,9 +44,11 @@
     }
 
     // Allows both bind:value and on:change for parent value retrieval
-    function setValue(val: number) {
-        value = val;
-        dispatch('change', { value });
+    function setValue(newVal: number) {
+        if (value != newVal) {
+            value = newVal;
+            dispatch('change', { value });
+        }
     }
 
     function onTrackEvent(e: MouseEvent | TouchEvent) {
@@ -113,16 +115,23 @@
     }
 
     function calculateNewValue(clientX: number) {
-        const elementX = element.getBoundingClientRect().left;
-        // Find distance between cursor and element's left cord (20px / 2 = 10px) - Center of thumb
-        let delta = clientX - (elementX + 10);
+        const elementX = element.getBoundingClientRect().left + 8 + 10; // left + 0.5rem left margin + half thumb width
+        // Find distance between cursor and element's left coord
+        let delta = clientX - elementX;
 
-        // Use width of the container minus (5px * 2 sides) offset for percent calc
-        let percent = (delta * 100) / (container.clientWidth - 10);
+        // Use width of the container minus (8px padding * 2 sides) offset for percent calc
+        let percent = (delta * 100) / (container.clientWidth - 16);
 
         // Limit percent 0 -> 100
         percent = percent < 0 ? 0 : percent > 100 ? 100 : percent;
-        console.log('>>>', percent + '%', (percent * (max - min)) / 100 + min);
+        // console.log(
+        //     '>>>',
+        //     elementX,
+        //     clientX,
+        //     container.clientWidth,
+        //     percent.toFixed(2) + '%',
+        //     ((percent * (max - min)) / 100 + min).toFixed(3)
+        // );
 
         // Limit value min -> max
         setValue(Math.floor((percent * (max - min)) / 100 + min + 0.5));
@@ -138,7 +147,7 @@
         if (e.stopPropagation) e.stopPropagation();
         if (e.preventDefault) e.preventDefault();
 
-        // Get client's x cord either touch or mouse
+        // Get client's x coord either touch or mouse
         let clientX: number;
         if (e instanceof TouchEvent) {
             clientX = e.touches[0].clientX;
