@@ -8,6 +8,7 @@
     export let max = 10;
     export let initialValue = 0;
     export let id: string = '';
+    export let disabled = false;
     export let value = typeof initialValue === 'string' ? parseInt(initialValue) : initialValue;
 
     // Node Bindings
@@ -199,6 +200,7 @@
 <div class="range">
     <div
         class="range__wrapper"
+        class:disabled
         tabindex="0"
         on:keydown={onKeyPress}
         bind:this={element}
@@ -269,6 +271,10 @@
         padding: 0.5rem;
         box-sizing: border-box;
         outline: none;
+
+        &.disabled {
+            pointer-events: none;
+        }
     }
 
     .range__wrapper:focus-visible > .range__track {
@@ -336,6 +342,10 @@
     .range__thumb--holding {
         box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 2px 1px rgba(0, 0, 0, 0.2),
             0 0 0 6px var(--thumb-holding-outline, rgba(113, 119, 250, 0.3));
+    }
+
+    .disabled .range__tooltip {
+        display: none;
     }
 
     .range__tooltip {

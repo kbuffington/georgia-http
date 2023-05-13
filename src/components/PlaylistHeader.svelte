@@ -4,8 +4,7 @@
     import { onDestroy } from 'svelte';
     import Button from '@smui/button';
     import Menu from '@smui/menu';
-    import Slider from '@smui/slider';
-    import MySlider from '@components/Slider.svelte';
+    import Slider from '@components/Slider.svelte';
     import List, { Item, Text, Meta } from '@smui/list';
 
     let menu: Menu;
@@ -75,35 +74,20 @@
     <!-- .pages can be 0 if the playlist is empty -->
     {#if $playlistData.pages <= 1}
         <div class="page-num">-</div>
-        <Slider
-            class="page-slider"
-            bind:value={currentPage}
-            min={1}
-            max={2}
-            disabled
-            input$aria-label="Playlist page slider"
-        />
+        <div class="slider-container">
+            <Slider value={1} min={1} max={2} disabled />
+        </div>
         <div class="page-num">-</div>
     {:else}
         <div class="page-num">1</div>
         <div class="slider-container">
-            <MySlider
+            <Slider
                 bind:value={currentPage}
                 on:change={updatePage}
                 min={1}
                 max={$playlistData.pages}
             />
         </div>
-        <!-- <Slider
-            class="page-slider"
-            bind:value={currentPage}
-            on:click={updatePage}
-            min={1}
-            max={$playlistData.pages}
-            discrete
-            tickMarks
-            input$aria-label="Playlist page slider"
-        /> -->
         <div class="page-num">{$playlistData.pages}</div>
     {/if}
 </div>
