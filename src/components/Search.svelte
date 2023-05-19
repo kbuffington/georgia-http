@@ -1,13 +1,11 @@
 <script lang="ts">
-    import { page } from '$app/stores';
-    import { onDestroy, onMount } from 'svelte/internal';
+    import { onDestroy } from 'svelte/internal';
     import { routingState, searchString, setFocus } from '@stores/stores';
     import { librarySearch } from '@api/commands';
     import { goto } from '$app/navigation';
     import type { Unsubscriber } from 'svelte/store';
 
-    let inputRef: HTMLElement;
-    let showInput = false;
+    let inputRef: HTMLInputElement;
     const unsubscribe: Unsubscriber[] = [];
 
     unsubscribe.push(
@@ -26,6 +24,7 @@
             await goto(path, { replaceState: false });
         }
         setFocus.update(n => n + 1);
+        inputRef.select();
     };
 
     function doSearch(evt: KeyboardEvent) {
