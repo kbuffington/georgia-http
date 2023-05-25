@@ -32,7 +32,7 @@ export const playingInfo = asyncReadable(
                 return new Promise<any>(resolve => {
                     const obj: PlayingInfo = {} as any;
                     obj.playbackState = new PlaybackState({}, '0');
-                    obj.trackInfo = new TrackInfo({}, '', {});
+                    obj.trackInfo = new TrackInfo({}, '', '', {});
                     obj.playlistsInfo = new PlaylistsInfo({});
                     obj.playlistData = new PlaylistData({ js: [] }, obj.playlistsInfo);
                     resolve(obj);
