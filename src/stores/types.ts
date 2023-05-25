@@ -36,6 +36,7 @@ export class TrackInfo {
     albumArtist = '';
     artistCountryFlags: string[] = [];
     added = '';
+    discart = '';
     codecInfo = '';
     genre: string[] = [];
     labels: string[] = [];
@@ -52,7 +53,7 @@ export class TrackInfo {
     tracknumber = '';
     displayLength = '';
 
-    constructor(obj: any, artwork: string, json: any) {
+    constructor(obj: any, artwork: string, discart: string, json: any) {
         if (Object.keys(obj).length) {
             this.artist = obj.a ?? '';
             this.album = obj.b ?? '';
@@ -69,6 +70,7 @@ export class TrackInfo {
             this.tracknumber = obj.n;
             this.displayLength = secondsToTime(this.length);
             this.artwork = artwork;
+            this.discart = discart;
             if (Object.keys(json).length) {
                 this.year = json.helper2;
                 this.codecInfo = json.helper3

@@ -81,6 +81,11 @@
     </div>
     <div class="art-wrapper">
         <div class="art-measure" bind:clientWidth={w}>
+            {#if $trackInfo.discart}
+                <div class="discart-container">
+                    <img class="discart" src={$trackInfo.discart} alt="disc art" />
+                </div>
+            {/if}
             <img
                 class="albumart"
                 src={$trackInfo.artwork}
@@ -136,6 +141,10 @@
                 img.albumart {
                     cursor: pointer;
                     max-width: calc(50vw - 0.75rem);
+                }
+
+                .discart-container {
+                    left: calc($art-left * -2);
                 }
             }
             .metadata {
@@ -200,11 +209,36 @@
             border-left: 1px solid rgba(0, 0, 0, 0.2);
         }
 
-        img.albumart {
+        .discart-container {
+            position: absolute;
+            z-index: -1;
+            transition: left 1.5s;
+            left: min(
+                var(--artwidth) * 0.47,
+                calc(100vw - (50vw - var(--artwidth) / 2)) - $art-height - 10px
+            );
+        }
+
+        img.albumart,
+        img.discart {
             max-width: $max-artwidth;
             max-height: $art-height;
             min-height: $art-height;
             display: block; // fix the extra 4 pixels of parent space
+        }
+
+        img.discart {
+            max-width: $art-height; // needs to be square
+            animation: rotation 3s infinite linear;
+        }
+    }
+
+    @keyframes rotation {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(359deg);
         }
     }
 </style>
