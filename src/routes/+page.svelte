@@ -52,7 +52,7 @@
         z-index: 1000;
         // these are needed for preventing elements scrolled off page from being visible
         position: relative;
-        top: -3rem;
+        top: -1rem;
         max-width: 100%;
 
         .top-content {
@@ -61,7 +61,7 @@
 
         .playlist-view {
             position: absolute;
-            top: 2rem;
+            top: 0px;
         }
     }
 </style>

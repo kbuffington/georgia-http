@@ -86,8 +86,8 @@
 
     header {
         background-color: $header-bg;
-        height: calc($header-height - $padding); // no padding on top
-        padding: 0 $padding $padding $padding;
+        height: $header-height; // no padding on top or bottom
+        padding: 0 $padding;
 
         #transport {
             position: absolute;

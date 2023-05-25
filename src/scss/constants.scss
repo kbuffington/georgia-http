@@ -4,7 +4,11 @@ $total-header-height: calc($header-height + $extended-header-bg-height);
 $progress-bar-height: 1.5rem;
 $progress-bar-time-font-size: 2rem;
 $progress-bar-bottom-margin: 1.25rem;
-$total-progress-height: calc($progress-bar-height + $progress-bar-time-font-size + $progress-bar-bottom-margin);
+$total-progress-height: calc(
+    $progress-bar-height + $progress-bar-time-font-size + $progress-bar-bottom-margin
+);
+
+$artist-name-height: 80px;
 
 $query-width: 25vw;
 

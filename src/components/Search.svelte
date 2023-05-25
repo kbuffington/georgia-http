@@ -63,7 +63,7 @@
         z-index: 1002; // above transport
         position: absolute;
         left: 1rem;
-        top: 2rem;
+        top: 3rem;
         display: flex;
 
         .magnifier {
