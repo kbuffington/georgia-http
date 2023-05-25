@@ -217,6 +217,7 @@
                 var(--artwidth) * 0.47,
                 calc(100vw - (50vw - var(--artwidth) / 2)) - $art-height - 10px
             );
+            overflow: hidden; // prevent bouncy scrollbar
         }
 
         img.albumart,
