@@ -54,6 +54,24 @@ export const fb = derived(playingInfo, ($playingInfo: PlayingInfo) => {
     return $playingInfo.playbackState;
 });
 
+function createPausedStateStore() {
+    let _paused = false;
+    return asyncWritable(
+        fb,
+        async ($fb: PlaybackState) => {
+            _paused = $fb.isPaused;
+            return _paused;
+        },
+        async (state: boolean) => {
+            _paused = state;
+        }
+    );
+}
+/**
+ * pausedState is a settable value that will get
+ */
+export const pausedState = createPausedStateStore();
+
 export const playlistData = derived(playingInfo, ($playingInfo: PlayingInfo) => {
     return $playingInfo.playlistData;
 });

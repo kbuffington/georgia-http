@@ -1,6 +1,8 @@
 import type { QueryResponse } from '@stores/types';
 import { stripXmlEntities } from './backend';
 import { rebouncedInfoPlayingRefresh } from './refresh-data';
+import { fb, pausedState } from '@stores/fb-store';
+import { get } from 'svelte/store';
 
 export function debounce<T extends unknown[], U>(
     callback: (...args: T) => PromiseLike<U> | U,
@@ -48,6 +50,11 @@ const sendCommandAndRefresh = async (
 };
 
 export const playOrPause = () => {
+    const playbackState = get(fb);
+    if (playbackState.isPausedOrPlaying) {
+        const newVal = !get(pausedState);
+        pausedState.set(newVal);
+    }
     sendCommandAndRefresh('PlayOrPause');
 };
 

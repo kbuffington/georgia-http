@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { fb, trackInfo } from '@stores/fb-store';
+    import { fb, pausedState, trackInfo } from '@stores/fb-store';
     import { theme } from '@stores/art-store';
     import PauseButton from './PauseButton.svelte';
     import { playOrPause } from '@api/commands';
@@ -35,7 +35,7 @@
                 imageLoaded();
             }}
         />
-        {#if $fb.isPaused}
+        {#if $pausedState}
             <PauseButton size={w * 0.75} />
         {/if}
     </div>

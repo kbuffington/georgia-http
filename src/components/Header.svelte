@@ -1,7 +1,7 @@
 <script lang="ts">
     import Fab from '@smui/fab';
     import { playOrPause, startNext, startPrevious, stop } from '@api/commands';
-    import { fb, playingInfo } from '@stores/fb-store';
+    import { fb, pausedState, playingInfo } from '@stores/fb-store';
     import { progressUseTransition, progressVal, userSettings } from '@stores/stores';
     import { refreshPlayingInfo } from '@api/backend';
     import RoutingTabs from './RoutingTabs.svelte';
@@ -52,7 +52,7 @@
                 {#await playingInfo.load()}
                     <span class="material-symbols-outlined"> play_arrow </span>
                 {:then}
-                    {#if !$fb.isPlaying}
+                    {#if $pausedState || $fb.isStopped}
                         <span class="material-symbols-outlined"> play_arrow </span>
                     {:else}
                         <span class="material-symbols-outlined"> pause </span>
