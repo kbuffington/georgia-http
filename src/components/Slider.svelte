@@ -332,6 +332,7 @@
         margin-top: -8px;
         transition: box-shadow 100ms;
         user-select: none;
+        z-index: 1;
         box-shadow: var(
             --thumb-boxshadow,
             0 1px 1px 0 rgba(0, 0, 0, 0.14),
