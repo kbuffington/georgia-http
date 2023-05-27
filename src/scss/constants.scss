@@ -8,7 +8,9 @@ $total-progress-height: calc(
     $progress-bar-height + $progress-bar-time-font-size + $progress-bar-bottom-margin
 );
 
+// if these values change update in js of Playlist.svelte as well
 $artist-name-height: 80px;
+$art-top: calc($header-height + $artist-name-height);
 
 $query-width: 25vw;
 

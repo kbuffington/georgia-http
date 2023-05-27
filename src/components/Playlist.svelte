@@ -15,6 +15,7 @@
         setFocus,
         setPlaylistItemsPerPage,
     } from '@api/commands';
+    import { onMount } from 'svelte';
     // import { send, receive } from '@api/crossfade';
 
     export let position: string;
@@ -26,6 +27,8 @@
 
     const forceUpdate = async (_: any) => {};
     let doRerender = 0;
+    let numPlaylistRows = 0;
+    let containerEl: Element;
 
     function doSearch(evt: CustomEvent) {
         if ($searchString.length) {
@@ -134,6 +137,36 @@
                 break;
         }
     }
+
+    function resizePlaylist(plHeight: number) {
+        const availableHeight =
+            plHeight -
+            63 - // playlist header height?
+            21; // playlist footer height
+        const numRows = Math.floor(availableHeight / 20); // 20 is playlist row height
+        if (numPlaylistRows !== numRows) {
+            setPlaylistItemsPerPage(numRows);
+            numPlaylistRows = numRows;
+        }
+        console.log('resized h:', innerHeight, 'new numRows:', numRows);
+    }
+
+    onMount(() => {
+        const resizeObserver = new ResizeObserver(entries => {
+            // We're only watching one element
+            const entry = entries.at(0);
+
+            if (entry) {
+                //Get the block size
+                resizePlaylist(entry!.contentBoxSize[0].blockSize);
+            }
+        });
+
+        resizeObserver.observe(containerEl);
+
+        // This callback cleans up the observer
+        return () => resizeObserver.unobserve(containerEl);
+    });
 </script>
 
 <svelte:window on:keyup={keyHandler} />
@@ -143,6 +176,7 @@
     class:off={position === 'off'}
     class:left={position === 'left'}
     class:right={position === 'right'}
+    bind:this={containerEl}
     style="--maxRows:{$playlistsInfo?.playlistItemsPerPage ?? 30}"
 >
     {#await playingInfo.load()}
@@ -240,15 +274,19 @@
     @import '@css/constants.scss';
     @import '@css/colors.scss';
 
+    $playlist-height: calc(100vh - $art-top - $total-progress-height - 28px);
+
     .playlist-container {
         width: fit-content;
+        top: -2px;
         background-color: $panel-bg;
         border: 1px solid black;
         padding: 3px;
         border-radius: 6px;
-        height: calc(
-            $pl-row-height * (var(--maxRows) + 1) + $pl-slider-height + $pl-header-height + 27px
-        );
+        // height: calc(
+        //     $pl-row-height * (var(--maxRows) + 1) + $pl-slider-height + $pl-header-height + 27px
+        // );
+        height: $playlist-height;
         display: flex;
         flex-direction: column;
         position: absolute;

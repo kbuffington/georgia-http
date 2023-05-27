@@ -108,7 +108,6 @@
 
     $left-padding: 1rem;
     $max-artwidth: 55vw;
-    $art-top: calc($header-height + $artist-name-height);
 
     // the -7.5rem is readding in what was the absolute positioning of the artwork + giving some space between elements
     $art-height: calc(100vh - $art-top - $total-progress-height - 1.5rem);
@@ -144,7 +143,7 @@
                 }
 
                 .discart-container {
-                    left: calc($art-left * -2);
+                    left: calc($art-left * -2.5);
                 }
             }
             .metadata {
