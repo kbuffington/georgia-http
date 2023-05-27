@@ -14,11 +14,9 @@ class PlayTimeInfo {
 
     constructor(json: any) {
         if (Object.keys(json).length) {
-            this.added = json.add === '' || json.add === 'N/A' ? -1 : new Date(json.add).getTime();
-            this.firstPlayed =
-                json.fp === '' || json.fp === 'N/A' ? -1 : new Date(json.fp).getTime();
-            this.lastPlayed =
-                json.lp === '' || json.lp === 'N/A' ? -1 : new Date(json.lp).getTime();
+            this.added = !json.add || json.add === 'N/A' ? -1 : new Date(json.add).getTime();
+            this.firstPlayed = !json.fp || json.fp === 'N/A' ? -1 : new Date(json.fp).getTime();
+            this.lastPlayed = !json.lp || json.lp === 'N/A' ? -1 : new Date(json.lp).getTime();
             // round times to nearest minute
             const playTimes = json.fbpt.map((t: number) => Math.floor(t / 60000) * 60000);
             const lfm = json.lfmpt.map((t: number) => Math.floor(t / 60000) * 60000);
@@ -155,9 +153,9 @@ export class PlaylistData {
         this.page = json.page === '0' ? 1 : parseInt(json.page);
         this.pages = parseInt(json.pages);
         // this.playingNumItems = parseInt(json.playingNumItems);
-        this.numItems = json.numItems === '?' ? 0 : parseInt(json.numItems);
-        this.focusedItem = json.focused === '?' ? -1 : parseInt(json.focused);
-        this.playingItem = json.itemPlaying === '?' ? -1 : parseInt(json.itemPlaying);
+        this.numItems = json.numItems === '?' ? 0 : json.numItems;
+        this.focusedItem = json.focused === '?' ? -1 : json.focused;
+        this.playingItem = json.itemPlaying === '?' ? -1 : json.itemPlaying;
         this.totalTime = json.totalTime;
         if (pi.playlists.length) {
             this.locked = pi.playlists[pi.playlistActive].locked;
@@ -185,11 +183,11 @@ export class PlaylistsInfo {
     constructor(json: any) {
         if (JSON.stringify(json) !== '{}') {
             this.playlists = json.js.map((pl: any) => {
-                return { name: pl.name, count: parseInt(pl.count), locked: pl.locked };
+                return { name: pl.name, count: pl.count, locked: pl.locked };
             });
-            this.playlistActive = parseInt(json.active);
-            this.playlistPlaying = parseInt(json.playing);
-            this.playlistItemsPerPage = parseInt(json.itemsPerPage);
+            this.playlistActive = json.active;
+            this.playlistPlaying = json.playing;
+            this.playlistItemsPerPage = json.itemsPerPage;
         }
     }
 }
@@ -203,13 +201,13 @@ enum PlaybackStates {
 export class PlaybackState {
     private state: PlaybackStates = PlaybackStates.STOPPED;
 
-    constructor(json: any, itemPlaylingLen: string) {
-        if (itemPlaylingLen === '0') {
+    constructor(json: any, itemPlaylingLen: number) {
+        if (itemPlaylingLen == 0) {
             // sometimes isPlaying is true but there's no length
             this.state = PlaybackStates.STOPPED;
-        } else if (json.isPlaying === '1') {
+        } else if (json.isPlaying === 1) {
             this.state = PlaybackStates.PLAYING;
-        } else if (json.isPaused === '1') {
+        } else if (json.isPaused === 1) {
             this.state = PlaybackStates.PAUSED;
         }
     }

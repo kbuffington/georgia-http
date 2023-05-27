@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onDestroy } from 'svelte';
     import { fb, currentTime, trackInfo } from '@stores/fb-store';
-    import { theme } from '@stores/art-store';
     import { noop } from '@api/callbacks';
     import { seekSecond } from '@api/commands';
     import { progressUseTransition, progressVal } from '@stores/stores';

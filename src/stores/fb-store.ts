@@ -10,7 +10,18 @@ export const playingInfo = asyncReadable(
     async () => {
         try {
             const response = await refreshPlayingInfo();
-            const json = await response.json();
+            const jsonText = await response.text();
+            const json = JSON.parse(jsonText, (key, value) => {
+                // don't modify helper strings
+                if (!key.startsWith('helper')) {
+                    if (!isNaN(value) && !Array.isArray(value)) {
+                        return Number(value);
+                    } else if (value === '') {
+                        return undefined;
+                    }
+                }
+                return value;
+            });
 
             return new Promise<any>(resolve => {
                 const obj: PlayingInfo = json;
@@ -31,7 +42,7 @@ export const playingInfo = asyncReadable(
                 console.log(e.name, '>>>', e.message);
                 return new Promise<any>(resolve => {
                     const obj: PlayingInfo = {} as any;
-                    obj.playbackState = new PlaybackState({}, '0');
+                    obj.playbackState = new PlaybackState({}, 0);
                     obj.trackInfo = new TrackInfo({}, '', '', {});
                     obj.playlistsInfo = new PlaylistsInfo({});
                     obj.playlistData = new PlaylistData({ js: [] }, obj.playlistsInfo);
