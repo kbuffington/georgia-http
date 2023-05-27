@@ -150,7 +150,7 @@ export class PlaylistData {
     totalTime = '';
 
     constructor(json: any, pi: PlaylistsInfo) {
-        this.page = json.page === '0' ? 1 : parseInt(json.page);
+        this.page = json.page === 0 ? 1 : parseInt(json.page);
         this.pages = parseInt(json.pages);
         // this.playingNumItems = parseInt(json.playingNumItems);
         this.numItems = json.numItems === '?' ? 0 : json.numItems;

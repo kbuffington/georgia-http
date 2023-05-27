@@ -14,7 +14,7 @@ export const playingInfo = asyncReadable(
             const json = JSON.parse(jsonText, (key, value) => {
                 // don't modify helper strings
                 if (!key.startsWith('helper')) {
-                    if (!isNaN(value) && !Array.isArray(value)) {
+                    if (!isNaN(value) && !Array.isArray(value) && key !== 'n' && key !== 'd') {
                         return Number(value);
                     } else if (value === '') {
                         return undefined;
@@ -22,6 +22,7 @@ export const playingInfo = asyncReadable(
                 }
                 return value;
             });
+            //console.log(json);
 
             return new Promise<any>(resolve => {
                 const obj: PlayingInfo = json;
