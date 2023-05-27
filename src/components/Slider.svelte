@@ -296,8 +296,9 @@
         left: 14px;
 
         .tick {
+            top: 1px;
             width: 2px;
-            height: 6px;
+            height: 4px;
             background: rgba(255, 255, 255, 0.7);
             position: absolute;
             z-index: 1;
