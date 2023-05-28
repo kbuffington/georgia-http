@@ -208,7 +208,9 @@
                         on:click={evt => selectItem(evt, i, item)}
                         on:dblclick={() => playItem(item.plIndex)}
                     >
-                        <div class="cell tracknum">{item.tracknumber}.</div>
+                        <div class="cell tracknum">
+                            {item.queueIndexes}{item.discNumber}{item.tracknumber}.
+                        </div>
                         <div class="cell title">
                             {#if i === 0 || item.albumArtist !== $playlistData.tracks[i - 1].albumArtist || item.album !== $playlistData.tracks[i - 1].album}
                                 {item.title}
@@ -343,10 +345,6 @@
             transition: 1s width;
             display: table;
 
-            span.dimmed {
-                color: var(--dimTextColor);
-            }
-
             .item-row {
                 color: rgb(230, 230, 230);
                 font-size: 12px;
@@ -365,6 +363,14 @@
                 &.active {
                     background-color: var(--primary) !important;
                     color: var(--textColor);
+
+                    span.dimmed {
+                        color: var(--dimTextColor);
+                    }
+                }
+
+                span.dimmed {
+                    color: rgb(255, 255, 255, 0.7); //var(--dimTextColor);
                 }
 
                 &:not(.selected).newalbum .cell {

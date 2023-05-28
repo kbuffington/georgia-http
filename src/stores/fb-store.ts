@@ -14,7 +14,13 @@ export const playingInfo = asyncReadable(
             const json = JSON.parse(jsonText, (key, value) => {
                 // don't modify helper strings
                 if (!key.startsWith('helper')) {
-                    if (!isNaN(value) && !Array.isArray(value) && key !== 'n' && key !== 'd') {
+                    if (
+                        !isNaN(value) &&
+                        !Array.isArray(value) &&
+                        key !== 'n' &&
+                        key !== 'd' &&
+                        key !== 'qi'
+                    ) {
                         return Number(value);
                     } else if (value === '') {
                         return undefined;

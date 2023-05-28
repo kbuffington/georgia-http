@@ -1,4 +1,5 @@
 import { loadCountryFlags } from '@api/country';
+import { convertToRoman } from '@api/helpers';
 
 function secondsToTime(time: number) {
     const minutes = Math.floor(time / 60);
@@ -99,6 +100,8 @@ export class PlTrackData {
     ratingStars = '';
     ratingEmpty = '⋅⋅⋅⋅⋅';
     title = '';
+    discNumber = '';
+    queueIndexes = '';
     tracknumber = '';
     active = false;
     focused = false;
@@ -129,6 +132,8 @@ export class PlTrackData {
             // this.ratingStars = json.r.padEnd(5, '\u2219');
             this.ratingEmpty = fill.repeat(5 - this.rating);
             this.title = json.t;
+            this.discNumber = json.dn > 0 ? `${convertToRoman(json.dn)}-` : '';
+            this.queueIndexes = json.qi ?? '';
             this.tracknumber = json.n;
             this.plIndex = plInfo.playlistItemsPerPage * (pData.page - 1) + index;
             this.active =
