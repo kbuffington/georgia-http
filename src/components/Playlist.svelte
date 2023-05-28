@@ -398,8 +398,12 @@
                     &.tracknum {
                         font-weight: 500;
                         width: $pl-track-w;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
                         text-align: right;
                         box-sizing: border-box;
+                        max-width: 60px;
                     }
                     &.title {
                         font-weight: 300;
