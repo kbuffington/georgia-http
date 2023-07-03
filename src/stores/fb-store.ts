@@ -15,6 +15,7 @@ export const playingInfo = asyncReadable(
                 // don't modify helper strings
                 if (!key.startsWith('helper')) {
                     if (
+                        value !== '' &&
                         !isNaN(value) &&
                         !Array.isArray(value) &&
                         key !== 'n' &&
