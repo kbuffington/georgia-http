@@ -166,7 +166,7 @@
     $: holding = Boolean(currentThumb);
 
     // Update progressbar and thumb styles to represent value
-    $: if (progressBar && thumb) {
+    $: if (progressBar && thumb && container) {
         // Limit value min -> max
         value = value > min ? value : min;
         value = value < max ? value : max;

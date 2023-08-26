@@ -37,8 +37,11 @@ export const playingInfo = asyncReadable(
                 obj.trackInfo = new TrackInfo(json.helper1, json.albumArt, json.discArt, json);
                 obj.playlistsInfo = new PlaylistsInfo(json.playlists);
                 obj.playlistData = new PlaylistData(json.playlist, obj.playlistsInfo);
-                if (get(searchString).length === 0) {
-                    searchString.set(json.search);
+                if (json.search) {
+                    const ss = get(searchString);
+                    if (!ss || ss?.length === 0) {
+                        searchString.set(json.search);
+                    }
                 }
                 console.log(obj.playlistsInfo);
                 resolve(obj);
