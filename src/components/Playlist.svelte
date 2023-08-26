@@ -15,7 +15,7 @@
         setFocus,
         setPlaylistItemsPerPage,
     } from '@api/commands';
-    import { onMount } from 'svelte';
+    // import { onMount } from 'svelte';
     // import { send, receive } from '@api/crossfade';
 
     export let position: string;
@@ -146,27 +146,34 @@
         const numRows = Math.floor(availableHeight / 20); // 20 is playlist row height
         if (numPlaylistRows !== numRows) {
             setPlaylistItemsPerPage(numRows);
+            console.log(
+                `>>> resized h: ${innerHeight} new numRows: ${numRows} was ${numPlaylistRows}`
+            );
             numPlaylistRows = numRows;
         }
-        console.log('resized h:', innerHeight, 'new numRows:', numRows);
     }
 
-    onMount(() => {
-        const resizeObserver = new ResizeObserver(entries => {
-            // We're only watching one element
-            const entry = entries.at(0);
+    let resizeObserver: ResizeObserver;
+    function setObserver(position: string) {
+        if (position !== 'off') {
+            resizeObserver?.unobserve(containerEl);
+            resizeObserver = new ResizeObserver(entries => {
+                // We're only watching one element
+                const entry = entries.at(0);
 
-            if (entry) {
-                //Get the block size
-                resizePlaylist(entry!.contentBoxSize[0].blockSize);
-            }
-        });
+                if (entry) {
+                    //Get the block size
+                    resizePlaylist(entry!.contentBoxSize[0].blockSize);
+                }
+            });
+            resizeObserver.observe(containerEl);
+        } else {
+            resizeObserver?.unobserve(containerEl);
+        }
+    }
+    $: thing = setObserver(position);
 
-        resizeObserver.observe(containerEl);
-
-        // This callback cleans up the observer
-        return () => resizeObserver.unobserve(containerEl);
-    });
+    // onMount(() => {});
 </script>
 
 <svelte:window on:keyup={keyHandler} />
