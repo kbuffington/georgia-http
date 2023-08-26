@@ -30,8 +30,6 @@
             tickRatios.shift();
             lastRatio = (100 * (last - added)) / total;
         }
-        console.log('ratios:', firstRatio, lastRatio);
-        console.log(tickRatios);
     });
 
     onDestroy(() => {
