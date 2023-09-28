@@ -37,11 +37,13 @@
     });
 
     function resizeWindow() {
-        let percent = ((value - min) * 100) / (max - min);
-        let offsetLeft = (container.clientWidth - 10) * (percent / 100) + 5;
+        if (container) {
+            let percent = ((value - min) * 100) / (max - min);
+            let offsetLeft = (container.clientWidth - 10) * (percent / 100) + 5;
 
-        // Update thumb position + active range track width
-        thumb.style.left = `${offsetLeft}px`;
+            // Update thumb position + active range track width
+            thumb.style.left = `${offsetLeft}px`;
+        }
     }
 
     // Allows both bind:value and on:change for parent value retrieval
