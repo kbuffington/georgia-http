@@ -32,7 +32,7 @@ class ProgressStore {
             const $fb = get(fb);
             if ($fb.isStopped) {
                 this.set(0);
-            } else if (trackLen) {
+            } else if (!isNaN(value) && trackLen) {
                 this.set(value / trackLen);
             }
             this.interval = setInterval(() => {
