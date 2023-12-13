@@ -39,7 +39,8 @@
            --darkAccent:{$theme.darkAccent};
            --lightAccent:{$theme.lightAccent};
            --textColor:{$theme.textColor};
-           --dimTextColor:{$theme.dimTextColor};"
+           --dimTextColor:{$theme.dimTextColor};
+           --activeTextColor:{$theme.activeTextColor};"
 >
     <Header />
 

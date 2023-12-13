@@ -17,6 +17,7 @@ interface ThemeColors {
     lightAccent: string;
     textColor: string;
     dimTextColor: string;
+    activeTextColor: string;
 }
 
 class ThemeStore {
@@ -59,8 +60,8 @@ class ThemeStore {
             c.brightness = getBrightness(c.red, c.green, c.blue);
 
             // Quadratic lightness regression: 0.35 + 2.34x -2.8x^2
-            const regLightness = 0.26 + 2.34 * c.lightness - 2.8 * c.lightness * c.lightness;
-            const regBrightness = 0.26 + 2.34 * c.brightness - 2.8 * c.brightness * c.brightness;
+            // const regLightness = 0.26 + 2.34 * c.lightness - 2.8 * c.lightness * c.lightness;
+            // const regBrightness = 0.26 + 2.34 * c.brightness - 2.8 * c.brightness * c.brightness;
             const midBrightness = 0.5 - Math.abs(0.5 - c.brightness);
             const euler = 2.71828;
             const areaWeight = 1 - Math.pow(10 * euler, -5 * c.area);
@@ -99,6 +100,7 @@ class ThemeStore {
         let lightAccent: Color;
         let textColor = createColor(255, 255, 255);
         let dimTextColor = rgbaToHex(255, 255, 255, 0.7);
+        let activeTextColor = rgbaToHex(255, 255, 255, 1.0);
 
         if (primary.brightness < 0.16) {
             darkAccent = shadeColor(primary, 35);
@@ -109,8 +111,9 @@ class ThemeStore {
             darkAccent = shadeColor(primary, 30);
             accent = shadeColor(primary, 20);
             lightAccent = shadeColor(primary, 10);
-            textColor = createColor(0, 0, 0);
+            textColor = createColor(15, 15, 15);
             dimTextColor = rgbaToHex(0, 0, 0, 0.7);
+            activeTextColor = rgbaToHex(0, 0, 0, 1.0);
         } else {
             // default
             darkAccent = shadeColor(primary, 30);
@@ -125,6 +128,7 @@ class ThemeStore {
             lightAccent: lightAccent.hex,
             textColor: textColor.hex,
             dimTextColor,
+            activeTextColor,
         };
     }
 }

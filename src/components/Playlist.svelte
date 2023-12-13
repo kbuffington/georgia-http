@@ -369,7 +369,10 @@
 
                 &.active {
                     background-color: var(--primary) !important;
-                    color: var(--textColor);
+
+                    .cell {
+                        color: var(--activeTextColor) !important;
+                    }
 
                     span.dimmed {
                         color: var(--dimTextColor);
