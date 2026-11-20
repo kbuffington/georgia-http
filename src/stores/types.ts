@@ -162,7 +162,7 @@ export class PlaylistData {
         this.focusedItem = json.focused === '?' ? -1 : json.focused;
         this.playingItem = json.itemPlaying === '?' ? -1 : json.itemPlaying;
         this.totalTime = json.totalTime;
-        if (pi.playlists.length) {
+        if (pi.playlists.length && pi.playlistActive >= 0 && pi.playlistActive < 4294967295) {
             this.locked = pi.playlists[pi.playlistActive].locked;
         }
         this.tracks = json.js.map((t: any, i: number) => new PlTrackData(t, i, pi, this));
