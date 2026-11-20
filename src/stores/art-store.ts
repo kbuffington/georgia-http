@@ -40,13 +40,89 @@ class ThemeStore {
         this._set(this.getNewThemeColors(red, green, blue));
     }
 
-    public async getArtColors(path: string) {
+    // extracted palettes by image URL; the main and mini artwork load the same image at about the
+    // same time, so caching the in-flight promise means the work is only done once
+    private paletteCache = new Map<string, Promise<Color[] | undefined>>();
+    private static PALETTE_CACHE_SIZE = 5;
+
+    /** Picks the theme color from an already-loaded <img>. */
+    public async getArtColors(img: HTMLImageElement) {
+        const key = img.currentSrc || img.src;
+        let palette = this.paletteCache.get(key);
+        if (!palette) {
+            palette = this.extractPalette(img);
+            this.paletteCache.set(key, palette);
+            // Map keeps insertion order, so the first key is the oldest
+            while (this.paletteCache.size > ThemeStore.PALETTE_CACHE_SIZE) {
+                this.paletteCache.delete(this.paletteCache.keys().next().value!);
+            }
+        }
+        const colors = await palette;
+        if (colors) {
+            this.processColors(colors);
+        } else {
+            this.paletteCache.delete(key); // failed; allow a retry on the next load
+        }
+    }
+
+    /**
+     * Extracts the palette from the displayed image's own pixels rather than re-fetching its URL.
+     *
+     * Shrinking a large image straight from the <img> in one drawImage (e.g. 3000x3000 -> 100x100)
+     * made the sampled pixels depend on how the browser decoded/scaled the image on that load, so
+     * art whose top two colors score almost the same flipped between them on refresh. Instead,
+     * copy the image 1:1 (exact pixels), then halve it repeatedly with smoothing so each sampled
+     * pixel is an average of its area — stable, and representative of what's on screen.
+     */
+    private async extractPalette(img: HTMLImageElement): Promise<Color[] | undefined> {
         try {
-            const cols = await extractColors(path, extractOptions);
-            this.processColors(cols.map(fc => createColor(fc.red, fc.green, fc.blue, fc.area)));
+            const { naturalWidth: nw, naturalHeight: nh } = img;
+            if (!nw || !nh) return undefined;
+            const targetPixels = extractOptions.pixels ?? 64000;
+
+            // exact 1:1 copy (bounded so a truly huge image can't use excessive memory)
+            const MAX_PIXELS = 4096 * 4096;
+            const fit = Math.min(1, Math.sqrt(MAX_PIXELS / (nw * nh)));
+            let canvas = this.drawToCanvas(img, Math.floor(nw * fit), Math.floor(nh * fit));
+            // halve until close to the target size, then one final step to it
+            while (canvas.width * canvas.height > targetPixels * 4) {
+                canvas = this.drawToCanvas(
+                    canvas,
+                    Math.floor(canvas.width / 2),
+                    Math.floor(canvas.height / 2)
+                );
+            }
+            const finalScale = Math.min(
+                1,
+                Math.sqrt(targetPixels / (canvas.width * canvas.height))
+            );
+            canvas = this.drawToCanvas(
+                canvas,
+                Math.round(canvas.width * finalScale),
+                Math.round(canvas.height * finalScale)
+            );
+            const { width, height } = canvas;
+            const imageData = canvas
+                .getContext('2d', { willReadFrequently: true })!
+                .getImageData(0, 0, width, height);
+            const cols = await extractColors(imageData, extractOptions);
+            return cols.map(fc => createColor(fc.red, fc.green, fc.blue, fc.area));
         } catch (e) {
             console.error(e);
+            return undefined;
         }
+    }
+
+    /** Draws `source` into a new CPU-backed canvas of the given size, with high-quality smoothing. */
+    private drawToCanvas(source: CanvasImageSource, width: number, height: number) {
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, width);
+        canvas.height = Math.max(1, height);
+        const context = canvas.getContext('2d', { willReadFrequently: true })!;
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = 'high';
+        context.drawImage(source, 0, 0, canvas.width, canvas.height);
+        return canvas;
     }
 
     public processColors(colors: Color[]) {

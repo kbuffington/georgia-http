@@ -1,7 +1,9 @@
 import type { BrowserOptions } from 'extract-colors/lib/types/Options';
 
 export const extractOptions: BrowserOptions = {
-    pixels: 10000,
+    // art is averaged down to ~200x200 before extraction; larger samples converged on the same
+    // pick, smaller ones were less representative (pixel read + extraction ~15ms at this size)
+    pixels: 40000,
     distance: 0.1, // default: 0.2
     splitPower: 15, // default: 10 [2-15]
     colorValidator: (red: number, green: number, blue: number, alpha = 255) => alpha > 250,

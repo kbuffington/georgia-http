@@ -15,9 +15,9 @@
     let w = $state<number>();
     const artWidthStyle = $derived(w === undefined ? '' : `--artwidth:${w}px`);
 
-    function imageLoaded() {
+    function imageLoaded(img: HTMLImageElement) {
         if ($fb.isPausedOrPlaying) {
-            theme.getArtColors($trackInfo.artwork);
+            theme.getArtColors(img);
         }
     }
 </script>
@@ -39,8 +39,8 @@
             alt="album art"
             onclick={playOrPause}
             onkeydown={() => {}}
-            onload={() => {
-                imageLoaded();
+            onload={evt => {
+                imageLoaded(evt.currentTarget as HTMLImageElement);
             }}
         />
         {#if $pausedState}

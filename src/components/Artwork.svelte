@@ -17,8 +17,8 @@
     let w = $state<number>();
     const artWidthStyle = $derived(w === undefined ? '' : `--artwidth:${w}px`);
 
-    function imageLoaded() {
-        theme.getArtColors($trackInfo.artwork);
+    function imageLoaded(img: HTMLImageElement) {
+        theme.getArtColors(img);
     }
 
     // star the pointer is over (1-5), used to preview the rating a double-click would set
@@ -120,8 +120,8 @@
                 alt="album art"
                 onclick={playOrPause}
                 onkeydown={() => {}}
-                onload={() => {
-                    imageLoaded();
+                onload={evt => {
+                    imageLoaded(evt.currentTarget as HTMLImageElement);
                 }}
             />
             {#if $pausedState}
