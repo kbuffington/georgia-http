@@ -382,43 +382,12 @@
                 user-select: none;
                 box-sizing: border-box;
 
-                &.is-drop-target {
-                    background-color: var(--lightAccent) !important;
-                }
-
-                &.active {
-                    background-color: var(--primary) !important;
-
-                    .cell {
-                        color: var(--activeTextColor) !important;
-                    }
-
-                    span.dimmed {
-                        color: var(--dimTextColor);
-                    }
-                }
-
                 span.dimmed {
                     color: rgb(255, 255, 255, 0.7); //var(--dimTextColor);
                 }
 
-                &:not(.selected).newalbum .cell {
-                    // border-top: 1px solid var(--color);
-                    border-top: 1px solid rgb(220, 220, 220);
-                }
                 &:not(.newalbum) .cell {
                     border-top: 1px solid rgba(0, 0, 0, 0); // need an invisible border so height doesn't get screwed up
-                }
-
-                &.selected {
-                    box-shadow: inset 0px 0px 0px 1px grey;
-
-                    .cell {
-                        color: white;
-                    }
-                    .cell.tracknum {
-                        border-left: 5px solid var(--darkAccent);
-                    }
                 }
 
                 div.cell {
@@ -444,36 +413,6 @@
                             $playlist-width - $pl-track-w - $pl-playcount-w - $pl-rating-w -
                                 $pl-length-w
                         );
-
-                        .featured {
-                            font-weight: 400;
-                        }
-                    }
-                    &.playcount {
-                        font-size: 10px;
-                        text-align: right;
-                        padding-right: 5px;
-                        font-weight: 100;
-                        width: $pl-playcount-w;
-                    }
-
-                    &.rating {
-                        user-select: none; // double-clicking to rate shouldn't select text
-
-                        .rate {
-                            cursor: pointer;
-                        }
-                        .star {
-                            letter-spacing: 2px;
-                        }
-                        .empty {
-                            letter-spacing: 6.3px;
-
-                            &.nostars {
-                                padding-left: 3px;
-                            }
-                        }
-                        width: $pl-rating-w;
                     }
                     &.length {
                         width: $pl-length-w;
@@ -484,6 +423,76 @@
                 }
                 &:nth-of-type(odd) {
                     background-color: rgba(0, 0, 0, 0.15);
+                }
+            }
+        }
+
+        // Track rows only. The footer reuses the base .item-row/.cell styles above, but never has
+        // these row states or the playcount/rating cells.
+        .playlist-data .item-row {
+            &.is-drop-target {
+                background-color: var(--lightAccent) !important;
+            }
+
+            &.active {
+                background-color: var(--primary) !important;
+
+                .cell {
+                    color: var(--activeTextColor) !important;
+                }
+
+                span.dimmed {
+                    color: var(--dimTextColor);
+                }
+            }
+
+            &:not(.selected).newalbum .cell {
+                // border-top: 1px solid var(--color);
+                border-top: 1px solid rgb(220, 220, 220);
+            }
+
+            &.selected {
+                box-shadow: inset 0px 0px 0px 1px grey;
+
+                .cell {
+                    color: white;
+                }
+                .cell.tracknum {
+                    border-left: 5px solid var(--darkAccent);
+                }
+            }
+
+            div.cell {
+                &.title {
+                    .featured {
+                        font-weight: 400;
+                    }
+                }
+                &.playcount {
+                    font-size: 10px;
+                    text-align: right;
+                    padding-right: 5px;
+                    font-weight: 100;
+                    width: $pl-playcount-w;
+                }
+
+                &.rating {
+                    user-select: none; // double-clicking to rate shouldn't select text
+
+                    .rate {
+                        cursor: pointer;
+                    }
+                    .star {
+                        letter-spacing: 2px;
+                    }
+                    .empty {
+                        letter-spacing: 6.3px;
+
+                        &.nostars {
+                            padding-left: 3px;
+                        }
+                    }
+                    width: $pl-rating-w;
                 }
             }
         }

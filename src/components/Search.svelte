@@ -91,6 +91,7 @@
                 border-radius: 0;
                 color: white;
                 -webkit-appearance: none;
+                appearance: none;
 
                 &::-webkit-search-cancel-button {
                     /* Remove default */

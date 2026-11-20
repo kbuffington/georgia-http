@@ -100,9 +100,6 @@
         // width: 100%;
         display: flex;
 
-        .slider-container {
-            // flex-grow: 1;
-        }
         .page-num {
             font-size: 13px;
             width: 1.75rem;
@@ -127,11 +124,6 @@
         // flex-grow: 1;
         width: calc(100% - 4rem);
         // height: $pl-slider-height !important;
-    }
-    .page-selection :global(.mdc-slider .mdc-slider__thumb) {
-        // height: $pl-slider-height !important;
-        // width: $pl-slider-height !important;
-        // left: calc($pl-slider-height / -2) !important;
     }
 
     .menu-container :global(.mdc-button.mini) {
