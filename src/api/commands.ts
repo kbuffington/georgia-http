@@ -121,6 +121,17 @@ export const setRatings = (items: number[], rating: number) => {
     return sendCommandAndRefresh('SelectionCommand', command, items.join(','));
 };
 
+/**
+ * Sets the Playback Statistics (foo_playcount) rating of the currently playing track via
+ * foo_httpcontrol's PlayingCommand.
+ * @param rating 1-5, or 0 to clear the rating
+ */
+export const setPlayingRating = (rating: number) => {
+    const menuItem = rating > 0 ? `${rating}` : '<not set>';
+    const command = encodeURIComponent(`Playback Statistics/Rating/${menuItem}`);
+    return sendCommandAndRefresh('PlayingCommand', command);
+};
+
 export const moveItems = (items: number[], diff: number) => {
     sendCommandAndRefresh('Move', items.join(','), diff);
 };

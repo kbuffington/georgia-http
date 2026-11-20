@@ -3,7 +3,7 @@
     import { theme } from '@stores/art-store';
     import Timeline from '@components/Timeline.svelte';
     import PauseButton from '@components/PauseButton.svelte';
-    import { playOrPause } from '@api/commands';
+    import { playOrPause, setPlayingRating } from '@api/commands';
 
     interface Props {
         position?: string;
@@ -19,6 +19,15 @@
 
     function imageLoaded() {
         theme.getArtColors($trackInfo.artwork);
+    }
+
+    // star the pointer is over (1-5), used to preview the rating a double-click would set
+    let hoverRating = $state(0);
+    const shownRating = $derived(hoverRating || $trackInfo.rating);
+
+    /** Double-clicking a star sets that rating; double-clicking the current rating clears it. */
+    function ratePlaying(rating: number) {
+        setPlayingRating(rating === $trackInfo.rating ? 0 : rating);
     }
 </script>
 
@@ -76,14 +85,25 @@
                     <div class="data">{$trackInfo.playcount}</div>
                 {/if}
 
-                {#if $trackInfo.rating > 0}
-                    <div class="label">Rating</div>
-                    <div class="data rating">
-                        {#each { length: $trackInfo.rating } as _, i (i)}
-                            <span class="material-symbols-outlined"> grade </span>
-                        {/each}
-                    </div>
-                {/if}
+                <div class="label">Rating</div>
+                <div class="data rating" onmouseleave={() => (hoverRating = 0)} role="group">
+                    {#each { length: 5 } as _, i (i)}
+                        <span
+                            class="material-symbols-outlined star"
+                            class:filled={i < shownRating}
+                            class:previewing={hoverRating > 0}
+                            role="button"
+                            tabindex="-1"
+                            title={i + 1 === $trackInfo.rating
+                                ? 'Double-click to clear rating'
+                                : `Double-click to rate ${i + 1}`}
+                            onmouseenter={() => (hoverRating = i + 1)}
+                            ondblclick={() => ratePlaying(i + 1)}
+                        >
+                            grade
+                        </span>
+                    {/each}
+                </div>
             </div>
         {/if}
     </div>
@@ -194,6 +214,32 @@
                     &.rating {
                         color: orange;
                         text-shadow: 0px 0px 1px black;
+                        user-select: none; // double-clicking to rate shouldn't select text
+                        width: fit-content;
+
+                        .star {
+                            cursor: pointer;
+                            // unfilled stars are outlines
+                            font-variation-settings:
+                                'FILL' 0,
+                                'wght' 400,
+                                'GRAD' 0,
+                                'opsz' 48;
+                            opacity: 0.6;
+
+                            &.filled {
+                                font-variation-settings:
+                                    'FILL' 1,
+                                    'wght' 400,
+                                    'GRAD' 0,
+                                    'opsz' 48;
+                                opacity: 1;
+                            }
+                            // while hovering, show the rating a double-click would set
+                            &.previewing.filled {
+                                color: #ffc04d;
+                            }
+                        }
                     }
 
                     .dot {
