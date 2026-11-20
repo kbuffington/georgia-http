@@ -64,10 +64,10 @@
 </div>
 
 <style lang="scss">
-    @import '@css/roboto/roboto.scss';
-    @import '@css/colors.scss';
-    @import '@css/constants.scss';
-    @import '@css/fonts.scss';
+    @use '@css/roboto/roboto.scss';
+    @use '@css/colors.scss' as *;
+    @use '@css/constants.scss' as *;
+    @use '@css/fonts.scss';
 
     .app {
         display: flex;

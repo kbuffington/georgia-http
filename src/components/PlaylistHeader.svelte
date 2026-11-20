@@ -93,8 +93,8 @@
 </div>
 
 <style lang="scss">
-    @import '@css/constants.scss';
-    @import '@css/colors.scss';
+    @use '@css/constants.scss' as *;
+    @use '@css/colors.scss' as *;
 
     .page-selection {
         // width: 100%;

@@ -299,8 +299,8 @@
 </div>
 
 <style lang="scss">
-    @import '@css/constants.scss';
-    @import '@css/colors.scss';
+    @use '@css/constants.scss' as *;
+    @use '@css/colors.scss' as *;
 
     $playlist-height: calc(100vh - $art-top - $total-progress-height - 28px);
 

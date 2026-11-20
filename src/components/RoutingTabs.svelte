@@ -85,7 +85,7 @@
 </div>
 
 <style lang="scss">
-    @import '@css/colors';
+    @use '@css/colors' as *;
 
     $num-of-tabs: 3; // this seemingly can only be set as a string using css variables
 

@@ -24,7 +24,7 @@
 </div>
 
 <style lang="scss">
-    @import '@css/constants.scss';
+    @use '@css/constants.scss' as *;
 
     $artist-wrapper-max-width: calc(100vw - 12rem);
 

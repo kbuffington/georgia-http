@@ -45,7 +45,7 @@
 </div>
 
 <style lang="scss">
-    @import '@css/constants';
+    @use '@css/constants' as *;
 
     $spacing: 0.75rem;
 

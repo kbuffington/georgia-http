@@ -50,7 +50,7 @@
 </div>
 
 <style lang="scss">
-    @import '@css/constants.scss';
+    @use '@css/constants.scss' as *;
 
     $mini-art-size: 5rem;
 

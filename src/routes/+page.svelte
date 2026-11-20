@@ -41,8 +41,8 @@
 {/await}
 
 <style lang="scss">
-    // @import '@css/colors.scss';
-    @import '@css/constants.scss';
+    // @use '@css/colors.scss' as *;
+    @use '@css/constants.scss' as *;
 
     #main-content {
         flex: 1;

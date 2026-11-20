@@ -132,7 +132,7 @@
 </div>
 
 <style lang="scss">
-    @import '@css/constants.scss';
+    @use '@css/constants.scss' as *;
 
     $left-padding: 1rem;
     $max-artwidth: 55vw;
