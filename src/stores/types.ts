@@ -209,10 +209,11 @@ export class PlaybackState {
         if (itemPlaylingLen == 0) {
             // sometimes isPlaying is true but there's no length
             this.state = PlaybackStates.STOPPED;
+        } else if (json.isPaused === 1) {
+            // check paused first: foobar reports isPlaying=1 while paused too
+            this.state = PlaybackStates.PAUSED;
         } else if (json.isPlaying === 1) {
             this.state = PlaybackStates.PLAYING;
-        } else if (json.isPaused === 1) {
-            this.state = PlaybackStates.PAUSED;
         }
     }
 
