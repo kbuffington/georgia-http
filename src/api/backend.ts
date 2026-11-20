@@ -1,6 +1,6 @@
-import { get_store_value } from 'svelte/internal';
+import { get } from 'svelte/store';
 import { userSettings } from '@stores/stores';
-import { rebounce } from '@square/svelte-store';
+import { rebounce } from '@stores/async-store';
 import { sendCommand } from './commands';
 
 const timeout = (ms: number) => {
@@ -9,7 +9,7 @@ const timeout = (ms: number) => {
 
 const refreshPlayingInfoCall = async (): Promise<Response> => {
     console.log('refreshing playingInfo');
-    const { useMocks } = get_store_value(userSettings);
+    const { useMocks } = get(userSettings);
     if (useMocks) {
         await timeout(1000);
         return await fetch('/mockdata/fake-backend-data.json');

@@ -2,7 +2,6 @@
     import { playingInfo } from '@stores/fb-store';
     import Header from '@components/Header.svelte';
     import Progress from '@components/Progress.svelte';
-    import { visibilityChange } from 'svelte-visibility-change';
     import { visibilityChanged } from '@api/refresh-data';
     import { theme } from '@stores/art-store';
 </script>
@@ -28,12 +27,10 @@
     />
 </svelte:head>
 
+<svelte:document on:visibilitychange={() => visibilityChanged(!document.hidden)} />
+
 <div
     class="app"
-    use:visibilityChange
-    on:visibilitychange={({ detail }) => {
-        visibilityChanged(detail.visible);
-    }}
     style="--primary:{$theme.color};
            --accent:{$theme.accent};
            --darkAccent:{$theme.darkAccent};

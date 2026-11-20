@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onDestroy } from 'svelte/internal';
+    import { onDestroy } from 'svelte';
     import { routingState, searchString, setFocus } from '@stores/stores';
     import { librarySearch } from '@api/commands';
     import { goto } from '$app/navigation';

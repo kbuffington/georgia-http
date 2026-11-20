@@ -5,7 +5,7 @@
     import { playingInfo, playlistData, playlistsInfo } from '@stores/fb-store';
     import type { QueryResponse } from '@stores/types';
     import { onMount } from 'svelte';
-    import { noop } from 'svelte/internal';
+    import { noop } from '@api/helpers';
 
     export let hidden = true;
     let queryResults: QueryResponse = { queryInfo: [], query: [] };

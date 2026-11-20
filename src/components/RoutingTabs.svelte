@@ -2,7 +2,8 @@
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
     import { routingState } from '@stores/stores';
-    import { noop, onDestroy, onMount } from 'svelte/internal';
+    import { onDestroy, onMount } from 'svelte';
+    import { noop } from '@api/helpers';
     import type { Unsubscriber } from 'svelte/store';
 
     const routes = [

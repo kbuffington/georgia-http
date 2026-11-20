@@ -1,4 +1,4 @@
-import { asyncReadable, asyncWritable } from '@square/svelte-store';
+import { asyncReadable, asyncWritable } from '@stores/async-store';
 import { derived, get } from 'svelte/store';
 import { refreshPlayingInfo } from '@api/backend';
 import { PlaybackState, PlaylistData, PlaylistsInfo, TrackInfo, type PlayingInfo } from './types';

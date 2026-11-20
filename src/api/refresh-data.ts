@@ -1,4 +1,4 @@
-import { rebounce } from '@square/svelte-store';
+import { rebounce } from '@stores/async-store';
 import { playingInfo } from '@stores/fb-store';
 
 // let lastRefreshed = 0;
