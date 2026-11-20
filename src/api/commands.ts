@@ -109,6 +109,18 @@ export const deleteItems = (items: number[]) => {
     sendCommandAndRefresh('Del', items.join(','));
 };
 
+/**
+ * Sets the Playback Statistics (foo_playcount) rating of active-playlist items by running its
+ * context menu command through foo_httpcontrol's SelectionCommand.
+ * @param items playlist indexes (plIndex) of the tracks to rate
+ * @param rating 1-5, or 0 to clear the rating
+ */
+export const setRatings = (items: number[], rating: number) => {
+    const menuItem = rating > 0 ? `${rating}` : '<not set>';
+    const command = encodeURIComponent(`Playback Statistics/Rating/${menuItem}`);
+    return sendCommandAndRefresh('SelectionCommand', command, items.join(','));
+};
+
 export const moveItems = (items: number[], diff: number) => {
     sendCommandAndRefresh('Move', items.join(','), diff);
 };

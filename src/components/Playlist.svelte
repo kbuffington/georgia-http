@@ -11,6 +11,7 @@
         queueItems,
         setFocus,
         setPlaylistItemsPerPage,
+        setRatings,
     } from '@api/commands';
     import { noop } from '@api/callbacks';
     // import { send, receive } from '@api/crossfade';
@@ -36,6 +37,15 @@
      */
     function playItem(index: number) {
         playPlaylistItem(index);
+    }
+
+    /**
+     * Double-clicking a rating position sets that rating; double-clicking the current rating clears it.
+     * Stops propagation so the row's own double-click (play track) doesn't also fire.
+     */
+    function rateItem(evt: MouseEvent, item: PlTrackData, rating: number) {
+        evt.stopPropagation();
+        setRatings([item.plIndex], rating === item.rating ? 0 : rating);
     }
 
     function selectItem(evt: MouseEvent | KeyboardEvent, index: number, item: PlTrackData) {
@@ -235,9 +245,27 @@
                         </div>
                         <div class="cell rating">
                             <span class="dimmed">| </span>
-                            <span class="star">{item.ratingStars}</span>
+                            <!-- one element per position so each can be double-clicked to rate -->
+                            <span class="star"
+                                >{#each { length: item.rating } as _, s (s)}<span
+                                        class="rate"
+                                        role="button"
+                                        tabindex="-1"
+                                        title={s + 1 === item.rating
+                                            ? 'Double-click to clear rating'
+                                            : `Double-click to rate ${s + 1}`}
+                                        ondblclick={evt => rateItem(evt, item, s + 1)}>★</span
+                                    >{/each}</span
+                            >
                             <span class="empty" class:nostars={!item.ratingStars}
-                                >{item.ratingEmpty}</span
+                                >{#each { length: 5 - item.rating } as _, e (e)}<span
+                                        class="rate"
+                                        role="button"
+                                        tabindex="-1"
+                                        title={`Double-click to rate ${item.rating + e + 1}`}
+                                        ondblclick={evt => rateItem(evt, item, item.rating + e + 1)}
+                                        >{item.ratingEmpty[0]}</span
+                                    >{/each}</span
                             >
                         </div>
                         <div class="cell length">{item.displayLength}</div>
@@ -430,6 +458,11 @@
                     }
 
                     &.rating {
+                        user-select: none; // double-clicking to rate shouldn't select text
+
+                        .rate {
+                            cursor: pointer;
+                        }
                         .star {
                             letter-spacing: 2px;
                         }
