@@ -10,7 +10,6 @@ const storage = <T>(key: string, initValue: T): Writable<T> => {
     if (storedValueStr != null) store.set(JSON.parse(storedValueStr));
 
     store.subscribe(val => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ([null, undefined].includes(val as any)) {
             localStorage.removeItem(key);
         } else {

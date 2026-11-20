@@ -21,6 +21,11 @@ export default ts.config(
         rules: {
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/no-non-null-assertion': 'off',
+            // allow intentionally-unused names, e.g. `{#each { length: n } as _}`
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+            ],
         },
     },
     {

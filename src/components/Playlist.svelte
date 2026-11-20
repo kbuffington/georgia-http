@@ -1,21 +1,18 @@
 <script lang="ts">
-    import { theme } from '@stores/art-store';
     import { fb, playingInfo, playlistData, playlistsInfo, trackInfo } from '@stores/fb-store';
     import type { PlTrackData } from '@stores/types';
-    import { searchString } from '@stores/stores';
     import PlaylistHeader from '@components/PlaylistHeader.svelte';
     import { flip } from 'svelte/animate';
     import {
         deleteItems,
         dequeueItems,
-        librarySearch,
         moveItems,
         playPlaylistItem,
         queueItems,
         setFocus,
         setPlaylistItemsPerPage,
     } from '@api/commands';
-    import { noop } from '@api/helpers';
+    import { noop } from '@api/callbacks';
     // import { send, receive } from '@api/crossfade';
 
     interface Props {
@@ -29,17 +26,10 @@
     let focus = $state(-1);
     let hovering: number | null = $state(null);
 
-    const forceUpdate = async (_: any) => {};
+    const forceUpdate = async (_rerender: number) => {};
     let doRerender = $state(0);
     let numPlaylistRows = 0;
     let containerEl: Element | undefined = $state();
-
-    function doSearch(evt: CustomEvent) {
-        if ($searchString.length) {
-            librarySearch($searchString);
-        }
-        evt.stopPropagation();
-    }
 
     /**
      * @param index The plIndex from the playlistData
@@ -89,7 +79,6 @@
         event.dataTransfer!.effectAllowed = 'move';
         event.dataTransfer!.dropEffect = 'move';
         event.dataTransfer!.setData('text/plain', `${index}`);
-        const target = event.target as Element;
         if (!selection.length) {
             selection = [plIndex];
         }
@@ -110,10 +99,10 @@
     function keyHandler(evt: KeyboardEvent) {
         switch (evt.code) {
             case 'KeyQ':
-                selection.length && queueItems(selection);
+                if (selection.length) queueItems(selection);
                 break;
             case 'KeyW':
-                selection.length && dequeueItems(selection);
+                if (selection.length) dequeueItems(selection);
                 break;
             case 'KeyP':
                 // setPlaylistItemsPerPage(30);
@@ -121,7 +110,7 @@
             case 'Delete':
             case 'Backspace':
                 // TODO: hide rows before refresh?
-                selection.length && deleteItems(selection);
+                if (selection.length) deleteItems(selection);
                 focus = Math.max(0, focus + 1 - selection.length);
                 selectItem(evt, focus, $playlistData.tracks[focus]);
                 break;
@@ -188,7 +177,7 @@
         <div class="playlist-header">
             <PlaylistHeader />
         </div>
-        {#await forceUpdate(doRerender) then _}
+        {#await forceUpdate(doRerender) then}
             <div class="playlist-data">
                 {#each $playlistData.tracks as item, i (item.plIndex)}
                     <div

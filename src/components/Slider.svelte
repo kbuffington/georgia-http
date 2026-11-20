@@ -229,7 +229,7 @@
     >
         <div class="range__track" bind:this={container}>
             <div class="tick-container">
-                {#each ticksX as t, index}
+                {#each ticksX as t, index (index)}
                     <div class="tick" class:above-val={index > value - 2} style="left:{t}%;"></div>
                 {/each}
             </div>

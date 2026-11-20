@@ -49,7 +49,7 @@
         </Button>
         <Menu bind:this={menu} anchorCorner="TOP_START" class="playlist-menu">
             <List>
-                {#each $playlistsInfo.playlists as pl, i}
+                {#each $playlistsInfo.playlists as pl, i (i)}
                     <Item onSMUIAction={() => switchToPlaylist(i)}>
                         <div class="playlist-item">
                             <Text>

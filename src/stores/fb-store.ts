@@ -4,7 +4,6 @@ import { refreshPlayingInfo } from '@api/backend';
 import { PlaybackState, PlaylistData, PlaylistsInfo, TrackInfo, type PlayingInfo } from './types';
 import { searchString } from './stores';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const playingInfo = asyncReadable(
     {},
     async () => {

@@ -13,7 +13,7 @@
         <div class="artist">
             {$trackInfo.artist}
         </div>
-        {#each $trackInfo.artistCountryFlags as flag}
+        {#each $trackInfo.artistCountryFlags as flag, i (i)}
             <img class="artist-flag" src="/georgia/images/flags/64/{flag}.png" alt="{flag} flag" />
         {/each}
     </div>

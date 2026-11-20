@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { fb } from '@stores/fb-store';
-
     interface Props {
         size?: number;
     }

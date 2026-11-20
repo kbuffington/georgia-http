@@ -36,7 +36,7 @@
                 {#if $trackInfo.labels.length}
                     <div class="label">Label</div>
                     <div class="data">
-                        {#each $trackInfo.labels as label, i}
+                        {#each $trackInfo.labels as label, i (i)}
                             {#if i > 0}
                                 <div class="dot noto-symbol">⋅</div>
                             {/if}
@@ -48,7 +48,7 @@
                 {#if $trackInfo.genre.length}
                     <div class="label">Genre</div>
                     <div class="data">
-                        {#each $trackInfo.genre as genre, i}
+                        {#each $trackInfo.genre as genre, i (i)}
                             {#if i > 0}
                                 <div class="dot noto-symbol">⋅</div>
                             {/if}
@@ -75,7 +75,7 @@
                 {#if $trackInfo.rating > 0}
                     <div class="label">Rating</div>
                     <div class="data rating">
-                        {#each { length: $trackInfo.rating } as _}
+                        {#each { length: $trackInfo.rating } as _, i (i)}
                             <span class="material-symbols-outlined"> grade </span>
                         {/each}
                     </div>

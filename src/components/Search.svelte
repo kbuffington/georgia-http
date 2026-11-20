@@ -9,7 +9,7 @@
     const unsubscribe: Unsubscriber[] = [];
 
     unsubscribe.push(
-        setFocus.subscribe(val => {
+        setFocus.subscribe(() => {
             // set the focus
             setTimeout(() => {
                 inputRef?.focus();
@@ -21,6 +21,8 @@
         if ($routingState !== 'playlist' && $routingState !== 'query') {
             routingState.set('playlist');
             const path = `/georgia?route=playlist`;
+            // only the ?route= query changes on the same page, so resolve() (which takes a route id) doesn't apply
+            // eslint-disable-next-line svelte/no-navigation-without-resolve
             await goto(path, { replaceState: false });
         }
         setFocus.update(n => n + 1);

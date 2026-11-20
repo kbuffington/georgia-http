@@ -2,14 +2,9 @@
     import Fab from '@smui/fab';
     import { playOrPause, startNext, startPrevious, stop } from '@api/commands';
     import { fb, pausedState, playingInfo } from '@stores/fb-store';
-    import { progressUseTransition, progressVal, userSettings } from '@stores/stores';
-    import { refreshPlayingInfo } from '@api/backend';
+    import { progressUseTransition, progressVal } from '@stores/stores';
     import RoutingTabs from './RoutingTabs.svelte';
     import Search from './Search.svelte';
-
-    function reloadData() {
-        refreshPlayingInfo();
-    }
 
     function handleTransportClick(type: string) {
         const cb = () => {

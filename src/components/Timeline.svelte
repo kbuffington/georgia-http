@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { theme } from '@stores/art-store';
     import { trackInfo } from '@stores/fb-store';
     import { onDestroy } from 'svelte';
 
@@ -40,7 +39,7 @@
 <div class="timeline" style="--start:{firstRatio}%; --end:{lastRatio}%;">
     <div class="timeline-bar played" class:never-played={neverPlayed}></div>
     <div class="timeline-bar unplayed" class:never-played={neverPlayed}></div>
-    {#each tickRatios as t}
+    {#each tickRatios as t, i (i)}
         <div class="tick" style="left:{t}%;"></div>
     {/each}
 </div>

@@ -27,7 +27,6 @@ class PlayTimeInfo {
     }
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export class TrackInfo {
     artist = '';
     artwork = '';

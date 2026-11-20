@@ -272,7 +272,7 @@ export function loadCountryFlags(countries: string) {
     const flagImagePaths: string[] = [];
     countries.split(',').forEach(country => {
         const flagImage = getFlagImage(country.trim());
-        flagImage && flagImagePaths.push(flagImage);
+        if (flagImage) flagImagePaths.push(flagImage);
     });
     return flagImagePaths;
 }

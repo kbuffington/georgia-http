@@ -1,11 +1,10 @@
 <script lang="ts">
-    import { refreshPlayingInfo } from '@api/backend';
     import { queryAdvance, queryRetrace, switchPlaylist } from '@api/commands';
     import { rebouncedInfoPlayingRefresh } from '@api/refresh-data';
-    import { playingInfo, playlistData, playlistsInfo } from '@stores/fb-store';
+    import { playlistsInfo } from '@stores/fb-store';
     import type { QueryResponse } from '@stores/types';
     import { onMount } from 'svelte';
-    import { noop } from '@api/helpers';
+    import { noop } from '@api/callbacks';
 
     interface Props {
         hidden?: boolean;
@@ -13,10 +12,8 @@
 
     let { hidden = true }: Props = $props();
     let queryResults: QueryResponse = $state({ queryInfo: [], query: [] });
-    let depth = 0;
 
     async function advanceQuery(query: string) {
-        depth++;
         queryResults = await queryAdvance(query);
         rebouncedInfoPlayingRefresh();
     }
@@ -27,7 +24,6 @@
         if (count >= 2) await queryRetrace();
         if (count >= 1) await queryRetrace();
         queryResults = await queryRetrace();
-        depth -= count;
         rebouncedInfoPlayingRefresh();
     }
 
@@ -44,7 +40,7 @@
 <div class="query-container" class:hidden>
     <div class="breadcrumbs">
         {#if queryResults.queryInfo.length}
-            {#each queryResults.queryInfo as breadcrumb, i}
+            {#each queryResults.queryInfo as breadcrumb, i (i)}
                 {#if i > 0}
                     <span>/</span>
                 {/if}
@@ -57,7 +53,7 @@
         {/if}
     </div>
     <div class="query">
-        {#each queryResults.query as queryItem, i}
+        {#each queryResults.query as queryItem, i (i)}
             <div class="item" onclick={() => advanceQuery(queryItem)} onkeydown={noop}>
                 {queryItem}
             </div>

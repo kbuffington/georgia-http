@@ -3,7 +3,7 @@
     import { page } from '$app/stores';
     import { routingState } from '@stores/stores';
     import { onDestroy, onMount } from 'svelte';
-    import { noop } from '@api/helpers';
+    import { noop } from '@api/callbacks';
     import type { Unsubscriber } from 'svelte/store';
 
     const routes = [
@@ -30,6 +30,8 @@
     function goToRoute(state: string, replaceState: boolean) {
         routingState.set(state);
         const path = `/georgia?route=${state}`;
+        // only the ?route= query changes on the same page, so resolve() (which takes a route id) doesn't apply
+        // eslint-disable-next-line svelte/no-navigation-without-resolve
         goto(path, { replaceState });
     }
 
@@ -54,12 +56,12 @@
     });
 
     onDestroy(() => {
-        unsubscribe && unsubscribe();
+        unsubscribe?.();
     });
 </script>
 
 <div class="tab-wrap" style="--num-of-tabs:{routes.length};">
-    {#each routes as tabRoute, i}
+    {#each routes as tabRoute, i (tabRoute.id)}
         <input
             type="radio"
             name="tabs"

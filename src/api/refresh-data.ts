@@ -14,7 +14,7 @@ class RefreshDataInstance {
 
     public async refresh() {
         await playingInfo.load();
-        playingInfo.reload!(); // eslint-disable-line
+        playingInfo.reload!();
         this.updateInterval();
     }
 
