@@ -96,6 +96,7 @@
 
         .art-wrapper {
             cursor: pointer;
+            position: relative; // so the pause overlay centers on the art, not the whole card
 
             img.albumart {
                 max-width: calc(#{$mini-art-size} + 1.5rem);
