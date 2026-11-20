@@ -1,4 +1,9 @@
 <script>
-    // I don't know why this is called when refreshing from /georgia/ but it is
-    window.location.href = window.location.origin + '/georgia/index.html';
+    // foo_httpcontrol serves this template when /georgia/ is requested (including on refresh),
+    // so send the browser on to the real app page.
+    // The redirect is a plain navigation, not a reload, so the browser may serve a stale cached
+    // index.html (which points at the previous build's scripts). A unique query string forces a
+    // fresh copy on every load; the app's JS/CSS filenames are content-hashed, so they cache safely.
+    // replace() keeps this page out of history so Back doesn't bounce through the redirect.
+    window.location.replace(window.location.origin + '/georgia/index.html?v=' + Date.now());
 </script>
