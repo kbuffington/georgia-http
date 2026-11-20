@@ -11,7 +11,11 @@
 
     let { position = 'center' }: Props = $props();
 
-    let w = $state(0);
+    // Leave the width unset until it's measured: --artwidth must stay unset on first render so the
+    // calc()-based `left` falls back to auto, which doesn't transition. Starting at 0 would make the
+    // art slide in from the right on every load.
+    let w = $state<number>();
+    const artWidthStyle = $derived(w === undefined ? '' : `--artwidth:${w}px`);
 
     function imageLoaded() {
         theme.getArtColors($trackInfo.artwork);
@@ -23,7 +27,7 @@
     class:left={position === 'left'}
     class:center={position === 'center'}
     class="artwork"
-    style="--artwidth:{w}px"
+    style={artWidthStyle}
 >
     <div class="metadata">
         {#if position !== 'left'}
@@ -101,7 +105,7 @@
                 }}
             />
             {#if $pausedState}
-                <PauseButton size={Math.max(100, w / 4)} />
+                <PauseButton size={Math.max(100, (w ?? 0) / 4)} />
             {/if}
         </div>
     </div>

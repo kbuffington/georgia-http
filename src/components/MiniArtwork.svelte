@@ -9,7 +9,11 @@
     }
 
     let { hidden = true }: Props = $props();
-    let w = $state(0);
+    // Leave the width unset until it's measured: --artwidth must stay unset on first render so the
+    // calc()-based `left` falls back to auto, which doesn't transition. Starting at 0 would make the
+    // art slide in from the right on every load.
+    let w = $state<number>();
+    const artWidthStyle = $derived(w === undefined ? '' : `--artwidth:${w}px`);
 
     function imageLoaded() {
         if ($fb.isPausedOrPlaying) {
@@ -21,7 +25,7 @@
 <div
     class="mini-artwork"
     class:hidden
-    style="--color:{$theme.color}; --textColor:{$theme.textColor}; --artwidth:{w}px"
+    style="--color:{$theme.color}; --textColor:{$theme.textColor}; {artWidthStyle}"
 >
     <div class="metadata">
         <div class="info">{$trackInfo.artist}</div>
@@ -40,7 +44,7 @@
             }}
         />
         {#if $pausedState}
-            <PauseButton size={w * 0.75} />
+            <PauseButton size={(w ?? 0) * 0.75} />
         {/if}
     </div>
 </div>
