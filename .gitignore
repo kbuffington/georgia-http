@@ -2,6 +2,7 @@ static/fonts/**/*.ttf
 static/fonts/**/*.woff
 
 .vscode
+*.code-workspace
 
 .DS_Store
 node_modules
