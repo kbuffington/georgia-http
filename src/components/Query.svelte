@@ -7,8 +7,12 @@
     import { onMount } from 'svelte';
     import { noop } from '@api/helpers';
 
-    export let hidden = true;
-    let queryResults: QueryResponse = { queryInfo: [], query: [] };
+    interface Props {
+        hidden?: boolean;
+    }
+
+    let { hidden = true }: Props = $props();
+    let queryResults: QueryResponse = $state({ queryInfo: [], query: [] });
     let depth = 0;
 
     async function advanceQuery(query: string) {
@@ -44,7 +48,7 @@
                 {#if i > 0}
                     <span>/</span>
                 {/if}
-                <span class="breadcrumb" on:click={() => retraceQuery(i)} on:keydown={noop}>
+                <span class="breadcrumb" onclick={() => retraceQuery(i)} onkeydown={noop}>
                     {breadcrumb}
                 </span>
             {/each}
@@ -54,7 +58,7 @@
     </div>
     <div class="query">
         {#each queryResults.query as queryItem, i}
-            <div class="item" on:click={() => advanceQuery(queryItem)} on:keydown={noop}>
+            <div class="item" onclick={() => advanceQuery(queryItem)} onkeydown={noop}>
                 {queryItem}
             </div>
         {/each}

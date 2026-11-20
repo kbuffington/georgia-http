@@ -5,7 +5,7 @@
     import { goto } from '$app/navigation';
     import type { Unsubscriber } from 'svelte/store';
 
-    let inputRef: HTMLInputElement;
+    let inputRef = $state<HTMLInputElement>();
     const unsubscribe: Unsubscriber[] = [];
 
     unsubscribe.push(
@@ -24,7 +24,7 @@
             await goto(path, { replaceState: false });
         }
         setFocus.update(n => n + 1);
-        inputRef.select();
+        inputRef?.select();
     };
 
     function doSearch(evt: KeyboardEvent) {
@@ -40,7 +40,7 @@
 </script>
 
 <div class="playlist-search">
-    <span class="material-symbols-outlined magnifier" on:click={showSearch} on:keydown={showSearch}>
+    <span class="material-symbols-outlined magnifier" onclick={showSearch} onkeydown={showSearch}>
         search
     </span>
     {#if $routingState === 'playlist' || $routingState === 'query'}
@@ -49,11 +49,11 @@
                 type="search"
                 placeholder="Search"
                 bind:value={$searchString}
-                on:keyup={doSearch}
+                onkeyup={doSearch}
                 bind:this={inputRef}
             />
-            <span class="underline-not-focused" />
-            <span class="underline" />
+            <span class="underline-not-focused"></span>
+            <span class="underline"></span>
         </div>
     {/if}
 </div>

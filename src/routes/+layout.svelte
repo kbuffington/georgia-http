@@ -4,6 +4,13 @@
     import Progress from '@components/Progress.svelte';
     import { visibilityChanged } from '@api/refresh-data';
     import { theme } from '@stores/art-store';
+    /**
+     * @typedef {Object} Props
+     * @property {import('svelte').Snippet} [children]
+     */
+
+    /** @type {Props} */
+    let { children } = $props();
 </script>
 
 <svelte:head>
@@ -27,7 +34,7 @@
     />
 </svelte:head>
 
-<svelte:document on:visibilitychange={() => visibilityChanged(!document.hidden)} />
+<svelte:document onvisibilitychange={() => visibilityChanged(!document.hidden)} />
 
 <div
     class="app"
@@ -42,13 +49,13 @@
     <Header />
 
     <main>
-        <div class="menu-bg-extended" />
-        <slot />
+        <div class="menu-bg-extended"></div>
+        {@render children?.()}
     </main>
 
     <footer>
         {#await playingInfo.load()}
-            <span />
+            <span></span>
         {:then}
             <Progress />
         {/await}
@@ -118,7 +125,11 @@
 
     :global(.material-symbols-outlined) {
         // material symbols outlined
-        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 48;
     }
 
     :global(.noto-symbol) {

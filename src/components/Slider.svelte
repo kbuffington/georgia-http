@@ -1,31 +1,42 @@
 <script lang="ts">
     // taken from https://svelte.dev/repl/7f0042a186ee4d8e949c46ca663dbe6c?version=3.33.0
-    import { createEventDispatcher, onMount } from 'svelte';
+    import { onMount } from 'svelte';
     import { fly, fade } from 'svelte/transition';
 
-    // Props
-    export let min = 0;
-    export let max = 10;
-    export let initialValue = 0;
-    export let id: string = '';
-    export let disabled = false;
-    export let value = typeof initialValue === 'string' ? parseInt(initialValue) : initialValue;
+    interface Props {
+        min?: number;
+        max?: number;
+        initialValue?: number | string;
+        id?: string;
+        disabled?: boolean;
+        value?: number;
+        /** called when the user changes the value (not when the parent changes it) */
+        onchange?: (detail: { value: number }) => void;
+    }
+
+    let {
+        min = 0,
+        max = 10,
+        initialValue = 0,
+        id = '',
+        disabled = false,
+        value = $bindable(typeof initialValue === 'string' ? parseInt(initialValue) : initialValue),
+        onchange,
+    }: Props = $props();
 
     // Node Bindings
-    let container: HTMLElement;
-    let thumb: HTMLElement;
-    let progressBar: HTMLElement;
-    let element: Element;
+    let container = $state<HTMLElement>();
+    let thumb = $state<HTMLElement>();
+    let progressBar = $state<HTMLElement>();
+    let element = $state<HTMLElement>();
 
     // Internal State
-    let currentThumb: HTMLElement | null = null;
-    let holding = false;
-    let thumbHover = false;
+    let currentThumb: HTMLElement | null = $state(null);
+    // Set a class based on if dragging
+    const holding = $derived(Boolean(currentThumb));
+    let thumbHover = $state(false);
     let keydownAcceleration = 0;
     let accelerationTimer: ReturnType<typeof setInterval>;
-
-    // Dispatch 'change' events
-    const dispatch = createEventDispatcher();
 
     // Mouse shield used onMouseDown to prevent any mouse events penetrating other elements,
     // ie. hover events on other elements while dragging. Especially for Safari
@@ -37,7 +48,7 @@
     });
 
     function resizeWindow() {
-        if (container) {
+        if (container && thumb) {
             let percent = ((value - min) * 100) / (max - min);
             let offsetLeft = (container.clientWidth - 10) * (percent / 100) + 5;
 
@@ -46,11 +57,11 @@
         }
     }
 
-    // Allows both bind:value and on:change for parent value retrieval
+    // Allows both bind:value and onchange for parent value retrieval
     function setValue(newVal: number) {
         if (value != newVal) {
             value = newVal;
-            dispatch('change', { value });
+            onchange?.({ value });
         }
     }
 
@@ -60,14 +71,10 @@
         onDragStart(e);
     }
 
-    function onHover(e: MouseEvent) {
-        thumbHover = thumbHover ? false : true;
-    }
-
     function onDragStart(e: MouseEvent | TouchEvent) {
         // If mouse event add a pointer events shield
         if (e.type === 'mousedown') document.body.append(mouseEventShield);
-        currentThumb = thumb;
+        currentThumb = thumb ?? null;
     }
 
     function onDragEnd(e: MouseEvent | TouchEvent) {
@@ -76,7 +83,7 @@
             if (document.body.contains(mouseEventShield))
                 document.body.removeChild(mouseEventShield);
             // Needed to check whether thumb and mouse overlap after shield removed
-            if (isMouseInElement(e, thumb)) thumbHover = true;
+            if (thumb && isMouseInElement(e, thumb)) thumbHover = true;
         }
         currentThumb = null;
     }
@@ -118,6 +125,7 @@
     }
 
     function calculateNewValue(clientX: number) {
+        if (!element || !container) return;
         const elementX = element.getBoundingClientRect().left + 8 + 10; // left + 0.5rem left margin + half thumb width
         // Find distance between cursor and element's left coord
         let delta = clientX - elementX;
@@ -161,76 +169,79 @@
     }
 
     onMount(() => {
-        new ResizeObserver(resizeWindow).observe(element);
+        const observer = new ResizeObserver(resizeWindow);
+        observer.observe(element!);
+        // touchmove must be non-passive so updateValueOnEvent can preventDefault (stop page scroll)
+        window.addEventListener('touchmove', updateValueOnEvent, { passive: false });
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('touchmove', updateValueOnEvent);
+        };
     });
 
-    // Set a class based on if dragging
-    $: holding = Boolean(currentThumb);
-
     // Update progressbar and thumb styles to represent value
-    $: if (progressBar && thumb && container) {
-        // Limit value min -> max
-        value = value > min ? value : min;
-        value = value < max ? value : max;
+    $effect(() => {
+        if (progressBar && thumb && container) {
+            // Limit value min -> max
+            value = value > min ? value : min;
+            value = value < max ? value : max;
 
-        let percent = ((value - min) * 100) / (max - min);
-        let offsetLeft = (container.clientWidth - 10) * (percent / 100) + 5;
+            let percent = ((value - min) * 100) / (max - min);
+            let offsetLeft = (container.clientWidth - 10) * (percent / 100) + 5;
 
-        // Update thumb position + active range track width
-        thumb.style.left = `${offsetLeft}px`;
-        progressBar.style.width = `${offsetLeft}px`;
-    }
+            // Update thumb position + active range track width
+            thumb.style.left = `${offsetLeft}px`;
+            progressBar.style.width = `${offsetLeft}px`;
+        }
+    });
 
-    let ticksX: number[] = [];
-    $: {
-        ticksX = [];
+    const ticksX = $derived.by(() => {
+        const ticks: number[] = [];
         const range = max - min;
         for (let i = 1; i < range; i++) {
-            ticksX.push((i / range) * 100); // precentage
+            ticks.push((i / range) * 100); // percentage
         }
-    }
+        return ticks;
+    });
 </script>
 
 <svelte:window
-    on:touchmove|nonpassive={updateValueOnEvent}
-    on:touchcancel={onDragEnd}
-    on:touchend={onDragEnd}
-    on:mousemove={updateValueOnEvent}
-    on:mouseup={onDragEnd}
-    on:resize={resizeWindow}
+    ontouchcancel={onDragEnd}
+    ontouchend={onDragEnd}
+    onmousemove={updateValueOnEvent}
+    onmouseup={onDragEnd}
+    onresize={resizeWindow}
 />
 <div class="range">
     <div
         class="range__wrapper"
         class:disabled
         tabindex="0"
-        on:keydown={onKeyPress}
+        onkeydown={onKeyPress}
         bind:this={element}
         role="slider"
         aria-valuemin={min}
         aria-valuemax={max}
         aria-valuenow={value}
         {id}
-        on:mousedown={onTrackEvent}
-        on:touchstart={onTrackEvent}
+        onmousedown={onTrackEvent}
+        ontouchstart={onTrackEvent}
     >
         <div class="range__track" bind:this={container}>
             <div class="tick-container">
                 {#each ticksX as t, index}
-                    <div class="tick" class:above-val={index > value - 2} style="left:{t}%;" />
+                    <div class="tick" class:above-val={index > value - 2} style="left:{t}%;"></div>
                 {/each}
             </div>
-            <div class="range__track--highlighted" bind:this={progressBar} />
+            <div class="range__track--highlighted" bind:this={progressBar}></div>
             <div
                 class="range__thumb"
                 class:range__thumb--holding={holding}
                 bind:this={thumb}
-                on:touchstart={onDragStart}
-                on:mousedown={onDragStart}
-                on:mouseover={() => (thumbHover = true)}
-                on:mouseout={() => (thumbHover = false)}
-                on:focus
-                on:blur
+                ontouchstart={onDragStart}
+                onmousedown={onDragStart}
+                onmouseover={() => (thumbHover = true)}
+                onmouseout={() => (thumbHover = false)}
             >
                 {#if holding || thumbHover}
                     <div
@@ -280,7 +291,9 @@
     }
 
     .range__wrapper:focus-visible > .range__track {
-        box-shadow: 0 0 0 2px white, 0 0 0 3px var(--darkAccent);
+        box-shadow:
+            0 0 0 2px white,
+            0 0 0 3px var(--darkAccent);
     }
 
     .range__track {
@@ -344,7 +357,9 @@
     }
 
     .range__thumb--holding {
-        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 2px 1px rgba(0, 0, 0, 0.2),
+        box-shadow:
+            0 1px 1px 0 rgba(0, 0, 0, 0.14),
+            0 1px 2px 1px rgba(0, 0, 0, 0.2),
             0 0 0 6px var(--thumb-holding-outline, rgba(113, 119, 250, 0.3));
     }
 

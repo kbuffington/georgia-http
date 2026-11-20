@@ -5,9 +5,13 @@
     import PauseButton from '@components/PauseButton.svelte';
     import { playOrPause } from '@api/commands';
 
-    export let position = 'center';
+    interface Props {
+        position?: string;
+    }
 
-    let w: number;
+    let { position = 'center' }: Props = $props();
+
+    let w = $state(0);
 
     function imageLoaded() {
         theme.getArtColors($trackInfo.artwork);
@@ -90,9 +94,9 @@
                 class="albumart"
                 src={$trackInfo.artwork}
                 alt="album art"
-                on:click={playOrPause}
-                on:keydown={() => {}}
-                on:load={() => {
+                onclick={playOrPause}
+                onkeydown={() => {}}
+                onload={() => {
                     imageLoaded();
                 }}
             />

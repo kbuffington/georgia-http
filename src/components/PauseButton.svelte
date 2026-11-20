@@ -1,7 +1,11 @@
 <script lang="ts">
     import { fb } from '@stores/fb-store';
 
-    export let size = 200;
+    interface Props {
+        size?: number;
+    }
+
+    let { size = 200 }: Props = $props();
 </script>
 
 <div class="pause-container" style="--size:{size}px;">
@@ -26,14 +30,18 @@
             min-height: var(--size);
             max-height: var(--size);
             color: rgba(255, 255, 255, 0.7);
-           
+
             .pause-text {
                 display: block;
                 font-size: var(--size);
                 line-height: var(--size);
                 width: 100%;
                 text-align: center;
-                font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 200, 'opsz' 48;
+                font-variation-settings:
+                    'FILL' 1,
+                    'wght' 300,
+                    'GRAD' 200,
+                    'opsz' 48;
             }
         }
     }

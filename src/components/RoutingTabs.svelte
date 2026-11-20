@@ -24,7 +24,7 @@
         },
     ];
 
-    let selectedRoute = routes[0].id;
+    let selectedRoute = $state(routes[0].id);
     let unsubscribe: Unsubscriber;
 
     function goToRoute(state: string, replaceState: boolean) {
@@ -70,8 +70,8 @@
         <div
             class="tab-label-content"
             id="tab{i}-content"
-            on:keydown={noop}
-            on:click={() => {
+            onkeydown={noop}
+            onclick={() => {
                 goToRoute(tabRoute.id, false);
             }}
         >
@@ -79,7 +79,7 @@
         </div>
     {/each}
 
-    <div class="slide" />
+    <div class="slide"></div>
 </div>
 
 <style lang="scss">

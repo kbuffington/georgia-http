@@ -4,8 +4,12 @@
     import PauseButton from './PauseButton.svelte';
     import { playOrPause } from '@api/commands';
 
-    export let hidden = true;
-    let w: number;
+    interface Props {
+        hidden?: boolean;
+    }
+
+    let { hidden = true }: Props = $props();
+    let w = $state(0);
 
     function imageLoaded() {
         if ($fb.isPausedOrPlaying) {
@@ -29,9 +33,9 @@
             class="albumart"
             src={$trackInfo.artwork}
             alt="album art"
-            on:click={playOrPause}
-            on:keydown={() => {}}
-            on:load={() => {
+            onclick={playOrPause}
+            onkeydown={() => {}}
+            onload={() => {
                 imageLoaded();
             }}
         />
@@ -58,7 +62,9 @@
         top: 1.5rem;
         transition: right 1s;
         // material design shadows
-        box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%), 0px 8px 10px 1px rgb(0 0 0 / 14%),
+        box-shadow:
+            0px 5px 5px -3px rgb(0 0 0 / 20%),
+            0px 8px 10px 1px rgb(0 0 0 / 14%),
             0px 3px 14px 2px rgb(0 0 0 / 12%);
 
         &.hidden {

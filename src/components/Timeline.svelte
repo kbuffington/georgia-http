@@ -3,10 +3,10 @@
     import { trackInfo } from '@stores/fb-store';
     import { onDestroy } from 'svelte';
 
-    let firstRatio: number;
-    let lastRatio: number;
-    let tickRatios: number[] = [];
-    let neverPlayed = true;
+    let firstRatio = $state<number>();
+    let lastRatio = $state<number>();
+    let tickRatios: number[] = $state([]);
+    let neverPlayed = $state(true);
 
     const unsubscribe = trackInfo.subscribe(ti => {
         const timeInfo = ti.timeInfo;
@@ -38,10 +38,10 @@
 </script>
 
 <div class="timeline" style="--start:{firstRatio}%; --end:{lastRatio}%;">
-    <div class="timeline-bar played" class:never-played={neverPlayed} />
-    <div class="timeline-bar unplayed" class:never-played={neverPlayed} />
+    <div class="timeline-bar played" class:never-played={neverPlayed}></div>
+    <div class="timeline-bar unplayed" class:never-played={neverPlayed}></div>
     {#each tickRatios as t}
-        <div class="tick" style="left:{t}%;" />
+        <div class="tick" style="left:{t}%;"></div>
     {/each}
 </div>
 

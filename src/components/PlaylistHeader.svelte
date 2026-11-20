@@ -7,8 +7,8 @@
     import Slider from '@components/Slider.svelte';
     import List, { Item, Text, Meta } from '@smui/list';
 
-    let menu: Menu;
-    let currentPage = 1;
+    let menu: Menu | undefined = $state();
+    let currentPage = $state(1);
 
     const unsubscribe = playlistData.subscribe(data => {
         currentPage = data?.page ?? 1;
@@ -41,8 +41,8 @@
     <div class="menu-container">
         <Button
             class="mini"
-            on:click={() => {
-                menu.setOpen(true);
+            onclick={() => {
+                menu?.setOpen(true);
             }}
         >
             <span class="material-symbols-outlined"> arrow_drop_down </span>
@@ -50,7 +50,7 @@
         <Menu bind:this={menu} anchorCorner="TOP_START" class="playlist-menu">
             <List>
                 {#each $playlistsInfo.playlists as pl, i}
-                    <Item on:SMUI:action={() => switchToPlaylist(i)}>
+                    <Item onSMUIAction={() => switchToPlaylist(i)}>
                         <div class="playlist-item">
                             <Text>
                                 {pl.name}
@@ -83,7 +83,7 @@
         <div class="slider-container">
             <Slider
                 bind:value={currentPage}
-                on:change={updatePage}
+                onchange={updatePage}
                 min={1}
                 max={$playlistData.pages}
             />

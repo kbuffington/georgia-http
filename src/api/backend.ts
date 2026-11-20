@@ -1,3 +1,4 @@
+import { base } from '$app/paths';
 import { get } from 'svelte/store';
 import { userSettings } from '@stores/stores';
 import { rebounce } from '@stores/async-store';
@@ -12,7 +13,7 @@ const refreshPlayingInfoCall = async (): Promise<Response> => {
     const { useMocks } = get(userSettings);
     if (useMocks) {
         await timeout(1000);
-        return await fetch('/mockdata/fake-backend-data.json');
+        return await fetch(`${base}/mockdata/fake-backend-data.json`);
     } else {
         // return await fetch('/mockdata/fake-backend-data2.json');
         return await sendCommand('RefreshPlayingInfo', undefined, undefined, 'schema/state.json');

@@ -62,9 +62,9 @@
     <progress
         class:transition={$progressUseTransition}
         value={$progressVal}
-        on:click={handleClick}
-        on:keydown={noop}
-    />
+        onclick={handleClick}
+        onkeydown={noop}
+    ></progress>
 </div>
 
 <style lang="scss">

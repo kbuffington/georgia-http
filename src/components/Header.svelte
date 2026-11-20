@@ -38,17 +38,17 @@
 
     <ul id="transport">
         <li>
-            <Fab on:click={() => handleTransportClick('stop')} mini>
+            <Fab onclick={() => handleTransportClick('stop')} mini>
                 <span class="material-symbols-outlined"> stop </span>
             </Fab>
         </li>
         <li>
-            <Fab on:click={() => handleTransportClick('prev')} mini>
+            <Fab onclick={() => handleTransportClick('prev')} mini>
                 <span class="material-symbols-outlined"> skip_previous </span>
             </Fab>
         </li>
         <li>
-            <Fab on:click={playOrPause} mini>
+            <Fab onclick={playOrPause} mini>
                 {#await playingInfo.load()}
                     <span class="material-symbols-outlined"> play_arrow </span>
                 {:then}
@@ -61,7 +61,7 @@
             </Fab>
         </li>
         <li>
-            <Fab on:click={() => handleTransportClick('next')} mini>
+            <Fab onclick={() => handleTransportClick('next')} mini>
                 <span class="material-symbols-outlined"> skip_next </span>
             </Fab>
         </li>

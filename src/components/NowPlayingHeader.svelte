@@ -1,7 +1,11 @@
 <script lang="ts">
     import { trackInfo } from '@stores/fb-store';
 
-    export let rightInfoHidden = true;
+    interface Props {
+        rightInfoHidden?: boolean;
+    }
+
+    let { rightInfoHidden = true }: Props = $props();
 </script>
 
 <div class="artist-container">

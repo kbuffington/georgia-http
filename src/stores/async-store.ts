@@ -136,7 +136,6 @@ export function asyncReadable<T>(
  * Returns a debounced version of `callback`. Each call cancels any pending call, whose promise
  * rejects with an AbortError. The callback runs `delay` ms after the most recent call.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function rebounce<Args extends any[], R>(
     callback: (...args: Args) => R | Promise<R>,
     delay = 0

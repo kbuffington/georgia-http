@@ -15,20 +15,24 @@
         setFocus,
         setPlaylistItemsPerPage,
     } from '@api/commands';
-    // import { onMount } from 'svelte';
+    import { noop } from '@api/helpers';
     // import { send, receive } from '@api/crossfade';
 
-    export let position: string;
+    interface Props {
+        position: string;
+    }
 
-    let selection: number[] = [];
+    let { position }: Props = $props();
+
+    let selection: number[] = $state([]);
     let anchor: number = -1;
-    let focus = -1;
-    let hovering: number | null = null;
+    let focus = $state(-1);
+    let hovering: number | null = $state(null);
 
     const forceUpdate = async (_: any) => {};
-    let doRerender = 0;
+    let doRerender = $state(0);
     let numPlaylistRows = 0;
-    let containerEl: Element;
+    let containerEl: Element | undefined = $state();
 
     function doSearch(evt: CustomEvent) {
         if ($searchString.length) {
@@ -153,30 +157,22 @@
         }
     }
 
-    let resizeObserver: ResizeObserver;
-    function setObserver(position: string) {
-        if (position !== 'off') {
-            resizeObserver?.unobserve(containerEl);
-            resizeObserver = new ResizeObserver(entries => {
-                // We're only watching one element
-                const entry = entries.at(0);
-
-                if (entry) {
-                    //Get the block size
-                    resizePlaylist(entry!.contentBoxSize[0].blockSize);
-                }
-            });
-            resizeObserver.observe(containerEl);
-        } else {
-            resizeObserver?.unobserve(containerEl);
-        }
-    }
-    $: thing = setObserver(position);
-
-    // onMount(() => {});
+    // Watch the playlist container's height while it's visible so the rows per page fit it
+    $effect(() => {
+        if (position === 'off' || !containerEl) return;
+        const resizeObserver = new ResizeObserver(entries => {
+            // We're only watching one element
+            const entry = entries.at(0);
+            if (entry) {
+                resizePlaylist(entry.contentBoxSize[0].blockSize);
+            }
+        });
+        resizeObserver.observe(containerEl);
+        return () => resizeObserver.disconnect();
+    });
 </script>
 
-<svelte:window on:keyup={keyHandler} />
+<svelte:window onkeyup={keyHandler} />
 
 <div
     class="playlist-container"
@@ -206,14 +202,20 @@
                         class:is-drop-target={hovering === i}
                         animate:flip
                         draggable={!$playlistData.locked}
-                        on:dragstart={event => dragStart(event, i, item.plIndex)}
-                        on:drop|preventDefault={event => drop(event, i)}
-                        on:dragover={evt => evt.preventDefault()}
-                        on:dragenter={() => (hovering = i)}
-                        on:keydown
-                        on:contextmenu|preventDefault={evt => rightClickContextMenu(evt, i, item)}
-                        on:click={evt => selectItem(evt, i, item)}
-                        on:dblclick={() => playItem(item.plIndex)}
+                        ondragstart={event => dragStart(event, i, item.plIndex)}
+                        ondrop={event => {
+                            event.preventDefault();
+                            drop(event, i);
+                        }}
+                        ondragover={evt => evt.preventDefault()}
+                        ondragenter={() => (hovering = i)}
+                        onkeydown={noop}
+                        oncontextmenu={evt => {
+                            evt.preventDefault();
+                            rightClickContextMenu(evt, i, item);
+                        }}
+                        onclick={evt => selectItem(evt, i, item)}
+                        ondblclick={() => playItem(item.plIndex)}
                     >
                         <div class="cell tracknum">
                             {item.queueIndexes}{item.discNumber}{item.tracknumber}.

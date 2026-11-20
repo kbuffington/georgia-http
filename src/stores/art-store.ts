@@ -8,7 +8,7 @@ import {
     getBrightness,
 } from '@api/color';
 import { extractColors } from 'extract-colors';
-import { writable, type StartStopNotifier } from 'svelte/store';
+import { writable, type Readable } from 'svelte/store';
 
 interface ThemeColors {
     color: string;
@@ -21,7 +21,7 @@ interface ThemeColors {
 }
 
 class ThemeStore {
-    subscribe: StartStopNotifier<ThemeColors>;
+    subscribe: Readable<ThemeColors>['subscribe'];
     primary: string;
     _set: any;
     _update: any;

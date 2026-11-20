@@ -1,4 +1,4 @@
-import { get, writable, type StartStopNotifier } from 'svelte/store';
+import { get, writable, type Readable } from 'svelte/store';
 import storage from './persistent-store';
 
 import { fb, currentTime, trackInfo } from '@stores/fb-store';
@@ -10,7 +10,7 @@ export const setFocus = writable(0);
 export const progressUseTransition = writable(true);
 
 class ProgressStore {
-    subscribe: StartStopNotifier<number>;
+    subscribe: Readable<number>['subscribe'];
     private set: any;
     private update: any;
     private value: number;

@@ -2,7 +2,6 @@ import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import path from 'path';
 
-
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
     // Consult https://kit.svelte.dev/docs/integrations#preprocessors
@@ -15,7 +14,7 @@ const config = {
             assets: 'build',
             fallback: null,
             precompress: false,
-            strict: true
+            strict: true,
         }),
         paths: {
             base: '/georgia',
@@ -26,8 +25,8 @@ const config = {
             '@components': path.resolve('./src/components'),
             '@css': path.resolve('./src/scss'),
             '@stores': path.resolve('./src/stores'),
-        }
-    }
+        },
+    },
 };
 
 export default config;
