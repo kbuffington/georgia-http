@@ -13,7 +13,6 @@
         setPlaylistItemsPerPage,
         setRatings,
     } from '@api/commands';
-    import { noop } from '@api/callbacks';
     // import { send, receive } from '@api/crossfade';
 
     interface Props {
@@ -188,10 +187,20 @@
             <PlaylistHeader />
         </div>
         {#await forceUpdate(doRerender) then}
-            <div class="playlist-data">
+            <!-- a selectable list: keyboard navigation/shortcuts are handled by keyHandler on window -->
+            <div
+                class="playlist-data"
+                role="listbox"
+                aria-label="Playlist"
+                aria-multiselectable="true"
+            >
                 {#each $playlistData.tracks as item, i (item.plIndex)}
                     <div
                         class="item-row"
+                        role="option"
+                        tabindex="-1"
+                        aria-selected={selection.includes(item.plIndex)}
+                        aria-current={item.active ? 'true' : undefined}
                         class:active={item.active}
                         class:focused={focus === i}
                         class:selected={selection.includes(item.plIndex)}
@@ -208,13 +217,25 @@
                         }}
                         ondragover={evt => evt.preventDefault()}
                         ondragenter={() => (hovering = i)}
-                        onkeydown={noop}
                         oncontextmenu={evt => {
                             evt.preventDefault();
                             rightClickContextMenu(evt, i, item);
                         }}
                         onclick={evt => selectItem(evt, i, item)}
                         ondblclick={() => playItem(item.plIndex)}
+                        onkeydown={evt => {
+                            // keyboard equivalent of double-click. Play the row the arrow keys
+                            // moved to (focus), not necessarily the row element that has DOM focus
+                            if (evt.key === 'Enter') {
+                                const track = $playlistData.tracks[focus];
+                                if (track) playItem(track.plIndex);
+                            }
+                            // a focused row would otherwise let these scroll the page; arrows move
+                            // the selection instead (keyHandler)
+                            if (['ArrowUp', 'ArrowDown', ' '].includes(evt.key)) {
+                                evt.preventDefault();
+                            }
+                        }}
                     >
                         <div class="cell tracknum">
                             {item.queueIndexes}{item.discNumber}{item.tracknumber}.

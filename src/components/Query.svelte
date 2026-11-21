@@ -4,7 +4,7 @@
     import { playlistsInfo } from '@stores/fb-store';
     import type { QueryResponse } from '@stores/types';
     import { onMount } from 'svelte';
-    import { noop } from '@api/callbacks';
+    import { onActivateKey } from '@api/callbacks';
 
     interface Props {
         hidden?: boolean;
@@ -44,7 +44,13 @@
                 {#if i > 0}
                     <span>/</span>
                 {/if}
-                <span class="breadcrumb" onclick={() => retraceQuery(i)} onkeydown={noop}>
+                <span
+                    class="breadcrumb"
+                    role="button"
+                    tabindex="0"
+                    onclick={() => retraceQuery(i)}
+                    onkeydown={onActivateKey(() => retraceQuery(i))}
+                >
                     {breadcrumb}
                 </span>
             {/each}
@@ -54,7 +60,13 @@
     </div>
     <div class="query">
         {#each queryResults.query as queryItem, i (i)}
-            <div class="item" onclick={() => advanceQuery(queryItem)} onkeydown={noop}>
+            <div
+                class="item"
+                role="button"
+                tabindex="0"
+                onclick={() => advanceQuery(queryItem)}
+                onkeydown={onActivateKey(() => advanceQuery(queryItem))}
+            >
                 {queryItem}
             </div>
         {/each}
