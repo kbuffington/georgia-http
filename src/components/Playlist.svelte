@@ -467,7 +467,9 @@
                 }
             }
 
-            &:not(.selected).newalbum .cell {
+            // album divider. Applies to selected rows too: every row needs a 1px top border (see the
+            // transparent one above), or the selected row's text shifts up 1px.
+            &.newalbum .cell {
                 // border-top: 1px solid var(--color);
                 border-top: 1px solid rgb(220, 220, 220);
             }
